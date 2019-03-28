@@ -6,12 +6,13 @@ const http = axios.create({
   withCredentials: true
 })
 
-const register = (user) => {
-  return http.post('/register', user)
+const getChallenges = () => {
+  return http.get('/challenges')
     .then(response => response.data)
 }
 
 
 export default {
-  register
+
+  getChallenges
 }
