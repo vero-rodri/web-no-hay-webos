@@ -1,24 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
-import { Form, FormField, Button } from 'grommet';
+import { Redirect, Link } from 'react-router-dom'
+import { Form, Button, Box, Text } from 'grommet';
+import InputField from '../misc/forms/InputField';
+import { createForm } from '../../utils/createForm'
 import authService  from '../../services/authService';
-
-const validators = {
-  email: (value) => {
-    let error;
-    if (!value) { 
-      error = 'email es obligatorio'
-    } 
-    return error;
-  },
-  password: (value) => {
-      let error;
-      if (!value) { 
-        error = 'contraseña es obligatoria'
-      } 
-      return error;
-  }
-}
 
 
 class Login extends Component {
@@ -32,41 +17,80 @@ class Login extends Component {
   }
 
 
-  handleChange = (event) => {
-    const {name, value} = event.target;
+  handleChange =(name, value) => {
     this.setState({
       user: {
         ...this.state.user,
-        [name] : value
-      },
-      errors: {
-        ...this.state.errors,
-        [name]: validators[name] && validators[name](value)
+        [name]: value
       }
     })
   }
 
+  // handleChange = (event) => {
+  //   console.log('entra en handleChange')
+  //   const {name, value} = event.target;
+  //   this.setState({
+  //     user: {
+  //       ...this.state.user,
+  //       [name] : value
+  //     }
+  //     // errors: {
+  //     //   ...this.state.errors,
+  //     //   [name]: validators[name] && validators[name](value)
+  //     // }
+  //   })
+  // }
 
-  handleSubmit = (event) => {
+
+  // handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   if ( !Object.values(this.state.errors).some(error => error !== undefined)) {
+  //     authService.authenticate(this.state.user)
+  //       .then(
+  //         () => this.setState({ isAuthenticated: true }), 
+  //         error => {
+  //           const { message, errors } = error.response.data;
+  //           this.setState({
+  //             errors: {
+  //               ...this.state.errors,
+  //               ...errors,
+  //               password: message
+  //             }
+  //         })
+  //       })
+  //   }
+  // }
+
+  handleSubmit = event => {
+    const { form } = this.props;
     event.preventDefault();
-    if ( !Object.values(this.state.errors).some(error => error !== undefined)) {
-      authService.authenticate(this.state.user)
+
+    form.validateFields((errors, fields) => {
+      console.log({ errors });
+      console.log({ fields });
+      const hasErrors = errors && Object.keys(errors).length > 0;
+      if (!hasErrors) {
+        authService.authenticate(this.state.user)
         .then(
           () => this.setState({ isAuthenticated: true }), 
           error => {
             const { message, errors } = error.response.data;
-            this.setState({
-              errors: {
-                ...this.state.errors,
-                ...errors,
-                password: message
-              }
-          })
-        })
-    }
-  }
+            // this.setState({
+            //   errors: {
+            //     ...this.state.errors,
+            //     ...errors,
+            //     password: message
+            //   }
+          // })
+        }) 
+        //aquí no falta la promesa que recoge los errores del back??
+      }
+    });
+  };
+
 
   render() {
+    const { getFieldProps, getFieldError } = this.props.form;
     const { email, password } = this.state.user;
 
     if ( this.state.isAuthenticated ) {
@@ -74,15 +98,48 @@ class Login extends Component {
     }
 
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormField name="email" placeholder="Nombre" label="Email:" value={email} onChange={this.handleChange} />
-        <p>{this.state.errors.email}</p>
-        <FormField name="password" label="Contraseña:" value={password} onChange={this.handleChange}/>
-        <p>{this.state.errors.password}</p>
-        <Button type="submit" primary label="Submit" />
-      </Form>
+      <Box margin="large">
+        <Form onSubmit={this.handleSubmit}>
+
+          <InputField
+            label="Email:"
+            placeholder="reinadedragones@example.com"
+            type="text"
+            name="email"
+            value={email}
+            handleChange={this.handleChange}
+            {...getFieldProps('email', {
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true }]
+            })}
+            errors={getFieldError('email')}
+          />
+
+          <InputField
+            label="Contraseña:"
+            placeholder="123aBc"
+            type="password"
+            name="password" 
+            value={password}
+            handleChange={this.handleChange}
+            {...getFieldProps('password', {
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true }]
+            })}
+            errors={getFieldError('password')}
+          />
+
+          <Button type="submit" primary label="Iniciar sesión" margin={{top: "medium", bottom: "small"}} fill />
+        </Form>
+        <Text size="small" alignSelf="center">
+          ¿Aún no tienes una cuenta? 
+          <Link to="/register" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Regístrate</Link>
+        </Text>
+      </Box>
     )
   }
 }
 
-export default Login;
+export default createForm()(Login);

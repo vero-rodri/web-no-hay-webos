@@ -1,106 +1,127 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Form, FormField, Button } from 'grommet';
+import { Redirect, Link } from 'react-router-dom';
+import { Form, Button, Box, Text } from 'grommet';
+import InputField from '../misc/forms/InputField';
+import { createForm } from '../../utils/createForm'
+import {
+  checkEmail,
+  checkPassword
+} from '../../utils/formValidators';
 import authService  from '../../services/authService';
-import { PASSWORD_PATTERN, EMAIL_PATTERN } from '../../utils/constants';
+import errors from '../../errors.json';
+import FileInput from '../misc/forms/FileInput';
 
-const validators = {
-  nickName: (value) => {
-    let error;
-    if (!value) {
-      error = 'nombre es obligatorio'
-    }
-    return error;
-  },
-  email: (value) => {
-    let error;
-    if (!value) { 
-      error = 'email es obligatorio'
-    } else if ( !EMAIL_PATTERN.test(value) ) { 
-      error = 'email no válido'
-    }
-    return error;
-  },
-  password: (value) => {
-      let error;
-      if (!value) { 
-        error = 'contraseña es obligatoria'
-      } else if ( !PASSWORD_PATTERN.test(value) ) { 
-        error = 'contraseña debe contener al menos 6 caracteres con letras, números y mayúsculas'
-      }
-      return error;
-  }
-}
+const getErrorText = text => errors[text];
 
 
 class Register extends Component {
   state = {
-    user: {
-      nickName: '',
-      email: '',
-      password: '',
-      fileProfile: ''
-    },
     errors: {},
     isRegistered: false
   }
-
-
-  handleChange = (event) => {
-    const {name, value} = event.target;
-    this.setState({
-      user: {
-        ...this.state.user,
-        [name] : value
-      },
-      errors: {
-        ...this.state.errors,
-        [name]: validators[name] && validators[name](value)
-      }
-    })
-  }
-
-
+  
   handleSubmit = (event) => {
+    const { form } = this.props;
     event.preventDefault();
-    if ( !Object.values(this.state.errors).some(error => error !== undefined)) {
-      authService.register(this.state.user)
+
+    form.validateFields((errors, fields) => {
+      const hasErrors = errors && Object.keys(errors).length > 0;
+      if (!hasErrors) {
+        authService.register(fields, 'fileProfile')
         .then(
           () => this.setState({ isRegistered: true }), 
           error => {
-            const { message, errors } = error.response.data;
-            console.log(errors)
-            this.setState({
-              errors: {
-                ...this.state.errors,
-                ...errors,
-                password: message
-              }
-          })
-        })
-    }
-  }
+            // const { message, error: errorResponse } = error.response.data;
+            // this.setState({
+            //   errors: {
+            //     ...this.state.errors,
+            //     ...errorResponse.errors,
+          //   //   }
+          // })
+        }) 
+      }
+    });
+  };
 
+
+
+  
   render() {
-
     if ( this.state.isRegistered ) {
       return <Redirect to="/login" />
     }
-    const {nickName, email, password, fileProfile} = this.state.user;
+
+    const { form } = this.props;
+    const { getFieldProps, getFieldError } = form;
+    const { errors } = this.state;
 
     return (
+      <Box margin="large">
       <Form onSubmit={this.handleSubmit}>
-        <FormField name="nickName" label="Nombre de usuario:" value={nickName} onChange={this.handleChange}/>
-        <p>{this.state.errors.nickName}</p>
-        <FormField name="email" placeholder="Nombre" label="Email:" value={email} onChange={this.handleChange} />
-        <p>{this.state.errors.email}</p>
-        <FormField name="password" label="Contraseña:" value={password} onChange={this.handleChange}/>
-        <p>{this.state.errors.password}</p>
-        <FormField name="fileProfile" type="file" label="Imagen de perfil:" value={fileProfile} onChange={this.handleChange}/>
-        <Button type="submit" primary label="Submit" />
+
+        <InputField
+          label="Nombre:"
+          icon="fas fa-user-astronaut"
+          placeholder="Daenerys"
+          type="text"
+          {...getFieldProps('nickName', {
+            initialValue: '',
+            validateFirst: true,
+            validateTrigger: 'onblur',
+            rules: [{ required: true}]
+          })}
+          errors={getFieldError('nickName')}
+        />
+
+        <InputField
+          label="Email:"
+          placeholder="reinadedragones@example.com"
+          type="text"
+          {...getFieldProps( 'email', {
+            initialValue: '',
+            validateFirst: true,
+            validateTrigger: 'onblur',
+            rules: [{ required: true, validator: checkEmail }]
+          })}
+          errors={getFieldError('email')}
+        />
+
+        <InputField
+          label="Contraseña:"
+          placeholder="123Abc"
+          type="password"
+          {...getFieldProps('password', {
+            initialValue: '',
+            validateFirst: true,
+            validateTrigger: 'onblur',
+            rules: [{ required: true, validator: checkPassword }]
+          })}
+          errors={getFieldError('password')}
+        />
+
+        <FileInput
+          label="Imagen de perfil:"
+          form={form}
+          errors={getFieldError('password')}
+        />
+
+        <Button type="submit" primary label="Registrarme" margin={{top: "medium", bottom: "small"}} fill />
+      
       </Form>
+      {errors && Object.keys(errors).length > 0 && (
+        Object.keys(errors).map(key => (
+          <p>Error: {getErrorText(errors[key].message)}</p>
+        ))
+      )}
+      <Text size="small" alignSelf="center">
+        ¿Ya estás registrado? 
+        <Link to="/login" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Entra</Link>
+      </Text>
+    </Box>
     )
   }
 }
 
-export default Register;
+export default createForm()(Register);
+
+
