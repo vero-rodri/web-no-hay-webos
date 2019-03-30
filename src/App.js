@@ -4,6 +4,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import ChallengeList from './components/challenges/ChallengeList';
 import ChallengeDetail from './components/challenges/ChallengeDetail';
+import SearchBar from './ui/searchBar';
 
 class App extends Component {
   render() {

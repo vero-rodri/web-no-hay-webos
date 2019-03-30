@@ -4,8 +4,9 @@ const ChallengeDetail = (props) => {
   return (
     <div>
       <p>hola</p>
-      {/* <h2>{props.location.state.title}</h2> */}
-      <p>{props.location.description}</p>
+      <h2>Título: {props.location.title}</h2>
+      <p>DESCRIPCIÓN{props.location.description}</p>
+      <img src={props.location.photo}></img>
     </div>
   )
 
