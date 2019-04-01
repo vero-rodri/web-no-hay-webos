@@ -7,6 +7,9 @@ import ChallengeList from './components/challenges/ChallengeList';
 import ChallengeDetail from './components/challenges/ChallengeDetail';
 import ChallengeCreate from './components/challenges/ChallengeCreate';
 import EvidenceCreate from './components/evidences/EvidenceCreate'
+import Board from './components/misc/Board';
+import Search from './components/misc/Search';
+
 
 class App extends Component {
   render() {
@@ -15,6 +18,8 @@ class App extends Component {
         <Switch>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/board" component={Board} />
+          <Route exact path="/search" component={Search} />
           <Route exact path="/challenges" component={ChallengeList} />
           <Route exact path="/challenges/create" component={ChallengeCreate} />
           <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />

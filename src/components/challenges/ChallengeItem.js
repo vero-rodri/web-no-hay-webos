@@ -1,25 +1,34 @@
-import React, { Component } from 'react';
-import { Box, Image } from 'grommet';
+import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom'
-import challengesService from '../../services/challengesService';
+
 
 class ChallengeItem extends Component {
 
   
   render() {
+    console.log("EL RETO TIENE", this.props)
+    const { title, photo, owner, id, views, nickName } = this.props
     return (
-      <Link to={{
-        pathname: `/challenges/${this.props.id}`,
-        ...this.props
-        }} >
-        <Box height="small" width="small">
-          <h3>{this.props.title}</h3>
-          <Image
-            fit="cover"
-            src={this.props.photo}
-          />
-        </Box>
-      </Link>
+      <Fragment>
+        <Link to={{
+          pathname: `/challenges/${id}`,
+          ...this.props
+          }} >
+          <div className="media align-items-center m-1 border rounded-lg">
+            <img src={photo} className="m-0 img-in-search rounded-lg" alt="..." />
+            <div className="media-body">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <p className="m-0"><small>TÍT: {title}</small></p>
+                  {owner && <p className="m-0"><small>CREa: {owner.nickName}</small></p>}
+                </div>
+                <div>
+                  <span>views<i class="fas fa-eye"></i>{views}</span></div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </Fragment>
     )
   }
 }
