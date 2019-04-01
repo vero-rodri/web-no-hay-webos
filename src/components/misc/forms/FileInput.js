@@ -21,19 +21,31 @@ function getValueFromFileEvent({ target }) {
 
 class FileInput extends Component {
   render() {
-    const { form, label } = this.props;
-    const { getFieldProps } = form;
+    const { form, label, name } = this.props;
+    const { getFieldProps, getFieldError } = form;
     return (
       <Box margin={{top: "medium"}}>
         <Text margin={{bottom: "xsmall"}}>{label}</Text>
         <TextInput 
-          type="file" {...getFieldProps('fileProfile', {
+          type="file" {...getFieldProps(name, {
                 initialValue: '',
                 getValueProps: getFileValueProps,
                 getValueFromEvent: getValueFromFileEvent,
                 rules: [checkSize],
               })}
         />
+          {getFieldError(name) && getFieldError(name).map((error, index) => {
+            return (
+            <Text
+              key={index} 
+              size="small" 
+              color="status-error" 
+              margin={{top: "xsmall", left:"small"}}>
+              {error}
+            </Text>
+            )}
+          )}
+
       </Box>
     );
   }

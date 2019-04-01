@@ -4,98 +4,49 @@ import { Form, Button, Box, Text } from 'grommet';
 import InputField from '../misc/forms/InputField';
 import { createForm } from '../../utils/createForm'
 import authService  from '../../services/authService';
+import errors from '../../utils/errors.json';
 
+const getErrorText = text => errors[text];
 
 class Login extends Component {
   state = {
-    user: {
-      email: '',
-      password: ''
-    },
     errors: {},
     isAuthenticated: false
   }
-
-
-  handleChange =(name, value) => {
-    this.setState({
-      user: {
-        ...this.state.user,
-        [name]: value
-      }
-    })
-  }
-
-  // handleChange = (event) => {
-  //   console.log('entra en handleChange')
-  //   const {name, value} = event.target;
-  //   this.setState({
-  //     user: {
-  //       ...this.state.user,
-  //       [name] : value
-  //     }
-  //     // errors: {
-  //     //   ...this.state.errors,
-  //     //   [name]: validators[name] && validators[name](value)
-  //     // }
-  //   })
-  // }
-
-
-  // handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   if ( !Object.values(this.state.errors).some(error => error !== undefined)) {
-  //     authService.authenticate(this.state.user)
-  //       .then(
-  //         () => this.setState({ isAuthenticated: true }), 
-  //         error => {
-  //           const { message, errors } = error.response.data;
-  //           this.setState({
-  //             errors: {
-  //               ...this.state.errors,
-  //               ...errors,
-  //               password: message
-  //             }
-  //         })
-  //       })
-  //   }
-  // }
 
   handleSubmit = event => {
     const { form } = this.props;
     event.preventDefault();
 
     form.validateFields((errors, fields) => {
-      console.log({ errors });
-      console.log({ fields });
       const hasErrors = errors && Object.keys(errors).length > 0;
       if (!hasErrors) {
-        authService.authenticate(this.state.user)
+        authService.authenticate(fields)
         .then(
           () => this.setState({ isAuthenticated: true }), 
           error => {
-            const { message, errors } = error.response.data;
-            // this.setState({
-            //   errors: {
-            //     ...this.state.errors,
-            //     ...errors,
-            //     password: message
-            //   }
-          // })
+            const { error: errorResponse } = error.response.data;
+            this.setState({
+              errors: {
+                ...this.state.errors,
+                ...errorResponse
+              }
+            })
         }) 
-        //aquí no falta la promesa que recoge los errores del back??
       }
     });
   };
 
 
   render() {
-    const { getFieldProps, getFieldError } = this.props.form;
-    const { email, password } = this.state.user;
 
     if ( this.state.isAuthenticated ) {
       return <Redirect to="/challenges" />
     }
+
+    const { form } = this.props;
+    const { getFieldProps, getFieldError } = form;
+    const { errors } = this.state;
 
     return (
       <Box margin="large">
@@ -104,11 +55,9 @@ class Login extends Component {
           <InputField
             label="Email:"
             placeholder="reinadedragones@example.com"
-            type="text"
-            name="email"
-            value={email}
-            handleChange={this.handleChange}
-            {...getFieldProps('email', {
+            type="search"
+            {...getFieldProps( 'email', {
+              initialValue: '',
               validateFirst: true,
               validateTrigger: 'onblur',
               rules: [{ required: true }]
@@ -118,12 +67,10 @@ class Login extends Component {
 
           <InputField
             label="Contraseña:"
-            placeholder="123aBc"
+            placeholder="123Abc"
             type="password"
-            name="password" 
-            value={password}
-            handleChange={this.handleChange}
             {...getFieldProps('password', {
+              initialValue: '',
               validateFirst: true,
               validateTrigger: 'onblur',
               rules: [{ required: true }]
@@ -131,8 +78,24 @@ class Login extends Component {
             errors={getFieldError('password')}
           />
 
-          <Button type="submit" primary label="Iniciar sesión" margin={{top: "medium", bottom: "small"}} fill />
+          {errors && Object.keys(errors).length > 0 && (
+            Object.keys(errors).map((key, index) => (
+            <Box key={index}>
+              <Text
+                alignSelf="center"
+                size="small" 
+                color="status-error" 
+                margin={{top: "medium", left:"small"}}>
+                {getErrorText(errors[key])}
+              </Text>
+            </Box>
+            )) 
+          )}
+
+          <Button 
+          type="submit" primary label="Iniciar sesión" margin={{top: "medium", bottom: "small"}} fill />
         </Form>
+
         <Text size="small" alignSelf="center">
           ¿Aún no tienes una cuenta? 
           <Link to="/register" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Regístrate</Link>

@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Form, Button, Box, Text } from 'grommet';
+import TextAreaInput from '../misc/forms/TextAreaInput';
 import InputField from '../misc/forms/InputField';
 import FileInput from '../misc/forms/FileInput';
 import { createForm } from '../../utils/createForm'
-import {
-  checkEmail,
-  checkPassword
-} from '../../utils/formValidators';
-import authService  from '../../services/authService';
+import evidencesService  from '../../services/evidencesService';
 import errors from '../../utils/errors.json';
 
 const getErrorText = text => errors[text];
 
 
-class Register extends Component {
+class EvidenceCreate extends Component {
   state = {
     errors: {},
-    isRegistered: false
+    isCreated: false
   }
   
   handleSubmit = (event) => {
@@ -27,9 +24,9 @@ class Register extends Component {
     form.validateFields((errors, fields) => {
       const hasErrors = errors && Object.keys(errors).length > 0;
       if (!hasErrors) {
-        authService.register(fields, 'fileProfile')
+        evidencesService.create(fields, 'fileProfile', 'description')
         .then(
-          () => this.setState({ isRegistered: true }), 
+          () => this.setState({ isCreated: true }), 
           error => {
             const { error: errorResponse } = error.response.data;
             this.setState({
@@ -44,7 +41,7 @@ class Register extends Component {
   };
   
   render() {
-    if ( this.state.isRegistered ) {
+    if ( this.state.isCreated ) {
       return <Redirect to="/login" />
     }
 
@@ -57,48 +54,31 @@ class Register extends Component {
       <Form onSubmit={this.handleSubmit}>
 
         <InputField
-          label="Nombre:"
-          placeholder="Daenerys"
+          label="Título:"
+          placeholder="Prueba 1"
           type="search"
-          {...getFieldProps('nickName', {
+          {...getFieldProps('title', {
             initialValue: '',
             validateFirst: true,
             validateTrigger: 'onblur',
             rules: [{ required: true}]
           })}
-          errors={getFieldError('nickName')}
+          errors={getFieldError('title')}
         />
 
-        <InputField
-          label="Email:"
-          placeholder="reinadedragones@example.com"
-          type="search"
-          {...getFieldProps( 'email', {
-            initialValue: '',
-            validateFirst: true,
-            validateTrigger: 'onblur',
-            rules: [{ required: true, validator: checkEmail }]
+        <TextAreaInput
+          label="Descripción:"
+          placeholder="Describe aquí tu evidencia"
+          type="textarea"
+          {...getFieldProps('description', {
+            initialValue: ''
           })}
-          errors={getFieldError('email')}
-        />
-
-        <InputField
-          label="Contraseña:"
-          placeholder="123Abc"
-          type="password"
-          {...getFieldProps('password', {
-            initialValue: '',
-            validateFirst: true,
-            validateTrigger: 'onblur',
-            rules: [{ required: true, validator: checkPassword }]
-          })}
-          errors={getFieldError('password')}
         />
 
         <FileInput
-          label="Imagen de perfil:"
+          label="Prueba gráfica:"
           form={form}
-          name="fileProfile"
+          name="fileEvidence"
         />
 
         {errors && Object.keys(errors).length > 0 && (
@@ -116,19 +96,14 @@ class Register extends Component {
         )}
 
         <Button 
-        type="submit" primary label="Registrarme" margin={{top: "medium", bottom: "small"}} fill />
+        type="submit" primary label="Subir evidencia" margin={{top: "medium", bottom: "small"}} fill />
       
       </Form>
-
-      <Text size="small" alignSelf="center">
-        ¿Ya estás registrado? 
-        <Link to="/login" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Entra</Link>
-      </Text>
     </Box>
     )
   }
 }
 
-export default createForm()(Register);
+export default createForm()(EvidenceCreate);
 
 

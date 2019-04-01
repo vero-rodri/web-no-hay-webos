@@ -14,7 +14,6 @@ const register = (user, imgKey) => {
   const data = new FormData();
   Object.keys(user).forEach(key => {
     if ( key === imgKey && user[key]) {
-      console.log(user[key]);
       data.append(key, user[key].target.files[0])
     } else {
       data.append(key, user[key])

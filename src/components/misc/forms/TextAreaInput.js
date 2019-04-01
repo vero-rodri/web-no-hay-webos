@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { TextInput, Box, Text  } from 'grommet';
+import { TextArea, Box, Text  } from 'grommet';
 
-class InputField extends Component {
+class TextAreaInput extends Component {
 
   handleChange = (event) => {
     const name = this.props.name;
@@ -12,7 +12,6 @@ class InputField extends Component {
     const {
       label,     
       value,
-      //icon,    
       placeholder,
       errors,
       onblur,
@@ -25,7 +24,7 @@ class InputField extends Component {
     return (
       <Box margin={{top: "medium"}}>
         <Text margin={{bottom: "xsmall"}}>{label}</Text>
-        <TextInput 
+        <TextArea 
           align="center"
           margin=""
           onChange={onChange}
@@ -50,4 +49,4 @@ class InputField extends Component {
   }
 }
 
-export default InputField;
+export default TextAreaInput;

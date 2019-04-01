@@ -1,0 +1,6 @@
+{
+  "default": "Sin restricciones, cada participante lo superará cuando y donde pueda",
+  "punctual": "Todos los participantes deberán superar el reto en la misma fecha",
+  "periodic": "Habrá que realizar una prueba periódica durante un período de tiempo determinado",
+  "expiration": "El reto se deberá haber completado antes de la fecha límite marcada"
+}
