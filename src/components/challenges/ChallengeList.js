@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
 import ChallengeItem from './ChallengeItem';
-import SearchBar from '../../ui/searchBar';
+import { Box } from 'grommet';
 
 class ChallengeList extends Component {
   state = {
@@ -20,8 +20,6 @@ class ChallengeList extends Component {
     this.state.challenges
       .filter(challenge => challenge.title.includes(this.state.search))
       .map(challenge => <ChallengeItem key={challenge.id} {...challenge} />)
-      //(challenge.title.includes(this.state.search) && <ChallengeItem key={challenge.id} {...challenge} />))
-      //<ChallengeItem key={challenge.id} {...challenge} />)
 
   handleSearch = (keyword) => 
     this.setState({...this.state,
@@ -30,8 +28,9 @@ class ChallengeList extends Component {
   render() {
     return (
       <div>
-        <SearchBar search={this.state.search} setSearch={this.handleSearch}/>
-        {this.challengeList()}
+        <Box direction="row">
+          {this.challengeList()}
+        </Box>
       </div>
     )
   }

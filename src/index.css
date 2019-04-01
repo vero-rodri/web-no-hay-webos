@@ -3,3 +3,42 @@ body {
   padding: 0;
 }
 
+.footerr {
+  --position: fixed;
+  text-align: center;
+  line-height: 50px;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  height: 50px;
+}
+.search-bar {
+  --position: fixed;
+  text-align: center;
+  line-height: 50px;
+  top: 0;
+  width: 100%;
+  background-color: red;
+  height: 50px;
+}
+
+.is-active {
+  color: green;
+  opacity: 100;
+}
+
+.img-in-search {
+  width: 33%;
+  margin: 0;
+  height: 100px;
+}
+
+.link {
+  z-index: 100;
+}
+
+.card {
+  width: 100%;
+}
+
+

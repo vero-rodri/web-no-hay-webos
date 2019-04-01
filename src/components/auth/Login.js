@@ -70,7 +70,8 @@ class Login extends Component {
     const { email, password } = this.state.user;
 
     if ( this.state.isAuthenticated ) {
-      return <Redirect to="/challenges" />
+      //return <Redirect to="/challenges" />
+      return <Redirect to="/board" />
     }
 
     return (

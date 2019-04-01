@@ -4,21 +4,19 @@ import { Box, TextInput, FormField } from 'grommet'
 
 const SearchBar = (props) => {
 
-
   const handleSearch = (event) => {
     props.setSearch(event.target.value);
   }
-
+  
   return (
-    <div>
+    <div className="search-bar">
       <Box direction="row" justify="center" >
         <FormSearch size="large" />
-        <FormField>
           <TextInput placeholder="type here" value={props.search} onChange={handleSearch}/>
-        </FormField>
       </Box>
     </div>
   )
 }
 
 export default SearchBar;
+
