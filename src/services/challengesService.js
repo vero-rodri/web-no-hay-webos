@@ -2,8 +2,7 @@ import axios from 'axios';
 import { BehaviorSubject } from 'rxjs';
 
 const http = axios.create({
-  //baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
   withCredentials: true
 })
 
@@ -21,6 +20,13 @@ const getChallenges = () => {
     })
 }
 
+
+const createChallenge = (challenge) => {
+  console.log("challenge que se envía: ", challenge)
+  // return http.post('/challenges', challenge)
+  //   .then(response => response.data)
+}
+
 const getUserChallenges = () => {
   return http.get('/user-challenges')
     .then(response => {
@@ -33,9 +39,9 @@ const getUserChallenges = () => {
 const onChallengesChange = () => challenges$.asObservable();
 const onUsersChallengesChange = () => userChallenges$.asObservable();
 
-
 export default {
   getChallenges,
+  createChallenge,
   getUserChallenges,
   onChallengesChange,
   onUsersChallengesChange

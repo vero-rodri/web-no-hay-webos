@@ -1,12 +1,19 @@
-const theme = {
+const customTheme = {
   global: {
     font: {
     family: 'Roboto',
     size: '14px',
     height: '20px',
-    color: 'green'
+    },
+    colors: {
+      brand: '#b1e3fa'
+    }
+  },
+  button: {
+    border: {
+      radius: "10px"
     }
   }
 }
 
-export default theme;
+export default customTheme;

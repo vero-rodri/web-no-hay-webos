@@ -1,89 +1,109 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
-import { Form, FormField, Button } from 'grommet';
+import { Redirect, Link } from 'react-router-dom'
+import { Form, Button, Box, Text } from 'grommet';
+import InputField from '../misc/forms/InputField';
+import { createForm } from '../../utils/createForm'
 import authService  from '../../services/authService';
+import errors from '../../utils/errors.json';
 
-const validators = {
-  email: (value) => {
-    let error;
-    if (!value) { 
-      error = 'email es obligatorio'
-    } 
-    return error;
-  },
-  password: (value) => {
-      let error;
-      if (!value) { 
-        error = 'contraseña es obligatoria'
-      } 
-      return error;
-  }
-}
-
+const getErrorText = text => errors[text];
 
 class Login extends Component {
   state = {
-    user: {
-      email: '',
-      password: ''
-    },
     errors: {},
     isAuthenticated: false
   }
 
-
-  handleChange = (event) => {
-    const {name, value} = event.target;
-    this.setState({
-      user: {
-        ...this.state.user,
-        [name] : value
-      },
-      errors: {
-        ...this.state.errors,
-        [name]: validators[name] && validators[name](value)
-      }
-    })
-  }
-
-
-  handleSubmit = (event) => {
+  handleSubmit = event => {
+    const { form } = this.props;
     event.preventDefault();
-    if ( !Object.values(this.state.errors).some(error => error !== undefined)) {
-      authService.authenticate(this.state.user)
+
+    form.validateFields((errors, fields) => {
+      const hasErrors = errors && Object.keys(errors).length > 0;
+      if (!hasErrors) {
+        authService.authenticate(fields)
         .then(
           () => this.setState({ isAuthenticated: true }), 
           error => {
-            const { message, errors } = error.response.data;
+            const { error: errorResponse } = error.response.data;
             this.setState({
               errors: {
                 ...this.state.errors,
-                ...errors,
-                password: message
+                ...errorResponse
               }
-          })
-        })
-    }
-  }
+            })
+        }) 
+      }
+    });
+  };
+
 
   render() {
-    const { email, password } = this.state.user;
 
     if ( this.state.isAuthenticated ) {
       //return <Redirect to="/challenges" />
       return <Redirect to="/board" />
     }
 
+    const { form } = this.props;
+    const { getFieldProps, getFieldError } = form;
+    const { errors } = this.state;
+
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormField name="email" placeholder="Nombre" label="Email:" value={email} onChange={this.handleChange} />
-        <p>{this.state.errors.email}</p>
-        <FormField name="password" label="Contraseña:" value={password} onChange={this.handleChange}/>
-        <p>{this.state.errors.password}</p>
-        <Button type="submit" primary label="Submit" />
-      </Form>
+      <Box margin="large">
+        <Form onSubmit={this.handleSubmit}>
+
+          <InputField
+            label="Email:"
+            placeholder="reinadedragones@example.com"
+            type="search"
+            {...getFieldProps( 'email', {
+              initialValue: '',
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true }]
+            })}
+            errors={getFieldError('email')}
+          />
+
+          <InputField
+            label="Contraseña:"
+            placeholder="123Abc"
+            type="password"
+            {...getFieldProps('password', {
+              initialValue: '',
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true }]
+            })}
+            errors={getFieldError('password')}
+          />
+
+          {errors && Object.keys(errors).length > 0 && (
+            Object.keys(errors).map((key, index) => (
+            <Box key={index}>
+              <Text
+                alignSelf="center"
+                size="small" 
+                color="status-error" 
+                margin={{top: "medium", left:"small"}}>
+                {getErrorText(errors[key])}
+              </Text>
+            </Box>
+            )) 
+          )}
+
+          <Button 
+          type="submit" primary label="Iniciar sesión" margin={{top: "medium", bottom: "small"}} fill />
+        </Form>
+
+        <Text size="small" alignSelf="center">
+          ¿Aún no tienes una cuenta? 
+          <Link to="/register" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Regístrate</Link>
+        </Text>
+      </Box>
     )
   }
 }
 
-export default Login;
+export default createForm()(Login);

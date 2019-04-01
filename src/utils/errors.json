@@ -1,0 +1,12 @@
+{
+  "user_required": "Nombre de usuario requerido",
+  "email_required": "Email requerido",
+  "password_required": "Contraseña requerida",
+  "email_unique": "Email y/o contraseña incorrectos",
+  "nickName_unique": "Este nombre no está disponible. Elige otro...",
+  "non_existent_email": "Email y/o contraseña incorrectos",
+  "invalid_password": "Email y/o contraseña incorrectos",
+  "maxLength_excedeed": "Título máximo de 50 caracteres",
+  "photo_required": "La imagen del reto es obligatoria",
+  "title_required": "Título de la evidencia requerido"
+}
