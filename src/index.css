@@ -1,26 +1,88 @@
+/* GLOBALS */
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-.footerr {
-  --position: fixed;
+a {
+  text-decoration: none;
+}
+
+.save-bar {
+  height: 50px;
+}
+
+/* NAV AND FOOTER BAR */
+.footer-bar {
   text-align: center;
-  line-height: 50px;
   bottom: 0;
   width: 100%;
   background-color: red;
   height: 50px;
+  position: fixed;
 }
+
 .search-bar {
-  --position: fixed;
+  position: fixed;
   text-align: center;
-  line-height: 50px;
   top: 0;
   width: 100%;
   background-color: red;
   height: 50px;
 }
+
+/* BOARD COMPONENT */
+.images-scroll {
+  display: flex;
+  width: 100%;
+  max-height: 125px;
+  overflow-x: auto;
+  
+}
+
+.images-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.images-content {
+  width: 200px;
+  height: 125px;
+}
+
+.img-challenge-size {
+  max-height: 125px;
+}
+
+.img-card-size {
+  height: 80px;
+  width: 125px;
+}
+
+.cards-scroll {
+  display: flex;
+  width: 100%;
+  max-height: 135px;
+  overflow-x: auto;
+  overflow-y: hidden; 
+}
+
+.cards-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.card-content {
+  --box-shadow: black;
+  --width: 200px;
+  height: 100%;
+}
+
+
+
+
+
+
+
 
 .is-active {
   color: green;
@@ -33,12 +95,39 @@ body {
   height: 100px;
 }
 
-.link {
+/* .link {
   z-index: 100;
-}
+} */
 
-.card {
-  width: 100%;
-}
+/* .card-user-challenge {
+  width: inherit important!;
+} */
+
+
+
+
+
+
+
+
+/* .img-challenge {
+  height: 100%;
+} */
+
+/* .img-user-challenge {
+  width: 100px;
+} */
+
+
+
+
+
+
+/* .card-img-top {
+  height: px;
+  max-width: 100%;
+} */
+
+
 
 
