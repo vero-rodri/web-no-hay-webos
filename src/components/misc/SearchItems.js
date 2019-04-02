@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
-import Footer from './Footer';
-import SearchBar from '../../ui/SearchBar';
+import Footer from './FooterBar';
 import Service from '../../services/challengesService';
 import ChallengeItem from '../challenges/ChallengeItem';
+import SearchBar from './SearchBar';
+import FooterBar from './FooterBar';
 
-class Search extends Component {
+
+class SearchItems extends Component {
 
   state = {
     challenges: [],
@@ -50,10 +52,10 @@ class Search extends Component {
       <Fragment>
         <SearchBar search={search} setSearch={this.handleSearch} />
         {(search !== '') ? this.challengeList() : <p>PONER IMAGEN DE "ESPERANDO QUE PONGAS ALGOO" </p>}
-        <Footer />
+        <FooterBar />
       </Fragment>
     )
   }
 }
 
-export default Search;
+export default SearchItems;

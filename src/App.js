@@ -7,14 +7,16 @@ import ChallengeList from './components/challenges/ChallengeList';
 import ChallengeDetail from './components/challenges/ChallengeDetail';
 import ChallengeCreate from './components/challenges/ChallengeCreate';
 import EvidenceCreate from './components/evidences/EvidenceCreate'
-import Board from './components/misc/Board';
-import Search from './components/misc/Search';
+import Board from './components/board/Board';
+import Search from './components/misc/SearchItems';
+import SearchBar from './components/misc/SearchBar';
 
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+      
         <Switch>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />

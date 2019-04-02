@@ -32,6 +32,7 @@ const getUserChallenges = () => {
     .then(response => {
       userChallenges = response.data;
       userChallenges$.next(userChallenges);
+      console.log("HAY HAY los logros ", userChallenges)
       return userChallenges;
     })
 }
