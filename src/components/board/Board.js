@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
-import ChallengeList from '../challenges/ChallengeList';
-import CarouselCustom from '../misc/CarouselCustom';
 import ChallengeItem from '../challenges/ChallengeItem';
-import TextCustom from '../../ui/TextCustom';
 import Footer from '../misc/FooterBar';
-import Nav from '../misc/Nav';
-import { Link, Redirect } from 'react-router-dom';
+import NavBar from '../misc/NavBar';
 import ChallengesScroll from './ChallengesScroll';
-import { Button } from 'grommet';
-import { Add } from 'grommet-icons';
 import LabelAndButton from './LabelAndButton';
 import CardsScroll from './CardsScroll';
 
@@ -38,12 +32,6 @@ class Board extends Component {
       .filter(challenge => challenge.title.includes(this.state.search))
       .map(challenge => <ChallengeItem key={challenge.id} {...challenge} />)
 
-  /* goToChallengesList = () => {
-    return <Link to={{
-      pathname: '/challenges/',
-      challenges
-      }} />
-  } */
 
   topChallenges = () => this.state.challenges
     .sort((a, b) => b.likes - a.likes)
@@ -68,7 +56,7 @@ class Board extends Component {
     const { challenges, userChallenges } = this.state;
     return (
       <div>
-        <Nav />
+        <NavBar />
         <div className="save-bar"></div>
         
         <LabelAndButton  
