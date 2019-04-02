@@ -21,11 +21,23 @@ const getChallenges = () => {
 }
 
 
-const createChallenge = (challenge) => {
-  console.log("challenge que se envía: ", challenge)
-  // return http.post('/challenges', challenge)
-  //   .then(response => response.data)
+const createChallenge = (challenge, imgKey) => {
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  };
+  const data = new FormData();
+  Object.keys(challenge).forEach(key => {
+    if ( key === imgKey && challenge[key]) {
+      data.append(key, challenge[key].target.files[0])
+    } else {
+      data.append(key, challenge[key])
+    }
+  })
+  return http.post('/challenges', data, config).then(response => response.data);
 }
+
 
 const getUserChallenges = () => {
   return http.get('/user-challenges')
