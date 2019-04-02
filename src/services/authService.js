@@ -1,4 +1,10 @@
 import axios from 'axios';
+import { BehaviorSubject } from 'rxjs';
+
+const CURRENT_USER_KEY = 'current-user';
+
+let user = JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || '{}')
+const user$ = new BehaviorSubject(user);
 
 const http = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
@@ -25,10 +31,21 @@ const register = (user, imgKey) => {
 
 const authenticate = (user) => {
   return http.post('/authenticate', user)
+    .then(response => {
+        user = response.data;
+        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+        user$.next(user);
+        console.log("sale del servicio: ", user)
+        return user;
+      }
+    )
 }
+
+const onUserChange = () => user$.asObservable()
 
 
 export default {
   register,
-  authenticate
+  authenticate,
+  onUserChange
 }

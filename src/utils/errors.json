@@ -8,5 +8,8 @@
   "invalid_password": "Email y/o contraseña incorrectos",
   "maxLength_excedeed": "Título máximo de 50 caracteres",
   "photo_required": "La imagen del reto es obligatoria",
-  "title_required": "Título de la evidencia requerido"
+  "title_required": "Título de la evidencia obligatorio",
+  "date_required": "La fecha del reto es obligatoria",
+  "periodicity_required": "La periodicidad es obligatoria",
+  "duration_required": "La duración es obligatoria"
 }
