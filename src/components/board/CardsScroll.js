@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Carousel, Image, Box, Stack, Text } from  'grommet';
 
 const CardsScroll = (props) => {
+  console.log("Al scrol entro con ", props)
 
   const items = (items) => 
     items.map(item => 
@@ -22,8 +23,8 @@ const CardsScroll = (props) => {
             </div>
           </div>
         </Box>
-      </Stack>
-    )
+      </Stack>)
+   
   return ( 
     <div className="cards-scroll mx-1">
       {items(props.items)}

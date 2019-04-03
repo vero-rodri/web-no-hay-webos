@@ -27,11 +27,6 @@ class Board extends Component {
         }))    
   }
 
-  challengeList = () => 
-    this.state.challenges
-      .filter(challenge => challenge.title.includes(this.state.search))
-      .map(challenge => <ChallengeItem key={challenge.id} {...challenge} />)
-
 
   topChallenges = () => this.state.challenges
     .sort((a, b) => b.likes - a.likes)
@@ -43,17 +38,17 @@ class Board extends Component {
   
     latestUserChallenges = () => this.state.userChallenges
     .sort((a, b) => {
-      console.log("la resta es", "a ", Date.parse(a.evidences[a.evidences.length - 1].createdAt), "y b", Date.parse(b.evidences[b.evidences.length - 1].createdAt))
-      console.log("RESULT ", Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt))
-      return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
+     
+        console.log("la resta es", "a ", Date.parse(a.evidences[a.evidences.length - 1].createdAt), "y b", Date.parse(b.evidences[b.evidences.length - 1].createdAt))
+        console.log("RESULT ", Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt))
+        return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
       })
-   // .slice(0, 10);
+    .slice(0, 10);
 
 
   render() {
-    // console.log("los chachensss ",this.state.challenges);
-    // console.log("y los logros ",this.state.userChallenges);
     const { challenges, userChallenges } = this.state;
+    console.log("los userChallengs", userChallenges)
     return (
       <div>
         <NavBar />
@@ -62,7 +57,7 @@ class Board extends Component {
         <LabelAndButton  
           label="Top Retos"
           items={challenges}
-          link="/challenges"
+          link="/challenges/top"
           labelButton="Más"
           />
         <ChallengesScroll items={this.topChallenges()} className="content" />
@@ -78,7 +73,6 @@ class Board extends Component {
         <LabelAndButton 
           label="Logros más virales"
           items={userChallenges}
-          link="/userChallenges"
           labelButton="Más"
           />
         {<CardsScroll items={this.topUserChallenges()} />}
@@ -87,7 +81,6 @@ class Board extends Component {
       </div>
     )
   }
-
 }
 
 export default Board;

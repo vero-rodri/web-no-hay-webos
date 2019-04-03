@@ -80,6 +80,9 @@ a {
 
 
 
+.icon-selected {
+  color: orange;
+}
 
 
 
@@ -93,6 +96,10 @@ a {
   width: 33%;
   margin: 0;
   height: 100px;
+}
+
+.avatar-user {
+  height: 25px;
 }
 
 /* .link {
