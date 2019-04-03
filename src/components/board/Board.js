@@ -56,8 +56,6 @@ class Board extends Component {
     const { challenges, userChallenges } = this.state;
     return (
       <div>
-        <NavBar />
-        <div className="save-bar"></div>
         
         <LabelAndButton  
           label="Top Retos"

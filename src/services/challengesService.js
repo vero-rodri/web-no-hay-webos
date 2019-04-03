@@ -38,6 +38,10 @@ const createChallenge = (challenge, imgKey) => {
   return http.post('/challenges', data, config).then(response => response.data);
 }
 
+const getChallengeDetail= (challengeId) => {
+  return http.get(`/challenges/${challengeId}`)
+    .then(response => response.data)
+}
 
 const getUserChallenges = () => {
   return http.get('/user-challenges')
@@ -49,13 +53,20 @@ const getUserChallenges = () => {
     })
 }
 
+const createUserChallenge = (challenge) => {
+  return http.post(`/challenges/${challenge}/user-challenges`)
+    .then(response => response.data)
+}
+
 const onChallengesChange = () => challenges$.asObservable();
 const onUsersChallengesChange = () => userChallenges$.asObservable();
 
 export default {
   getChallenges,
+  getChallengeDetail,
   createChallenge,
   getUserChallenges,
   onChallengesChange,
-  onUsersChallengesChange
+  onUsersChallengesChange,
+  createUserChallenge
 }

@@ -7,7 +7,7 @@ class ChallengeItem extends Component {
   
   render() {
     console.log("EL RETO TIENE", this.props)
-    const { title, photo, owner, id, views, nickName } = this.props
+    const { title, photo, owner, id, views } = this.props
     return (
       <Fragment>
         <Link to={{
