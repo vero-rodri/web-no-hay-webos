@@ -58,6 +58,32 @@ const createUserChallenge = (challenge) => {
     .then(response => response.data)
 }
 
+const addChallengeToLikes = (challengeId) => {
+  console.log("dentro del service add like")
+  return http.post(`/challenges/${challengeId}/likes`)
+    .then (response => {
+      console.log("Servicio LIKE añadir", response)
+      return response.data;
+    })
+}
+
+const removeChallengeFromLikes = (challengeId) => {
+  console.log("dentro del service remove like")
+  return http.delete(`/challenges/${challengeId}/likes`)
+    .then(response => {
+      console.log("Servicio LIKE quitar", response)
+      return response.data;
+    })
+}
+
+const addViewToChallenge = (challengeId) => {
+  return http.get(`/challenges/${challengeId}/addToViews`)
+    .then(response => {
+      console.log("Servicio Add View", response);
+      return response.data;
+    })
+}
+
 const onChallengesChange = () => challenges$.asObservable();
 const onUsersChallengesChange = () => userChallenges$.asObservable();
 
@@ -68,5 +94,8 @@ export default {
   getUserChallenges,
   onChallengesChange,
   onUsersChallengesChange,
-  createUserChallenge
+  createUserChallenge,
+  addChallengeToLikes,
+  removeChallengeFromLikes,
+  addViewToChallenge
 }

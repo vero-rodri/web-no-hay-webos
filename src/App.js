@@ -6,12 +6,12 @@ import Login from './components/auth/Login';
 import Profile from './components/auth/Profile';
 import ChallengeDetail from './components/challenges/ChallengeDetail';
 import ChallengeCreate from './components/challenges/ChallengeCreate';
-import EvidenceCreate from './components/evidences/EvidenceCreate';
 import UserChallenge from './components/userChallenges/UserChallenge';
 import Board from './components/board/Board';
 import Search from './components/misc/SearchItems';
 import NavBar from './components/misc/NavBar';
 import FooterBar from './components/misc/FooterBar';
+import SearchItems from './components/misc/SearchItems';
 
 
 class App extends Component {
@@ -22,7 +22,6 @@ class App extends Component {
           <NavBar />
           <FooterBar />
         </div>
-      
         <div className="container-fluid px-0 py-1 margin-main-container">
           <Switch>
             <Route exact path="/register" component={Register} />
@@ -30,6 +29,8 @@ class App extends Component {
             <Route exact path="/board" component={Board} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/search" component={Search} />
+            <Route exact path="/challenges/top" component={SearchItems} />
+            <Route exact path="/user-challenges/top" component={SearchItems} />
             <Route exact path="/challenges/create" component={ChallengeCreate} />
             <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />
             <Route exact path="/user-challenges/:userChallengeId" component={UserChallenge} />

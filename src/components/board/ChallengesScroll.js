@@ -6,7 +6,7 @@ const ChallengesScroll = (props) => {
   
   const items = (items) => 
     items.map(item => 
-      <Stack anchor='center' className="images-content img-challenge-size mx-1">
+      <Stack key={item.id} anchor='center' className="images-content img-challenge-size mx-1">
         <Box height="small" width="medium" className="img-challenge-size">
           <Image className="h-100 w-100 rounded" alignSelf="center" key={item.id} src={item.photo} />
         </Box>

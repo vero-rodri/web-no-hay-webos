@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
 import ChallengeItem from './ChallengeItem';
-import { Box } from 'grommet';
 
 class ChallengeList extends Component {
   state = {
@@ -16,7 +15,7 @@ class ChallengeList extends Component {
       }))
   }
 
-  challengeList = () => 
+  itemsList = () => 
     this.state.challenges
       .filter(challenge => challenge.title.includes(this.state.search))
       .map(challenge => <ChallengeItem key={challenge.id} {...challenge} />)
@@ -28,14 +27,12 @@ class ChallengeList extends Component {
   render() {
     return (
       <div>
-        <Box direction="row">
-          {this.challengeList()}
-        </Box>
+        <div className="container">
+          {this.itemsList()}
+        </div>
       </div>
     )
   }
 }
 
 export default ChallengeList;
-
- 
