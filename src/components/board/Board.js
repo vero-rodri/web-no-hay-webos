@@ -51,8 +51,6 @@ class Board extends Component {
     console.log("los userChallengs", userChallenges)
     return (
       <div>
-        <NavBar />
-        <div className="save-bar"></div>
         
         <LabelAndButton  
           label="Top Retos"

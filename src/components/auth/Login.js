@@ -41,7 +41,6 @@ class Login extends Component {
   render() {
 
     if ( this.state.isAuthenticated ) {
-      //return <Redirect to="/challenges" />
       return <Redirect to="/board" />
     }
 

@@ -35,7 +35,6 @@ const authenticate = (user) => {
         user = response.data;
         localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
         user$.next(user);
-        console.log("sale del servicio: ", user)
         return user;
       }
     )

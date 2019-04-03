@@ -19,9 +19,7 @@ import challengeDescription from '../../utils/challenge-descriptions.json';
 import errors from '../../utils/errors.json';
 
 const challengeOptions = Object.keys(challengeSelect);
-const getChallengeTypesText = text => {
-  return Object.keys(challengeSelect).filter( elem => challengeSelect[elem] === text);
-}
+
 const getChallengeDescriptionText = text => {
   return challengeDescription[text];
 }
@@ -48,13 +46,6 @@ class ChallengeCreate extends Component {
 
   componentWillUnmount() {
     this.userSubscription.unsubscribe();
-  }
-  
-  setOnChange = (event) => {
-    this.setState({
-      challengeText: event.value,
-      challengeType: getChallengeTypesText(event.value)
-    })
   }
   
   handleSubmit = (event) => {

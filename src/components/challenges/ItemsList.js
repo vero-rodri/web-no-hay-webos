@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
 import ChallengeItem from './ChallengeItem';
-import { Box } from 'grommet';
 
 class ChallengeList extends Component {
   state = {
@@ -37,4 +36,3 @@ class ChallengeList extends Component {
 }
 
 export default ChallengeList;
-
