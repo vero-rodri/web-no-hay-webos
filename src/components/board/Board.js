@@ -63,7 +63,7 @@ class Board extends Component {
         <LabelAndButton 
           label="Logros más recientes"
           items={userChallenges}
-          link="/userChallenges"
+          link="/user-challenges/latest"
           labelButton="Más"
           />
         {<CardsScroll items={this.latestUserChallenges()} />}
@@ -71,6 +71,7 @@ class Board extends Component {
         <LabelAndButton 
           label="Logros más virales"
           items={userChallenges}
+          link="/user-challenges/top"
           labelButton="Más"
           />
         {<CardsScroll items={this.topUserChallenges()} />}

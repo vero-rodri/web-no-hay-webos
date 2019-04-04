@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Footer from './FooterBar';
-import Service from '../../services/challengesService';
+import challengeService from '../../services/challengesService';
 import ChallengeItem from '../challenges/ChallengeItem';
 import SearchBar from './SearchBar';
 import FooterBar from './FooterBar';
@@ -20,21 +20,21 @@ class SearchItems extends Component {
   componentDidMount() {
 
     //ESTA NOS LA CARGAREMOS, PERO DE MOMENTO LA DEJO PARA PODER TRABAJAR MEJOR AL MAQUETAR...
-    Service.getChallenges()
+    challengeService.getChallenges()
       .then(challenges => this.setState({
         challenges: challenges 
       }))
     ///////////////////////
 
 
-    this.challengesSubscription = Service
+    this.challengesSubscription = challengeService
       .onChallengesChange()
       .subscribe(challenges => {
         console.log("LOS RETOS SON", challenges)
         this.setState({challenges: challenges});
       })
 
-    this.userChallengesSubscription = Service
+    this.userChallengesSubscription = challengeService
       .onChallengesChange()
       .subscribe(userChallenges => {
         console.log("LOS logros SON", userChallenges)

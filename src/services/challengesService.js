@@ -71,15 +71,15 @@ const removeChallengeFromLikes = (challengeId) => {
   console.log("dentro del service remove like")
   return http.delete(`/challenges/${challengeId}/likes`)
     .then(response => {
-      console.log("Servicio LIKE quitar", response)
+      console.log("Servicio LIKE quitar", response.data)
       return response.data;
     })
 }
 
 const addViewToChallenge = (challengeId) => {
-  return http.get(`/challenges/${challengeId}/addToViews`)
+  return http.post(`/challenges/${challengeId}/views`)
     .then(response => {
-      console.log("Servicio Add View", response);
+      console.log("Servicio Add View", response.data);
       return response.data;
     })
 }

@@ -141,7 +141,10 @@ a {
   height: 100px;
 }
 
-
+.avatar-user {
+  max-height: 25px;
+  width: 25px;
+}
 /* CHALLENGE DETAIL */
 
 .chl-det-header {
