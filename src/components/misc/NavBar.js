@@ -1,6 +1,10 @@
 import React, { Component} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import authService from '../../services/authService';
+import searchBarr from '../../ui/SearchBarr';
+import InputSearch from '../../ui/InputSearch';
+
+
 
 class NavBar extends Component {
   state = {
@@ -27,7 +31,7 @@ class NavBar extends Component {
     return (
     <div className="pos-f-t">
       <nav className="navbar navbar-dark nav-bar-bg">
-        <div className="profile-container">
+        <div className="profile-container col-3">
           <Link to="/profile">
             <div className="nav-bar-img-div">
               <img className="nav-bar-img" src={user.avatarURL} alt={user.nickName}></img>
@@ -35,6 +39,10 @@ class NavBar extends Component {
           </Link>
           <span>{user.nickName}</span>
         </div>
+        
+          {this.props.location.pathname.startsWith('/search') &&<InputSearch className="my-search-bar col-3" />}
+       
+       
 
         <div className="dropdown">
           <button 
@@ -64,4 +72,4 @@ class NavBar extends Component {
 
 }
 
-export default NavBar;
+export default withRouter(NavBar);

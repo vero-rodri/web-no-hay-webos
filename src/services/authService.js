@@ -32,6 +32,7 @@ const register = (user, imgKey) => {
 const authenticate = (user) => {
   return http.post('/authenticate', user)
     .then(response => {
+      console.log("el usuario logado es ", response.data)
         user = response.data;
         localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
         user$.next(user);
@@ -40,11 +41,24 @@ const authenticate = (user) => {
     )
 }
 
+const getUserDetail = (userId) => {
+  return http.get(`/user/${userId}`)
+    .then(response => response.data)
+}
+
+const getUserSession = () => {
+  return http.get('/user')
+    .then(response => response.data)
+}
+
+
 const onUserChange = () => user$.asObservable()
 
 
 export default {
   register,
   authenticate,
-  onUserChange
+  onUserChange,
+  getUserDetail,
+  getUserSession
 }

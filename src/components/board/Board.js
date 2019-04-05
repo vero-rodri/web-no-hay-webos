@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
-import ChallengeItem from '../challenges/ChallengeItem';
+import ChallengeItem from '../search/item';
 import Footer from '../misc/FooterBar';
 import NavBar from '../misc/NavBar';
 import ChallengesScroll from './ChallengesScroll';
@@ -55,7 +55,10 @@ class Board extends Component {
         <LabelAndButton  
           label="Top Retos"
           items={challenges}
-          link="/challenges/top"
+          type="challenge"
+          sort="likes"
+          //link="/challenges/top"
+          link="/search"
           labelButton="Más"
           />
         <ChallengesScroll items={this.topChallenges()} className="content" />
@@ -63,7 +66,10 @@ class Board extends Component {
         <LabelAndButton 
           label="Logros más recientes"
           items={userChallenges}
-          link="/user-challenges/latest"
+          //link="/user-challenges/latest"
+          link="/search"          
+          type="userChallenge"
+          sort="likes"
           labelButton="Más"
           />
         {<CardsScroll items={this.latestUserChallenges()} />}
@@ -71,7 +77,10 @@ class Board extends Component {
         <LabelAndButton 
           label="Logros más virales"
           items={userChallenges}
-          link="/user-challenges/top"
+          //link="/user-challenges/top"
+          link="/search"          
+          type="userChallenge"
+          sort="likes"
           labelButton="Más"
           />
         {<CardsScroll items={this.topUserChallenges()} />}

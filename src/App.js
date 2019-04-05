@@ -8,10 +8,11 @@ import ChallengeDetail from './components/challenges/ChallengeDetail';
 import ChallengeCreate from './components/challenges/ChallengeCreate';
 import UserChallenge from './components/userChallenges/UserChallenge';
 import Board from './components/board/Board';
-import Search from './components/misc/SearchItems';
 import NavBar from './components/misc/NavBar';
 import FooterBar from './components/misc/FooterBar';
-import SearchItems from './components/misc/SearchItems';
+import Search from '../src/components/search/Search';
+import SearchItemsList from './components/search/SearchItemsList';
+
 
 
 class App extends Component {
@@ -28,10 +29,10 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/board" component={Board} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/search" component={SearchItems} />
-            <Route exact path="/challenges/top" component={SearchItems} />
+            <Route exact path="/search" component={Search} />
+            {/* <Route exact path="/challenges/top" component={SearchItems} />
             <Route exact path="/user-challenges/latest" component={SearchItems} />
-            <Route exact path="/user-challenges/top" component={SearchItems} />
+            <Route exact path="/user-challenges/top" component={SearchItems} /> */}
             <Route exact path="/challenges/create" component={ChallengeCreate} />
             <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />
             <Route exact path="/user-challenges/:userChallengeId" component={UserChallenge} />

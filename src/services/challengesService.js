@@ -6,8 +6,14 @@ const http = axios.create({
   withCredentials: true
 })
 
-let challenges = [];
-let userChallenges = [];
+//let challenges = [];
+let CURRENT_USER_KEY = 'current-user';
+let CURRENT_CHALLENGES_KEY = 'current_challenges';
+let CURRENT_USER_CHALLENGES_KEY = 'current_userchallenges'
+let challenges = JSON.parse(localStorage.getItem(CURRENT_CHALLENGES_KEY) || '[]')
+let userChallenges = JSON.parse(localStorage.getItem(CURRENT_USER_CHALLENGES_KEY) || '[]')
+
+//let userChallenges = [];
 const challenges$ = new BehaviorSubject(challenges);
 const userChallenges$ = new BehaviorSubject(userChallenges);
 
@@ -15,6 +21,7 @@ const getChallenges = () => {
   return http.get('/challenges')
     .then(response => {
       challenges = response.data;
+      localStorage.setItem(CURRENT_CHALLENGES_KEY, JSON.stringify(challenges));
       challenges$.next(challenges);
       return challenges;
     })
@@ -47,6 +54,7 @@ const getUserChallenges = () => {
   return http.get('/user-challenges')
     .then(response => {
       userChallenges = response.data;
+      localStorage.setItem(CURRENT_USER_CHALLENGES_KEY, JSON.stringify(userChallenges));
       userChallenges$.next(userChallenges);
       console.log("HAY HAY los logros ", userChallenges)
       return userChallenges;
@@ -59,18 +67,44 @@ const createUserChallenge = (challenge) => {
 }
 
 const addChallengeToLikes = (challengeId) => {
-  console.log("dentro del service add like")
+  console.log("dentro del service C add like")
   return http.post(`/challenges/${challengeId}/likes`)
     .then (response => {
+      getChallenges()
+        .then(() => console.log("fetch challenges"))
       console.log("Servicio LIKE añadir", response)
       return response.data;
     })
 }
 
 const removeChallengeFromLikes = (challengeId) => {
-  console.log("dentro del service remove like")
+  console.log("dentro del service C remove like")
   return http.delete(`/challenges/${challengeId}/likes`)
     .then(response => {
+      getChallenges()
+        .then(() => console.log("fetch challenges"))
+      console.log("Servicio LIKE quitar", response.data)
+      return response.data;
+    })
+}
+
+const addUserChallengeToLikes = (userChallengeId) => {
+  console.log("dentro del service UC add like")
+  return http.post(`/user-challenges/${userChallengeId}/likes`)
+    .then (response => {
+      getUserChallenges()
+        .then(() => console.log("fetch userChallenges"))
+      console.log("Servicio LIKE añadir", response)
+      return response.data;
+    })
+}
+
+const removeUserChallengeFromLikes = (userChallengeId) => {
+  console.log("dentro del service UC remove like")
+  return http.delete(`/user-challenges/${userChallengeId}/likes`)
+    .then(response => {
+      getUserChallenges()
+        .then(() => console.log("fetch userChallenges"))
       console.log("Servicio LIKE quitar", response.data)
       return response.data;
     })
@@ -79,13 +113,21 @@ const removeChallengeFromLikes = (challengeId) => {
 const addViewToChallenge = (challengeId) => {
   return http.post(`/challenges/${challengeId}/views`)
     .then(response => {
-      console.log("Servicio Add View", response.data);
+      console.log("Servicio Add CHALLENGE View", response.data);
+      return response.data;
+    })
+}
+
+const addViewToUserChallenge = (userChallengeId) => {
+  return http.post(`/user-challenges/${userChallengeId}/views`)
+    .then(response => {
+      console.log("Servicio Add UC View", response.data);
       return response.data;
     })
 }
 
 const onChallengesChange = () => challenges$.asObservable();
-const onUsersChallengesChange = () => userChallenges$.asObservable();
+const onUserChallengesChange = () => userChallenges$.asObservable();
 
 export default {
   getChallenges,
@@ -93,9 +135,12 @@ export default {
   createChallenge,
   getUserChallenges,
   onChallengesChange,
-  onUsersChallengesChange,
+  onUserChallengesChange,
   createUserChallenge,
   addChallengeToLikes,
   removeChallengeFromLikes,
-  addViewToChallenge
+  addUserChallengeToLikes,
+  removeUserChallengeFromLikes,
+  addViewToChallenge,
+  addViewToUserChallenge
 }
