@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
-import ChallengeItem from '../search/item';
-import Footer from '../misc/FooterBar';
-import NavBar from '../misc/NavBar';
 import ChallengesScroll from './ChallengesScroll';
 import LabelAndButton from './LabelAndButton';
 import CardsScroll from './CardsScroll';
@@ -14,6 +11,7 @@ class Board extends Component {
     challenges: [],
     userChallenges: []
   }
+
 
   componentDidMount = () => {
 
@@ -32,26 +30,26 @@ class Board extends Component {
     .sort((a, b) => b.likes - a.likes)
     .slice(0, 10);
 
+
   topUserChallenges = () => this.state.userChallenges
-    .sort((a, b) => b.likes - a.likes)
+    .sort((a, b) => b.likesº - a.likes)
     .slice(0, 10);
   
-    latestUserChallenges = () => this.state.userChallenges
+
+  latestUserChallenges = () => this.state.userChallenges
     .sort((a, b) => {
-     
-        console.log("la resta es", "a ", Date.parse(a.evidences[a.evidences.length - 1].createdAt), "y b", Date.parse(b.evidences[b.evidences.length - 1].createdAt))
-        console.log("RESULT ", Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt))
-        return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
-      })
+    
+      console.log("la resta es", "a ", Date.parse(a.evidences[a.evidences.length - 1].createdAt), "y b", Date.parse(b.evidences[b.evidences.length - 1].createdAt))
+      console.log("RESULT ", Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt))
+      return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
+    })
     .slice(0, 10);
 
 
   render() {
     const { challenges, userChallenges } = this.state;
-    console.log("los userChallengs", userChallenges)
     return (
-      <div>
-        
+      <div>  
         <LabelAndButton  
           label="Top Retos"
           items={challenges}
@@ -83,9 +81,7 @@ class Board extends Component {
           sort="likes"
           labelButton="Más"
           />
-        {<CardsScroll items={this.topUserChallenges()} />}
-        
-        <Footer className="footer"/>
+        {<CardsScroll items={this.topUserChallenges()} />}   
       </div>
     )
   }

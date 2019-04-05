@@ -15,29 +15,31 @@ class SearchItemsList extends Component {
   challengesSubscription = undefined;
   userChallengesSubscription = undefined;
 
+
   componentDidMount() {
 
     this.challengesSubscription = challengeService
       .onChallengesChange()
       .subscribe(challenges => {
-        //console.log("LOS RETOS SON", challenges)
         this.setState({challenges: challenges});
       })
 
     this.userChallengesSubscription = challengeService
       .onUserChallengesChange()
       .subscribe(userChallenges => {
-        //console.log("LOS logros SON", userChallenges)
         this.setState({userChallenges: userChallenges});
       })
   }
+
 
   componentWillUnmount() {
     this.challengesSubscription.unsubscribe();
     this.userChallengesSubscription.unsubscribe();
   }
 
+
   listChallenges = (items) => {
+
     return items
     .filter(challenge => challenge.title.toLowerCase().includes(this.props.search.toLowerCase()))
       .map(challenge => {
@@ -56,7 +58,9 @@ class SearchItemsList extends Component {
       })
     }
 
+
   listUserChallenges = (items) => {
+
     return items
       .filter(userChallenge => userChallenge.challengeId.title.toLowerCase().includes(this.props.search.toLowerCase()))
       .map(userChallenge => {
@@ -74,6 +78,7 @@ class SearchItemsList extends Component {
         return <Item key={info.id} {...info} onReprint={this.handleReprint} />
     })
   }
+
 
   listByFilters = () => {
 
@@ -123,9 +128,9 @@ class SearchItemsList extends Component {
       }
       return this.listUserChallenges(filteredArr);
     }
-     
   }
 
+  
   render() {
     return (
       <Fragment>

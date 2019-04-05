@@ -15,7 +15,6 @@ class Item extends Component {
   }
 
 
-
   componentDidMount() {
 
       authService.getSession()
@@ -30,7 +29,9 @@ class Item extends Component {
         })
   }
 
+
   formatFields = () => {
+
     let formatedProps  = {...this.state.info}
     formatedProps.description = (formatedProps.description.length > LIMIT_DESCRIPTION) ?
       (`${formatedProps.description.slice(0, LIMIT_DESCRIPTION)} [...]`) : formatedProps.description;
@@ -39,7 +40,9 @@ class Item extends Component {
     return formatedProps;
   }
 
+
   goToDetail = () => {
+
     const { id, type } = this.state.info
     return (
       (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
@@ -150,6 +153,7 @@ class Item extends Component {
     }
   }
 
+
   objectIdInArray = (objId, arr) => {
    
     let arrAux = arr.map(objId => JSON.stringify(objId))
@@ -157,6 +161,7 @@ class Item extends Component {
     return (arrAux.includes(objIdAux))
   }
 
+  
   render() {
     const formatedProps = this.formatFields();
     //const { type, id, title, description, userName, avatarURL, itemsLiked, views, likes, file } = formatedProps;
