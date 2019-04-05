@@ -1,15 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import Footer from '../misc/FooterBar';
 import challengeService from '../../services/challengesService';
 import Item from './item';
-import SearchBar from './SearchBar';
-import FooterBar from '../misc/FooterBar';
-import SearchFilters from './SearchFiters';
-import { SELECT_TYPES, MIRROR_SELECT_TYPES, SELECT_SORTS, MIRROR_SELECT_SORTS } from '../../constants';
-import SearchBarr from '../../ui/SearchBarr';
 import { withSearchConsumer } from '../../context/SearchStore';
-import InputSearch from '../../ui/InputSearch';
 
 
 class SearchItemsList extends Component {
@@ -17,28 +10,12 @@ class SearchItemsList extends Component {
   state = {
     challenges: [],
     userChallenges: [],
-    reprint: false,
   }
 
   challengesSubscription = undefined;
   userChallengesSubscription = undefined;
-  userSubscription = undefined;
 
   componentDidMount() {
-    console.log('!!!!!!DIDMOUNT DE LA LISTAAA!!!!!!!')
-   
-    //ESTA NOS LA CARGAREMOS, PERO DE MOMENTO LA DEJO PARA PODER TRABAJAR MEJOR AL MAQUETAR...
- /*    challengeService.getChallenges()
-      .then(challenges => this.setState({
-        challenges: challenges 
-      }))
-
-    challengeService.getUserChallenges()
-      .then(userChallenges => this.setState({
-        userChallenges: userChallenges 
-      })) */
-    ///////////////////////
-
 
     this.challengesSubscription = challengeService
       .onChallengesChange()
@@ -53,34 +30,12 @@ class SearchItemsList extends Component {
         //console.log("LOS logros SON", userChallenges)
         this.setState({userChallenges: userChallenges});
       })
-
-     /*  this.userSubscription = authService
-        .onUserChange()
-        .subscribe(user => {
-        let itemsLiked = [];
-        (this.state.info.type === 'challenge') ? itemsLiked = [...user.challengesLiked] : itemsLiked = [...user.userChallengesLiked];
-        console.log("EN DIDMOUNT el itemsLiked es ", itemsLiked)
-
-       // console.log("\n\n EL DIDMOUNT, con user", user)
-        this.setState({
-          ...this.state,
-          itemsLiked: itemsLiked
-        })
-      }) */
   }
 
   componentWillUnmount() {
     this.challengesSubscription.unsubscribe();
     this.userChallengesSubscription.unsubscribe();
   }
-
-  handleReprintList = () => {
-    this.setState({
-      ...this.state,
-      reprint: true
-    })
-  }
-
 
   listChallenges = (items) => {
     return items
@@ -91,11 +46,8 @@ class SearchItemsList extends Component {
           id: challenge.id,
           title: challenge.title,
           description: challenge.description,
-          user: challenge.owner.nickName,
-         // userId: challenge.userId.id,
+          userName: challenge.owner.nickName,
           avatarURL: challenge.owner.avatarURL,
-          //itemsLiked: challenge.owner.challengesLiked,
-         // itemsLiked: challenge.owner.challengesLiked,
           views: challenge.views,
           likes: challenge.likes,
           file: challenge.photo
@@ -114,9 +66,7 @@ class SearchItemsList extends Component {
           title: userChallenge.challengeId.title,
           description: userChallenge.challengeId.description,
           userName: userChallenge.userId.nickName,
-         // userId: userChallenge.userId.id,
           avatarURL: userChallenge.userId.avatarURL,
-          //itemsLiked: userChallenge.userId.userChallengesLiked,
           views: userChallenge.views,
           likes: userChallenge.likes,
           file: userChallenge.evidences[0].file     
@@ -177,12 +127,6 @@ class SearchItemsList extends Component {
   }
 
   render() {
-    console.log("@@LISTA-RENDER")
-    const { pathname } = this.props.location;
-   
-    //console.log("BUSCANDO EL PATH ", this.props.location.pathname)
-    const { search, type, sort } = this.state;
-    const { challenges, userChallenges } = this.state;
     return (
       <Fragment>
         {this.listByFilters()}
