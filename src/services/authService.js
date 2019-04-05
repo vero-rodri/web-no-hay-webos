@@ -46,8 +46,8 @@ const getUserDetail = (userId) => {
     .then(response => response.data)
 }
 
-const getUserSession = () => {
-  return http.get('/user')
+const getSession = () => {
+  return http.get('/session')
     .then(response => response.data)
 }
 
@@ -60,5 +60,5 @@ export default {
   authenticate,
   onUserChange,
   getUserDetail,
-  getUserSession
+  getSession
 }

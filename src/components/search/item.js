@@ -10,34 +10,15 @@ import { withAuthConsumer } from '../../context/AuthStore';
 class Item extends Component {
 
   state = {
-    user: this.props.user,
     info: this.props,
     redirectToDetail: false
-
-    //itemsLiked: []
   }
 
-  userSubscription = undefined;
+
 
   componentDidMount() {
-    console.log("%%%% DIDMOUNT ITEM %%%%")
-    this.userSubscription = authService.onUserChange()
-      .subscribe(user => {
-        let itemsLiked = [];
-        (this.state.info.type === 'challenge') ? itemsLiked = [...user.challengesLiked] : itemsLiked = [...user.userChallengesLiked];
-        console.log("EN DIDMOUNT el itemsLiked es ", itemsLiked)
 
-       // console.log("\n\n EL DIDMOUNT, con user", user)
-        this.setState({
-          ...this.state,
-          itemsLiked: itemsLiked
-        })
-      })
-
-      console.log("la subscripcio a user lleva", this.userSubscription)
-
-
-      authService.getUserSession()
+      authService.getSession()
         .then(user => {
           console.log("el puto user es", user)
           let itemsLiked;
@@ -47,26 +28,7 @@ class Item extends Component {
             itemsLiked
           })
         })
-        
-
-
-        console.log("y el itemsLiked (en DM) es ", this.state.itemsLiked)
   }
-
-  componentWillUnmount() {
-  //  this.userSubscription.unsubscribe()
-  }
-
-
-
-  /* getPath = (type) => {
-    console.log("el tipo es", type)
-    if (type === 'challenge') {
-      return '/challenges';
-    } else {
-      return '/user-challenges';
-    }
-  } */
 
   formatFields = () => {
     let formatedProps  = {...this.state.info}
@@ -79,13 +41,9 @@ class Item extends Component {
 
   goToDetail = () => {
     const { id, type } = this.state.info
-    //console.log("añadiendo go detail.. ")
     return (
       (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
-      //(this.state.path.startsWith("/challenges")) ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
-      // challengeService.addViewToChallenge(this.state.info.id)
       .then((views) => {
-        //console.log("Ahora los views deberían ser = ", views)
         this.setState({
           info:{
             ...this.state.info,
@@ -102,15 +60,6 @@ class Item extends Component {
 
     const handleAddLikeToChallenge = (id) => {
       challengeService.addChallengeToLikes(id)
-        /* .then((response) => {
-          this.setState({
-            info:{
-              ...this.state.info,
-              ...response 
-            }
-          })
-        })  */
-        //intentandolo sacando el itemsLike a parte... 
         .then((response) => {
           const {likes, itemsLiked} = response
           this.setState({
@@ -121,21 +70,11 @@ class Item extends Component {
               likes 
             }
           })
-          console.log("EL ITEMSLIKED DEL ESTADO ES", this.state.itemsLiked)
         })       
     }
 
     const handleAddLikeToUserChallenge = (id) => {
       challengeService.addUserChallengeToLikes(id)
-      /* .then((response) => {
-        this.setState({
-          info:{
-            ...this.state.info,
-            ...response 
-          }
-        })
-      })  */
-      // probando sacando el itemsLike...
         .then((response) => {
           const {likes, itemsLiked} = response
           this.setState({
@@ -144,23 +83,13 @@ class Item extends Component {
             info: {
               ...this.state.info,
               likes 
-          }
+            }
+          })
         })
-        console.log("EL ITEMSLIKED DEL ESTADO ES", this.state.itemsLiked)
-      })
     }
 
     const handleRemoveLikeFromChallenge = (id) => {
       challengeService.removeChallengeFromLikes(id)
-        /* .then(response => {
-          this.setState({
-            info:{
-              ...this.state.info,
-              ...response
-            }
-          })
-        }); */
-        // probando sacando el itemsLike...
         .then((response) => {
           const {likes, itemsLiked} = response
           this.setState({
@@ -169,71 +98,50 @@ class Item extends Component {
             info: {
               ...this.state.info,
               likes 
-          }
+            }
+          })
         })
-        console.log("EL ITEMSLIKED DEL ESTADO ES", this.state.itemsLiked)
-      })
-      }
+    }
       
     const handleRemoveLikeFromUserChallenge = (id) => {
       challengeService.removeUserChallengeFromLikes(id)
-      /* .then((response) => {
-        this.setState({
-          info:{
-            ...this.state.info,
-            ...response
-          }
+        .then((response) => {
+          const {likes, itemsLiked} = response
+          this.setState({
+            ...this.state,
+            itemsLiked,
+            info: {
+              ...this.state.info,
+              likes 
+            }
+          })
         })
-      }); */
-      // probando sacando el itemsLike...
-      .then((response) => {
-        const {likes, itemsLiked} = response
-        this.setState({
-          ...this.state,
-          itemsLiked,
-          info: {
-            ...this.state.info,
-            likes 
-          }
-        })
-        console.log("EL ITEMSLIKED DEL ESTADO ES", this.state.itemsLiked)
-      })
     }
 
     const { type, id } = this.state.info;
     const { itemsLiked } = this.state
 
-   // console.log("estado inicial tag =>", event.target)
-
     if (this.objectIdInArray(id, itemsLiked)) {
-      console.log("toca quitar!")
       $(event.target).removeClass("icon-selected");
-      //console.log("estado despues tag =>", event.target)
       switch (type) {
         case 'challenge': {
-          console.log('remove like C..')
           handleRemoveLikeFromChallenge(id);
           break;
         }
         case 'userChallenge': {
-          console.log('remove like UC..')
           handleRemoveLikeFromUserChallenge(id);
           break;
         }
         default:
       }
     } else {
-      console.log("toca poner!!!")
       $(event.target).addClass("icon-selected");
-   // console.log("estado despues tag =>", event.target)
       switch (type) {
         case 'challenge': {
-          console.log('add like C..')
           handleAddLikeToChallenge(id);
           break;
         }
         case 'userChallenge': {
-          console.log('add like UC..')
           handleAddLikeToUserChallenge(id);
           break;
         }
@@ -243,23 +151,17 @@ class Item extends Component {
   }
 
   objectIdInArray = (objId, arr) => {
-    console.log("entro a comparar con ", objId, arr)
+   
     let arrAux = arr.map(objId => JSON.stringify(objId))
     let objIdAux = JSON.stringify(objId);
-    console.log("\n ¿¿el id ", objIdAux, " está incluido en ", arrAux)
-    console.log("respuesta ", arrAux.includes(objIdAux))
     return (arrAux.includes(objIdAux))
   }
 
   render() {
-    console.log("---ITEM-RENDER")
     const formatedProps = this.formatFields();
     //const { type, id, title, description, userName, avatarURL, itemsLiked, views, likes, file } = formatedProps;
     const { type, id, title, description, userName, avatarURL, views, likes, file } = this.state.info;
     const { itemsLiked } = this.state;
-    console.log("y en el RENDER itemsLIked ", itemsLiked)
-
-    //console.log("SE MONTA EL COMPONENTE CON ID E ITEMSLIKES", userName, id, itemsLiked)
 
     if (this.state.redirectToDetail) {
       if (type === 'challenge') {
@@ -269,7 +171,6 @@ class Item extends Component {
       }
     }
     
-    //console.log("pinto el reto", title, "con nº likes", likes)
     return (
       <Fragment>
         {<div className="media align-items-center mx-1 my-2 border rounded-lg">
