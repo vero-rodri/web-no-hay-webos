@@ -2,8 +2,10 @@ import React, { Component} from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import authService from '../../services/authService';
 import icons from '../../utils/icons.json';
+import InputSearch from '../../ui/InputSearch';
 
 const getIconText = text => icons[text];
+
 
 
 class NavBar extends Component {
@@ -45,6 +47,9 @@ class NavBar extends Component {
             </Link>
             <span>{user.nickName}</span>
           </div>
+
+          {pathname.startsWith('/search') &&<InputSearch className="my-search-bar col-3" />}
+
   
           <div className="dropdown">
             <button 
@@ -57,9 +62,6 @@ class NavBar extends Component {
             >
             <img className="navbar-icon" src={getIconText("eggs")} alt="eggs" ></img>
           </button>      
-            {/* <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown link
-            </a> */}
   
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
               <Link className="dropdown-item" to="#">Action</Link>
