@@ -7,10 +7,28 @@ body {
 
 a {
   text-decoration: none;
+  color: black;
 }
 
 .margin-main-container {
   margin: 60px 0 60px 0;
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.card {
+  height: 135px;
+  width: 127px;
+}
+
+.card-comment {
+  width: 75%
+}
+
+.dropdown-menu {
+  margin-top: 1rem;
 }
 
 /* NAV AND FOOTER BAR */
@@ -36,6 +54,14 @@ a {
   font-size: 1.2rem;
   font-weight: 500;
   color: rgb(254,254,254)
+}
+
+.navbar-icon {
+  height: 35px
+}
+
+.navbar-toggler {
+  border: none;
 }
 
 .profile-container {
@@ -89,12 +115,12 @@ a {
 }
 
 .images-content {
-  width: 200px;
-  height: 125px;
+  width: 180px;
+  height: 113px;
 }
 
 .img-challenge-size {
-  max-height: 125px;
+  max-height: 113px;
 }
 
 .img-card-size {
@@ -104,6 +130,7 @@ a {
 
 .cards-scroll {
   display: flex;
+  padding-right: 10px;
   width: 100%;
   max-height: 135px;
   overflow-x: auto;
@@ -115,20 +142,14 @@ a {
 }
 
 .card-content {
-  --box-shadow: black;
-  --width: 200px;
+  box-shadow: black;
+  width: 200px;
   height: 100%;
 }
-
-
-
 
 .icon-selected {
   color: orange;
 }
-
-
-
 
 .is-active {
   color: green;
@@ -141,6 +162,14 @@ a {
   height: 100px;
 }
 
+.avatar-user {
+  height: 25px;
+}
+
+.icon-plus {
+  font-size: 1.5rem;
+  color: #94deff;
+}
 
 /* CHALLENGE DETAIL */
 
@@ -172,4 +201,68 @@ a {
 .chl-det-header:hover .overlay {
   width: 30%;
   left: 70%;
+}
+
+/* USER CHALLENGE: */
+
+.challenge-summary {
+  background-color: #e3f5fd;
+  border-radius: 0px 0px 15px 15px;
+  height: 135px;
+  align-content: center;
+}
+
+.challenge-descrp {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.user-challenge-img {
+  width: 130px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.scroll-container {
+  padding-left: .5rem;
+  border-top: 1px solid #ffc629;
+  border-bottom: 1px solid #ffc629;
+}
+
+.user-challenge-scroll {
+  padding-left: 0px
+}
+
+.add-evidence-btn {
+  height: 80px;
+  width: 80px;
+  background-color:#b1e3f9;
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.default-card {
+  height: 135px;
+  width: 127px;
+  background-color:#e3f4fd;
+  border-radius: 0.25rem;
+  display: flex;
+}
+
+ 
+.achievement {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 30px 0px 20px;
+  align-items: center;
+}
+
+.achievement img {
+  height: 60px;
 }

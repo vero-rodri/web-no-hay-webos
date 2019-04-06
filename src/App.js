@@ -14,6 +14,7 @@ import FooterBar from './components/misc/FooterBar';
 import SearchItems from './components/misc/SearchItems';
 
 
+
 class App extends Component {
   render() {
     return (

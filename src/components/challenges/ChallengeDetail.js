@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Text, Button, Form } from 'grommet';
+import { Text, Button } from 'grommet';
 import authService from '../../services/authService';
 import challengesService from '../../services/challengesService';
 
@@ -10,7 +10,7 @@ class ChallengeDetail extends Component {
     user: {},
     challenge: {},
     isAlreadyJoined: false,
-    isJoinedNow: false
+    isJoinedNow: ''
   }
 
   userSubscription = undefined;
@@ -53,7 +53,7 @@ class ChallengeDetail extends Component {
         (response) => 
           this.setState({
             ...this.state,
-            isJoinedNow: true
+            isJoinedNow: response.id
           }),
         error => console.log(error)
       )
@@ -66,12 +66,11 @@ class ChallengeDetail extends Component {
 
   render() {
 
-    const { photo, title, description, isFinished } = this.state.challenge;
-
+    const { photo, title, description, isFinished, owner  } = this.state.challenge;
     if ( this.state.isJoinedNow ) {
-      return <Redirect to={`/user-challenges/${this.state.isJoined}`} />
+      return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
-
+    
     return (
       <div className="d-flex flex-column m-0 p-0">
         <div className="chl-det-header p-0">
@@ -82,6 +81,7 @@ class ChallengeDetail extends Component {
         </div>
     
         <div className="col-12 mt-3">
+          <p>Creado por: {owner && owner.nickName}</p>
           <Text>{description}</Text>
         </div>
         <div className="col-12 mt-3 d-flex flex-row justify-content-around">

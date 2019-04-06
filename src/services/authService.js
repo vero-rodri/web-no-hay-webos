@@ -40,11 +40,18 @@ const authenticate = (user) => {
     )
 }
 
+const getUserDetail = (userId) => {
+  return http.get(`/user/${userId}`)
+    .then(response => response.data)
+}
+
+
 const onUserChange = () => user$.asObservable()
 
 
 export default {
   register,
   authenticate,
-  onUserChange
+  onUserChange,
+  getUserDetail
 }

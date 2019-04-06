@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import Footer from './FooterBar';
 import Service from '../../services/challengesService';
 import ChallengeItem from '../challenges/ChallengeItem';
-import SearchBar from './SearchBar';
-import FooterBar from './FooterBar';
 
 
 class SearchItems extends Component {
@@ -15,7 +12,7 @@ class SearchItems extends Component {
   }
 
   challengesSubscription = undefined;
-  userChallangesSubbscription = undefined;
+  userChallengesSubscription = undefined;
 
   componentDidMount() {
 
@@ -44,6 +41,7 @@ class SearchItems extends Component {
 
   componentWillUnmount() {
     this.challengesSubscription.unsubscribe();
+    this.userChallengesSubscription.unsubscribe();
   }
 
   handleSearch = (keyword) => 
@@ -106,22 +104,12 @@ class SearchItems extends Component {
     })
 
   render() {
-    console.log("BUSCANDO EL PATH ", this.props.location.pathname)
-    const { pathname } = this.props.location;
-    const { search } = this.state;
-    const { challenges, userChallenges } = this.state;
+    const { challenges } = this.state;
     return (
       <Fragment>
-        {/* <SearchBar search={search} setSearch={this.handleSearch} /> */}
-        {/* { pathname == '/challenges/top' && this.listByLikes(challenges, 'challenge')} */}
         <div>
           {this.listByLikes(challenges, 'challenge')}
         </div>
-        {/* { pathname == '/user-challenges/evidences/top' && this.listByLikes(userChallenges, 'userChallenge')}
-        { pathname == '/user-challenges/evidences/latest' && this.listByLikes(userChallenges, 'userChallenge')} */}
-
-       {/*  {(search !== '') ? this.list() : <p>PONER IMAGEN DE "ESPERANDO QUE PONGAS ALGOO" </p>} */}
-        <FooterBar />
       </Fragment>
     )
   }

@@ -6,7 +6,8 @@ const customTheme = {
     height: '20px',
     },
     colors: {
-      brand: '#b1e3fa'
+      brand: '#b1e3fa',
+      neutral: "#ebf9ff"
     }
   },
   button: {

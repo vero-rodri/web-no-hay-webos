@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text } from 'grommet'
 
 const TextCustom = (props) => (
-  <Text>{props.children}</Text>
+  <h6 className="my-0 ml-2">{props.children}</h6>
 )
 
 export default TextCustom;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Carousel, Image, Box, Stack, Text } from  'grommet';
+import { Image, Box, Stack, Text } from  'grommet';
 
 const ChallengesScroll = (props) => {
   
@@ -13,7 +13,7 @@ const ChallengesScroll = (props) => {
         <Link to={{
           pathname: `/challenges/${item.id}`,
           ...item }} >
-          <Text className="link text-white" size='large'><strong>{item.title}</strong></Text>
+          <h5 className="link text-white text-center"><strong>{item.title}</strong></h5>
         </Link>
       </Stack>
     )
