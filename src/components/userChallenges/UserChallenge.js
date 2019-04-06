@@ -11,6 +11,7 @@ import CardScroll from '../../ui/CardsScroll';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import authService from '../../services/authService';
+import evidencesService from '../../services/evidencesService';
 
 
 const getErrorText = text => errors[text];
@@ -20,6 +21,7 @@ class UserChallenge extends Component {
 
   state = {
     userChallenge: {},
+    evidences: {},
     errors: {},
     challengeOwner: {},
     isVisibleForm: false,
@@ -32,21 +34,14 @@ class UserChallenge extends Component {
     }
   }
 
-  userChallengeSubscription = undefined;
 
   componentDidMount() {
-    this.userChallengeSubscription = challengesService.onUsersChallengeDetailChange().subscribe((userChallenge) => {
-      this.setState({
-        ...this.state,
-        userChallenge: userChallenge
-      })
-    })
-
     challengesService.getUserChallengeDetail(this.props.match.params.userChallengeId)
       .then( userChallenge => {
         this.setState({
         ...this.state,
-        userChallenge: userChallenge
+        userChallenge: userChallenge,
+        evidences: userChallenge.evidences
         })
         authService.getUserDetail(userChallenge.challengeId.owner)
           .then( challengeOwner => {
@@ -57,10 +52,6 @@ class UserChallenge extends Component {
           })
         }
       )
-  }
-
-  componentWillUnmount() {
-    this.userChallengeSubscription.unsubscribe();
   }
 
 
@@ -89,7 +80,17 @@ class UserChallenge extends Component {
       if (!hasErrors) {
         challengesService.createEvidence(fields, 'fileEvidence', userChallengeId)
         .then(
-          () => this.setState({ isVisibleForm: false }), 
+          () => { this.setState({ isVisibleForm: false });
+                  evidencesService.getEvidencesList(this.state.userChallenge.id)
+                  .then(evidences => {
+                    this.setState({
+                    ...this.state,
+                    evidences: evidences
+                    })
+                    console.log("las evidencias que llegan a UserChallenge: ", evidences);
+                  })
+          }       
+        , 
           error => {
             const { error: errorResponse } = error.response.data;
             this.setState({
@@ -97,8 +98,8 @@ class UserChallenge extends Component {
                 ...this.state.errors,
                 ...errorResponse.errors,
               }
-          })
-        }) 
+            })
+          }) 
       }
     });
   }
@@ -109,7 +110,8 @@ class UserChallenge extends Component {
         const { form } = this.props;
         const { getFieldProps, getFieldError } = form;
         const { errors, 
-                userChallenge, 
+                userChallenge,
+                evidences, 
                 rangeValue, 
                 challengeOwner, 
                 opacityHen, 
@@ -147,15 +149,15 @@ class UserChallenge extends Component {
                 <div className="add-evidence-btn" onClick={this.onClickEvidenceForm}>
                   <i className="fas fa-plus-circle text-white"></i>
                 </div>
-                { userChallenge.evidences && userChallenge.evidences.length === 0 && (
+                { evidences && evidences.length === 0 && (
                 <div className="row ml-2">
                   <div className="default-card mr-2"/>
                   <div className="default-card mr-2"/>
                 </div>
                 )}
-                { userChallenge.evidences && (
+                { evidences && evidences.length > 0 && (
                 <div className="col cards-scroll user-challenge-scroll">
-                  <CardScroll items={userChallenge.evidences} owner={challengeOwner.id}/>
+                  <CardScroll items={evidences} origin="userChallenge"/>
                 </div>
                 )}
               </div>
@@ -219,6 +221,6 @@ class UserChallenge extends Component {
           </div>
         );
     }
-}
+  }
 
 export default createForm()(UserChallenge);

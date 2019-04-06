@@ -4,6 +4,7 @@ import { Box, Stack} from  'grommet';
 const CardItem = (props) => {
 
   const item = props.item;
+  const origin = props.origin;
 
   return (
     <Stack key={item.id} anchor='center' className="card-content mx-1">
@@ -17,9 +18,11 @@ const CardItem = (props) => {
             <div className="card-comment px-1">
               <p className="m-0"><small className="card-text m-0">{item.comments}</small></p>
             </div>
+            { ( origin === 'userChallenge' && 
             <div className="px-1">
               <button className="p-0"><i className="fas fa-trash-alt text-danger"></i></button>
             </div>
+            )}
           </div>
         </div>
       </Box>

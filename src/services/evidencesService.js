@@ -6,9 +6,8 @@ const http = axios.create({
 })
 
 const create = (evidence, imgKey) => {
-  //NO FUNCIONA PORQUE FALTA PASAR LOS ID DE USERCHALLENGE Y CHALLENGE ¿DEBERÍAN LLEGAR POR PARAMS?
   const challengeId = '';
-  const userChallengeId = ''; //modificar
+  const userChallengeId = '';
 
   const config = {
     headers: {
@@ -23,13 +22,20 @@ const create = (evidence, imgKey) => {
       data.append(key, evidence[key])
     }
   })
-  //ESTA RUTA HAY QUE RELLENARLA CON LOS DATOS DE PARAMS:
   return http.post(`/challenges/${challengeId}/user-challenges/${userChallengeId}/evidences`, data, config)
     .then(response => response.data);
 }
 
+const getEvidencesList = (userChallengeId) => {
+  return http.get(`/user-challenges/${userChallengeId}/evidences`)
+  .then(response => {
+    console.log("la respuesta del servicio es: ", response);
+    return response.data;
+  })
+}
 
 
 export default {
-  create
+  create,
+  getEvidencesList
 }

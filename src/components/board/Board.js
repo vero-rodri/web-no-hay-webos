@@ -30,15 +30,12 @@ class Board extends Component {
 
 
   topUserChallenges = () => this.state.userChallenges
-    .sort((a, b) => b.likesº - a.likes)
+    .sort((a, b) => b.likes - a.likes)
     .slice(0, 10);
   
 
   latestUserChallenges = () => this.state.userChallenges
     .sort((a, b) => {
-    
-      console.log("la resta es", "a ", Date.parse(a.evidences[a.evidences.length - 1].createdAt), "y b", Date.parse(b.evidences[b.evidences.length - 1].createdAt))
-      console.log("RESULT ", Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt))
       return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
     })
     .slice(0, 10);
@@ -53,7 +50,6 @@ class Board extends Component {
           items={challenges}
           type="challenge"
           sort="likes"
-          //link="/challenges/top"
           link="/search"
           labelButton="Más"
           />
@@ -66,7 +62,6 @@ class Board extends Component {
         <LabelAndButton 
           label="Logros más recientes"
           items={userChallenges}
-          //link="/user-challenges/latest"
           link="/search"          
           type="userChallenge"
           sort="createDate"
@@ -74,20 +69,23 @@ class Board extends Component {
           />
         <div className="row py-2 ml-2">
           <div className="col cards-scroll user-challenge-scroll">
-            {<CardsScroll items={this.latestUserChallenges()} />}
+            {<CardsScroll items={this.latestUserChallenges()} origin="board"/>}
           </div>
         </div>
 
         <LabelAndButton 
           label="Logros más virales"
           items={userChallenges}
-          //link="/user-challenges/top"
           link="/search"          
           type="userChallenge"
-          sort="likes"
+          sort="latests"
           labelButton="Más"
           />
-        {<CardsScroll items={this.topUserChallenges()} />}   
+          <div className="row py-2 ml-2">
+            <div className="col cards-scroll user-challenge-scroll">
+              {<CardsScroll items={this.topUserChallenges()} origin="board"/>}
+            </div>
+          </div>
       </div>
     )
   }
