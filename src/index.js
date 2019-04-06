@@ -8,14 +8,16 @@ import * as serviceWorker from './serviceWorker';
 import { Grommet } from 'grommet';
 import customTheme from './utils/theme-grommet'
 import { BrowserRouter } from 'react-router-dom';
-
+import { SearchStore } from '../src/context/SearchStore';
 
 
 ReactDOM.render(
   <BrowserRouter>
-    <Grommet  theme={customTheme}>
-      <App />
-    </Grommet>
+    <SearchStore>
+      <Grommet  theme={customTheme}>
+        <App />
+      </Grommet>
+    </SearchStore>
   </BrowserRouter>,
  document.getElementById('root'));
 serviceWorker.unregister();

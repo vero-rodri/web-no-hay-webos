@@ -5,6 +5,7 @@ import { Box, TextInput, FormField } from 'grommet'
 const SearchBar = (props) => {
 
   const handleSearch = (event) => {
+    console.log("dentrooo")
     props.setSearch(event.target.value);
   }
   
@@ -19,4 +20,3 @@ const SearchBar = (props) => {
 }
 
 export default SearchBar;
-

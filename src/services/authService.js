@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { BehaviorSubject } from 'rxjs';
 
-const CURRENT_USER_KEY = 'current-user';
 
+const CURRENT_USER_KEY = 'current-user';
 let user = JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || '{}')
 const user$ = new BehaviorSubject(user);
 
@@ -11,6 +11,7 @@ const http = axios.create({
   withCredentials: true
 })
 
+
 const register = (user, imgKey) => {
   const config = {
     headers: {
@@ -18,6 +19,7 @@ const register = (user, imgKey) => {
     }
   };
   const data = new FormData();
+
   Object.keys(user).forEach(key => {
     if ( key === imgKey && user[key]) {
       data.append(key, user[key].target.files[0])
@@ -30,8 +32,10 @@ const register = (user, imgKey) => {
 
 
 const authenticate = (user) => {
+  
   return http.post('/authenticate', user)
     .then(response => {
+      console.log("el usuario logado es ", response.data)
         user = response.data;
         localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
         user$.next(user);
@@ -40,11 +44,28 @@ const authenticate = (user) => {
     )
 }
 
+
+const getUserDetail = (userId) => {
+  
+  return http.get(`/user/${userId}`)
+    .then(response => response.data)
+}
+
+
+const getSession = () => {
+  
+  return http.get('/session')
+    .then(response => response.data)
+}
+
+
 const onUserChange = () => user$.asObservable()
 
 
 export default {
   register,
   authenticate,
-  onUserChange
+  onUserChange,
+  getUserDetail,
+  getSession
 }
