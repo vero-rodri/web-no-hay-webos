@@ -133,6 +133,14 @@ const addViewToChallenge = (challengeId) => {
     })
 }
 
+const addParticipantToChallenge = (challengeId) => {
+
+  return http.post(`challenges/${challengeId}/new-participant`)
+    .then(response => {
+      return response.data
+    })
+}
+
 
 const addViewToUserChallenge = (userChallengeId) => {
 
@@ -180,5 +188,6 @@ export default {
   removeUserChallengeFromLikes,
   addViewToChallenge,
   addViewToUserChallenge,
-  createEvidence
+  createEvidence,
+  addParticipantToChallenge
 }

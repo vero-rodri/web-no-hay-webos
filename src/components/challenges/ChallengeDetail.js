@@ -30,6 +30,7 @@ class ChallengeDetail extends Component {
     
     challengesService.getChallengeDetail(this.props.match.params.challengeId)
       .then( challenge => {
+        console.log("pinto el challenge", challenge)
         this.setState({
         ...this.state,
         challenge: challenge
@@ -48,6 +49,7 @@ class ChallengeDetail extends Component {
   }
 
   onClickJoin = () => {
+            
     challengesService.createUserChallenge(this.state.challenge.id)
       .then(
         (response) => 
@@ -64,21 +66,47 @@ class ChallengeDetail extends Component {
     //IMPLEMENTAR LA LÓGICA PARA RETAR A OTROS!!!
   }
 
+  countUsersChallenge = () => 
+    (this.state.challenge.usersChallenge) ?
+      this.state.challenge.usersChallenge.length : 0;
+  
+
+  countUsersChallengeFinished = () =>   
+    (this.state.challenge.usersChallenge) ?
+      this.state.challenge.usersChallenge
+        .filter(userChallenge => userChallenge.Finished)
+        .length : 0;
+
   render() {
 
-    const { photo, title, description, isFinished, owner  } = this.state.challenge;
+    const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
     
     return (
-      <div className="d-flex flex-column m-0 p-0">
-        <div className="chl-det-header p-0">
-          <img src={photo} alt={title}></img>
-          <div className="overlay">
-            <div className="text">Hello World</div>
+        <div className="d-flex flex-column m-0 p-0">
+          <div className="chl-det-header p-0">
+            <img src={photo} alt={title}></img>
+            <div className="overlay container">
+              <div className="row justify-content-around align-items-center my-2 mx-1">
+                <p className="m-0"><i className="m-0 fas fa-thumbs-up fa-lg"></i></p>
+                <h5 className="m-0">{likes}</h5>
+              </div>
+              <div className="row justify-content-around align-items-center my-2 mx-1">
+                <p className="m-0"><i className=" m-0 fas fa-eye fa-lg"></i></p>
+                <h5 className="m-0">{views}</h5>
+              </div>
+              <div className="row justify-content-around align-items-center my-2 mx-1">
+                <p className="m-0"><i className=" m-0 fas fa-users fa-lg"></i></p>
+                <h5 className="m-0">{this.countUsersChallenge()}</h5>
+              </div>
+              <div className="row justify-content-around align-items-center my-2 mx-1">
+                <p className="m-0"><i className=" m-0 fas fa-trophy fa-lg"></i></p>
+                <h5 className="m-0">{this.countUsersChallengeFinished()}</h5>
+              </div>
+            </div>
           </div>
-        </div>
     
         <div className="col-12 mt-3">
           <p>Creado por: {owner && owner.nickName}</p>

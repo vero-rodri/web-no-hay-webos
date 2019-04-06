@@ -69,7 +69,7 @@ class Board extends Component {
           //link="/user-challenges/latest"
           link="/search"          
           type="userChallenge"
-          sort="likes"
+          sort="createDate"
           labelButton="Más"
           />
         <div className="row py-2 ml-2">
