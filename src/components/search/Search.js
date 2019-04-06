@@ -7,8 +7,8 @@ import SearchItemsList from './SearchItemsList';
 class Search extends Component {
 
   state = {
-    type: (this.props.location.params && this.props.location.params.type) || 'challenge',
-    sort: (this.props.location.params && this.props.location.params.sort) || 'likes'
+    type: (this.props.location.type) || 'challenge',
+    sort: (this.props.location.sort) || 'likes'
   }
 
   handleChangeType = (type) => { 
