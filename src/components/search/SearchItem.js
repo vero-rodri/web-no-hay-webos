@@ -7,7 +7,7 @@ import authService from '../../services/authService';
 import { withAuthConsumer } from '../../context/AuthStore';
 
 
-class Item extends Component {
+class SearchItem extends Component {
 
   state = {
     info: this.props,
@@ -207,4 +207,4 @@ class Item extends Component {
   }
 }
 
-export default withRouter(withAuthConsumer(Item));
+export default withRouter(withAuthConsumer(SearchItem));

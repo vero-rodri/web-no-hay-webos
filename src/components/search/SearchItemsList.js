@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import challengeService from '../../services/challengesService';
-import Item from './item';
+import SearchItem from './SearchItem';
 import { withSearchConsumer } from '../../context/SearchStore';
 
 
@@ -54,7 +54,7 @@ class SearchItemsList extends Component {
           likes: challenge.likes,
           file: challenge.photo
         }
-        return <Item key={info.id} {...info} onReprint={this.handleReprint}/>
+        return <SearchItem key={info.id} {...info} onReprint={this.handleReprint}/>
       })
     }
 
@@ -75,7 +75,7 @@ class SearchItemsList extends Component {
           likes: userChallenge.likes,
           file: userChallenge.evidences[0].file     
         }
-        return <Item key={info.id} {...info} onReprint={this.handleReprint} />
+        return <SearchItem key={info.id} {...info} onReprint={this.handleReprint} />
     })
   }
 
@@ -84,10 +84,11 @@ class SearchItemsList extends Component {
 
     const sortByLikes = (arr) => arr.sort((a, b) => b.likes-a.likes);
     const sortByViews = (arr) => arr.sort((a, b) => b.views-a.views);
-    const sortByCreatAt = (arr) => arr.sort((a, b) => 
+    const sortByCreateAt = (arr) => arr.sort((a, b) => {
       // console.log("la resta es", "a ", Date.parse(a.evidences[a.evidences.length - 1].createdAt), "y b", Date.parse(b.evidences[b.evidences.length - 1].createdAt))
       // console.log("RESULT ", Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt))
-      (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1); 
+      return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1
+    }); 
     
     let filteredArr = [];
 
@@ -104,7 +105,7 @@ class SearchItemsList extends Component {
           break;
         }
         case 'createAt': {
-          filteredArr = sortByCreatAt(challenges);
+          filteredArr = sortByCreateAt(challenges);
           break;
         }
         default: {}
@@ -121,7 +122,7 @@ class SearchItemsList extends Component {
           break;
         }
         case 'createAt': {
-          filteredArr = sortByCreatAt(userChallenges);
+          filteredArr = sortByCreateAt(userChallenges);
           break;
         }
         default: {}
@@ -130,7 +131,7 @@ class SearchItemsList extends Component {
     }
   }
 
-  
+
   render() {
     return (
       <Fragment>
