@@ -11,9 +11,6 @@ import Board from './components/board/Board';
 import NavBar from './components/misc/NavBar';
 import FooterBar from './components/misc/FooterBar';
 import Search from '../src/components/search/Search';
-import SearchItemsList from './components/search/SearchItemsList';
-
-
 
 
 class App extends Component {

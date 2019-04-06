@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { Link, Redirect, withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import {LIMIT_DESCRIPTION, LIMIT_TITLE } from '../../constants';
 import $ from 'jquery';
 import challengeService from '../../services/challengesService';
@@ -163,8 +163,6 @@ class SearchItem extends Component {
 
   
   render() {
-    const formatedProps = this.formatFields();
-    //const { type, id, title, description, userName, avatarURL, itemsLiked, views, likes, file } = formatedProps;
     const { type, id, title, description, userName, avatarURL, views, likes, file } = this.state.info;
     const { itemsLiked } = this.state;
 

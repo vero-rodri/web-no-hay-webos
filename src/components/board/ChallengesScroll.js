@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Image, Box, Stack, Text } from  'grommet';
+import { Image, Box, Stack } from  'grommet';
 
 const ChallengesScroll = (props) => {
   

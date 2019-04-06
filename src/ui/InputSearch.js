@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormSearch , View} from 'grommet-icons';
-import { Box, TextInput, FormField, Button } from 'grommet';
+import { FormSearch } from 'grommet-icons';
+import { Box, TextInput, Button } from 'grommet';
 import { withSearchConsumer } from '../context/SearchStore';
 
 const InputSearch = (props) => {
