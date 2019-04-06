@@ -6,12 +6,15 @@ const http = axios.create({
   withCredentials: true
 })
 
+
+
+let userChallengeDetail = [];
 let CURRENT_CHALLENGES_KEY = 'current_challenges';
 let CURRENT_USER_CHALLENGES_KEY = 'current_userchallenges'
 let challenges = JSON.parse(localStorage.getItem(CURRENT_CHALLENGES_KEY) || '[]')
 let userChallenges = JSON.parse(localStorage.getItem(CURRENT_USER_CHALLENGES_KEY) || '[]')
-
 const challenges$ = new BehaviorSubject(challenges);
+const userChallengeDetail$ = new BehaviorSubject(userChallengeDetail);
 const userChallenges$ = new BehaviorSubject(userChallenges);
 
 
@@ -48,34 +51,39 @@ const createChallenge = (challenge, imgKey) => {
 
 
 const getChallengeDetail= (challengeId) => {
-
   return http.get(`/challenges/${challengeId}`)
     .then(response => response.data)
 }
 
+const getUserChallengeDetail = (UserChallengeId) => {
+  return http.get(`/user-challenges/${UserChallengeId}`)
+    .then(
+      response => {
+        userChallengeDetail = response.data;
+        userChallengeDetail$.next(userChallengeDetail);
+        return userChallengeDetail;
+      })
+}
+
 
 const getUserChallenges = () => {
-
   return http.get('/user-challenges')
     .then(response => {
       userChallenges = response.data;
       localStorage.setItem(CURRENT_USER_CHALLENGES_KEY, JSON.stringify(userChallenges));
       userChallenges$.next(userChallenges);
-      console.log("HAY HAY los logros ", userChallenges)
       return userChallenges;
     })
 }
 
 
 const createUserChallenge = (challenge) => {
-
   return http.post(`/challenges/${challenge}/user-challenges`)
     .then(response => response.data)
 }
 
 
 const addChallengeToLikes = (challengeId) => {
-
   return http.post(`/challenges/${challengeId}/likes`)
     .then (response => {
       getChallenges()
@@ -86,7 +94,6 @@ const addChallengeToLikes = (challengeId) => {
 
 
 const removeChallengeFromLikes = (challengeId) => {
-
   return http.delete(`/challenges/${challengeId}/likes`)
     .then(response => {
       getChallenges()
@@ -135,8 +142,26 @@ const addViewToUserChallenge = (userChallengeId) => {
     })
 }
 
+const createEvidence = (evidence, imgKey, userChallengeId) => {
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  };
+  const data = new FormData();
+  Object.keys(evidence).forEach(key => {
+    if ( key === imgKey && evidence[key]) {
+      data.append(key, evidence[key].target.files[0])
+    } else {
+      data.append(key, evidence[key])
+    }
+  })
+  return http.post(`/user-challenges/${userChallengeId}/evidences`, data, config)
+  .then(response => response.data);
+}
 
 const onChallengesChange = () => challenges$.asObservable();
+const onUsersChallengeDetailChange = () => userChallengeDetail$.asObservable();
 const onUserChallengesChange = () => userChallenges$.asObservable();
 
 export default {
@@ -144,13 +169,16 @@ export default {
   getChallengeDetail,
   createChallenge,
   getUserChallenges,
+  getUserChallengeDetail,
   onChallengesChange,
   onUserChallengesChange,
+  onUsersChallengeDetailChange,
   createUserChallenge,
   addChallengeToLikes,
   removeChallengeFromLikes,
   addUserChallengeToLikes,
   removeUserChallengeFromLikes,
   addViewToChallenge,
-  addViewToUserChallenge
+  addViewToUserChallenge,
+  createEvidence
 }

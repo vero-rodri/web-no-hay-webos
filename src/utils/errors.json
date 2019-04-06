@@ -11,5 +11,6 @@
   "title_required": "Título de la evidencia obligatorio",
   "date_required": "La fecha del reto es obligatoria",
   "periodicity_required": "La periodicidad es obligatoria",
-  "duration_required": "La duración es obligatoria"
+  "duration_required": "La duración es obligatoria",
+  "file_required": "Tienes que enviar una prueba física de tu logro!"
 }

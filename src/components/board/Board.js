@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
 import ChallengesScroll from './ChallengesScroll';
 import LabelAndButton from './LabelAndButton';
-import CardsScroll from './CardsScroll';
-
+import CardsScroll from '../../ui/CardsScroll'
 
 class Board extends Component {
 
@@ -24,7 +23,6 @@ class Board extends Component {
         userChallenges: userChallenges
         }))    
   }
-
 
   topChallenges = () => this.state.challenges
     .sort((a, b) => b.likes - a.likes)
@@ -49,7 +47,7 @@ class Board extends Component {
   render() {
     const { challenges, userChallenges } = this.state;
     return (
-      <div>  
+      <div className="container">  
         <LabelAndButton  
           label="Top Retos"
           items={challenges}
@@ -59,7 +57,11 @@ class Board extends Component {
           link="/search"
           labelButton="Más"
           />
-        <ChallengesScroll items={this.topChallenges()} className="content" />
+        <div className="row py-2 ml-2">
+          <div className="col cards-scroll user-challenge-scroll">
+            <ChallengesScroll items={this.topChallenges()} className="content" />
+          </div>
+        </div>
         
         <LabelAndButton 
           label="Logros más recientes"
@@ -70,8 +72,12 @@ class Board extends Component {
           sort="likes"
           labelButton="Más"
           />
-        {<CardsScroll items={this.latestUserChallenges()} />}
-        
+        <div className="row py-2 ml-2">
+          <div className="col cards-scroll user-challenge-scroll">
+            {<CardsScroll items={this.latestUserChallenges()} />}
+          </div>
+        </div>
+
         <LabelAndButton 
           label="Logros más virales"
           items={userChallenges}

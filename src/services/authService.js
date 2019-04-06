@@ -46,14 +46,12 @@ const authenticate = (user) => {
 
 
 const getUserDetail = (userId) => {
-  
   return http.get(`/user/${userId}`)
     .then(response => response.data)
 }
 
 
 const getSession = () => {
-  
   return http.get('/session')
     .then(response => response.data)
 }
