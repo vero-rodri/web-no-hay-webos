@@ -47,7 +47,7 @@ class Board extends Component {
   render() {
     const { challenges, userChallenges } = this.state;
     return (
-      <div>  
+      <div className="container">  
         <LabelAndButton  
           label="Top Retos"
           items={challenges}

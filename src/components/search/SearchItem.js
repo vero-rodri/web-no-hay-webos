@@ -192,12 +192,12 @@ class SearchItem extends Component {
               </div>
               <div className="px-1 col-3 text-center group-icons">
                 <div>
-                  <p className="m-0 mb-1"><i class="fas fa-eye"></i><span className="mx-1">{views}</span></p>
+                  <p className="m-0 mb-1"><i className="fas fa-eye"></i><span className="mx-1">{views}</span></p>
                   <p className={`m-0 my-1 ${(itemsLiked && this.objectIdInArray(id, itemsLiked)) ? 'icon-selected' : null}`} onClick={this.toggleIcon}>
                     <span><i className="fas fa-thumbs-up mx-1">{likes}</i></span>
                   </p>
                 </div> 
-                <p className="m-0 mt-3"><i class="fas fa-exclamation-triangle"></i></p>
+                <p className="m-0 mt-3"><i className="fas fa-exclamation-triangle"></i></p>
               </div>
             </div>
           </div>

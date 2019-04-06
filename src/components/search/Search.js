@@ -29,7 +29,7 @@ class Search extends Component {
    
     const { type, sort } = this.state;
     return (
-      <Fragment>
+      <div className="container">
         <SearchFilters 
           onChangeType={this.handleChangeType}
           onChangeSort={this.handleChangeSort}
@@ -37,7 +37,7 @@ class Search extends Component {
           sort={sort}
         />
         <SearchItemsList {...this.state} />
-      </Fragment>
+      </div>
     )
   }
 }
