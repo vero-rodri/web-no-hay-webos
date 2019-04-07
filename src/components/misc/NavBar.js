@@ -31,8 +31,8 @@ class NavBar extends Component {
   handleLogout = () => {
     authService.logout()
       .then(() => {
-        return <Redirect to="/login" />
-        //this.props.history.push('/login')
+        //return <Redirect to="/login" />
+        this.props.history.push('/login')
       })
   }
 

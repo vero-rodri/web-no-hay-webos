@@ -35,7 +35,9 @@ class App extends Component {
             <Redirect to="/board" />
 
 
-           {/*  <Route exact path="/register" component={Register} />
+
+            {/* //He intentado las rutas privadas pero siempre isAuthenticated es undefinde...me he vuelto loco y no he dado con ello aún */}
+            {/* <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/board" component={Board} />
             <PrivateRoute exact path="/profile" component={Profile} />
