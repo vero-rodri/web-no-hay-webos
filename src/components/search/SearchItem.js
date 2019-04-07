@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom'
+import { Redirect, withRouter, Link } from 'react-router-dom'
 import {LIMIT_DESCRIPTION, LIMIT_TITLE } from '../../constants';
 import $ from 'jquery';
 import challengeService from '../../services/challengesService';
@@ -176,9 +176,14 @@ class SearchItem extends Component {
     
     return (
       <Fragment>
-        {<div className="media align-items-center mx-1 my-2 border rounded-lg">
-          <img src={file} className="m-0 img-in-search rounded-lg" alt="..." />
-          <div className="media-body">
+        {<div className="media align-items-center mx-1 my-2 border rounded-lg row">
+          
+            <div className="col-3 p-0">
+          <Link to={`/challenges/${id}`} className="w-auto m-0">
+              <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
+          </Link>
+            </div>  
+          <div className="media-body col-9 p-0 h-100">
             <div className="d-flex justify-content-between align-items-center">
               <div className="px-2 col-9" onClick={this.goToDetail}>
                 <h6 className="m-0 mb-1"><u>{title}</u></h6>

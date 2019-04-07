@@ -219,6 +219,88 @@ a {
   left: 70%;
 }
 
+
+ul.avatars {
+  display: flex ; /* Causes LI items to display in row. */
+  list-style-type: none ;
+  margin: auto ; /* Centers vertically / horizontally in flex container. */
+  padding: 0px 7px 0px 0px ;
+  /*
+      By using the row-reverse layout, the visual ordering will be opposite of
+      the DOM ordering. This will allows us to stack the items in the opposite
+      direction of the natural stacking order without having to mess with the
+      zIndex value. The MAJOR DOWNSIDE is that the HTML itself now reads
+      backwards, which super janky.
+  */
+  --flex-direction: row-reverse ;
+}
+li.avatars-img {
+  width: 45px;
+  height: 45px;
+  margin: 0px 0px 0px 0px ;
+  padding: 0px 0px 0px 0px ;
+  position: relative ;
+  -webkit-transition: 2s ease;
+  transition: 2s ease;
+}
+/*
+  These items are all 49px wide while the flex-item (in which they live) is
+  only 42px wide. As such, there will be several pixels of overflow content,
+  which will be stacked using the natural DOM-based stacking order.
+*/
+img.avatars-img,
+span.avatars-others {
+  background-color: #ffc629 ;
+  border: 2px solid #1F2532 ;
+  border-radius: 100px 100px 100px 100px ;
+  color: #FFFFFF ;
+  display: block ;
+  font-family: sans-serif ;
+  font-size: 12px ;
+  font-weight: bold ;
+  height: 45px ;
+  line-height: 45px ;
+  text-align: center ;
+  width: 45px;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.4);
+}
+
+
+li:nth-child(n+2) { margin-left: -20px; }
+
+ul:hover li:nth-child(n+2) {
+  margin-left: -5px;
+}
+
+
+/* ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: inline-block;
+  position: relative;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2);
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+}
+
+li:nth-child(1) { background: blue; }
+li:nth-child(2) { background: green; }
+li:nth-child(3) { background: purple; }
+li:nth-child(4) { background: tomato; }
+li:nth-child(n+2) { margin-left: -30px; }
+
+ul:hover li:nth-child(n+2) {
+   margin-left: -10px;
+} */
+
 /* USER CHALLENGE: */
 
 .challenge-summary {

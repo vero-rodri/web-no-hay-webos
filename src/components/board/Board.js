@@ -78,7 +78,7 @@ class Board extends Component {
           items={userChallenges}
           link="/search"          
           type="userChallenge"
-          sort="latests"
+          sort="views"
           labelButton="Más"
           />
           <div className="row py-2 ml-2">

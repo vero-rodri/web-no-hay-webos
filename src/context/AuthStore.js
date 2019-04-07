@@ -19,15 +19,15 @@ class AuthStore extends Component {
     }
   }
 
-  //isAuthenticated = () => this.state.user && this.state.user.email;
+  isAuthenticated = () => this.state.user && this.state.user.email;
   //isAdmin = () => this.state.user && this.state.user.role === 'admin';
 
   render() {
     return (
       <AuthContext.Provider value={{
         user: this.state.user,
-        onUserChanged: this.handleUserChange
-    //    isAuthenticated: this.isAuthenticated,
+        onUserChanged: this.handleUserChange,
+        isAuthenticated: this.isAuthenticated
       //  isAdmin: this.isAdmin,
       }}>
         {this.props.children}

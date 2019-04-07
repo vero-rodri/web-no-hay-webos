@@ -22,6 +22,7 @@ const SELECT_CATEGORIES = [
   {'sports': 'Deportivos'},
   {'crazyThings': 'Locuras'}
 ];
+const LIMIT_AVATARS_LIST = 2;
 
 export {
   LIMIT_DESCRIPTION,
@@ -30,5 +31,6 @@ export {
   SELECT_SORTS,
   SELECT_CATEGORIES,
   MIRROR_SELECT_TYPES,
-  MIRROR_SELECT_SORTS
+  MIRROR_SELECT_SORTS,
+  LIMIT_AVATARS_LIST
 }
