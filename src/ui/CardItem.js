@@ -6,6 +6,10 @@ const CardItem = (props) => {
   const item = props.item;
   const origin = props.origin;
 
+  const onDeleteEvidence = () => {
+    props.onDeleteEvidence(item.id)
+  }
+
   return (
     <Stack key={item.id} anchor='center' className="card-content mx-1">
       <Box >
@@ -20,7 +24,7 @@ const CardItem = (props) => {
             </div>
             { ( origin === 'userChallenge' && 
             <div className="px-1">
-              <button className="p-0"><i className="fas fa-trash-alt text-danger"></i></button>
+              <button className="p-0" onClick={onDeleteEvidence}><i className="fas fa-trash-alt text-danger"></i></button>
             </div>
             )}
           </div>

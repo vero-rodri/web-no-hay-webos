@@ -8,7 +8,7 @@ const ChallengesScroll = (props) => {
     items.map(item => 
       <Stack key={item.id} anchor='center' className="images-content img-challenge-size mx-1">
         <Box height="small" width="medium" className="img-challenge-size">
-          <Image className="h-100 w-100 rounded" alignSelf="center" key={item.id} src={item.photo} />
+          <Image className="h-100 w-100 rounded img-board-chg" alignSelf="center" key={item.id} src={item.photo} />
         </Box>
         <Link to={{
           pathname: `/challenges/${item.id}`,

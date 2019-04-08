@@ -28,14 +28,17 @@ const create = (evidence, imgKey) => {
 
 const getEvidencesList = (userChallengeId) => {
   return http.get(`/user-challenges/${userChallengeId}/evidences`)
-  .then(response => {
-    console.log("la respuesta del servicio es: ", response);
-    return response.data;
-  })
+  .then(response => response.data)
 }
 
+const evidenceDelete = (userChallengeId, evidenceId) => {
+  return http.delete(`/user-challenges/${userChallengeId}/evidences/${evidenceId}`)
+  .then(response => response.data)
+}
+ 
 
 export default {
   create,
-  getEvidencesList
+  getEvidencesList,
+  evidenceDelete
 }

@@ -27,7 +27,6 @@ a {
   height: 135px;
   width: 127px;
 }
-
 .card-comment {
   width: 75%
 }
@@ -36,6 +35,47 @@ a {
   margin-top: 1rem;
 }
 
+.main-bg {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("https://res.cloudinary.com/ddby3wqlo/image/upload/v1554674220/NoHayWebos/icons/FONDO_3-01.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: -70px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.intro-form-container {
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.logo {
+  position: fixed;
+  width: 200px;
+  right: 25px;
+}
+
+.login {
+  top: 250px;
+}
+
+.register {
+  top: 80px;
+}
+
+.login-btn {
+  height: 45px;
+  border: 2px solid #ffb100 !important;
+  background: #ffc629 !important;
+}
 
 /* NAV AND FOOTER BAR */
 
@@ -56,7 +96,7 @@ a {
 }
 
 .navbar span {
-  margin-left: 1rem;
+  margin-left: .7rem;
   font-size: 1.2rem;
   font-weight: 500;
   color: rgb(254,254,254)
@@ -80,8 +120,9 @@ a {
 }
 
 .nav-bar-img {
- height: 100%;
- object-fit: contain;
+ height: 45px;
+ width:45px;
+ object-fit: cover;
  border-radius: 50%;
  border: 1px solid rgb(254, 254, 254);
 }
@@ -116,6 +157,11 @@ a {
   
 }
 
+.img-board-chg {
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,.125);
+}
+
 .images-scroll::-webkit-scrollbar {
   display: none;
 }
@@ -132,6 +178,14 @@ a {
 .img-card-size {
   height: 80px;
   width: 125px;
+}
+
+.card-body {
+  border-top: 1px solid rgba(0,0,0,.125);
+}
+
+.card-img-top {
+  object-fit: cover
 }
 
 .cards-scroll {
@@ -167,13 +221,16 @@ a {
 }
 
 .my-search-bar {
-  width: 150px;
+  background-color: white;
+  height: 35px;
+  width: 220px;
 }
 
 /********HASTA AQUI*******/
 
 
 /* SEARCH */
+
 
 .avatar-user {
   max-height: 25px;
@@ -205,9 +262,21 @@ a {
   height: 100px;
 }
 
+.see-more-btn {
+ display: flex;
+ align-content: center;
+ justify-content: center;
+ border: 1px solid rgba(0,0,0,.125);;
+ border-radius: .5rem;
+ background-color: #94deff;
+ padding: 0.15rem;
+ color: white
+}
+
 .icon-plus {
-  font-size: 1.5rem;
-  color: #94deff;
+  font-size: 1rem;
+  color: white;
+  align-self: center;
 }
 
 .media
@@ -303,7 +372,7 @@ ul:hover li:nth-child(n+2) {
 .user-challenge-img {
   width: 130px;
   height: 100px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .scroll-container {
@@ -327,6 +396,14 @@ ul:hover li:nth-child(n+2) {
   font-size: 2rem;
 }
 
+.add-evidence-btn:active {
+  background-color: #88d5f6;
+  -ms-transform: scale(1.1,1.1); /* IE 9 */
+  -webkit-transform: scale(1.1,1.1); /* Safari */
+  transform: scale(1.1,1.1); /* Standard syntax */
+  }
+  
+
 .default-card {
   height: 135px;
   width: 127px;
@@ -347,4 +424,27 @@ ul:hover li:nth-child(n+2) {
 
 .achievement img {
   height: 60px;
+}
+
+.progress-bar-content {
+  border: 1px solid #ededed;
+  height: 17px;
+  width: 147px;
+  border-radius: 17px;
+    
+}
+.progress-bar-second {
+  position: absolute;
+  height: 15px;
+  width: 145px;
+  border-radius: 15px;
+  background-image: linear-gradient(to right, #e71a3f , #18b8ff);
+}
+
+.progress-bar-progress {
+	position: absolute;
+  height: 15px;
+  width: 145px;
+  border-radius: 15px;
+  --background-image: linear-gradient(to left, white 90%, transparent 0%);
 }

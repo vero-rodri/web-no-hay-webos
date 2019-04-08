@@ -10,8 +10,10 @@ import {
 } from '../../utils/formValidators';
 import authService  from '../../services/authService';
 import errors from '../../utils/errors.json';
+import icons from '../../utils/icons.json';
 
 const getErrorText = text => errors[text];
+const getIconText = text => icons[text];
 
 
 class Register extends Component {
@@ -53,78 +55,81 @@ class Register extends Component {
     const { errors } = this.state;
     
     return (
-      <Box margin="large">
-      <Form onSubmit={this.handleSubmit}>
+    <div className="main-bg">
+      <div ><img className="logo register" src={getIconText("logo")} alt="logo" ></img></div>
+      <div className="intro-form-container">
+        <Form onSubmit={this.handleSubmit}>
 
-        <InputField
-          label="Nombre:"
-          placeholder="Daenerys"
-          type="search"
-          {...getFieldProps('nickName', {
-            initialValue: '',
-            validateFirst: true,
-            validateTrigger: 'onblur',
-            rules: [{ required: true}]
-          })}
-          errors={getFieldError('nickName')}
-        />
+          <InputField
+            label="Nombre:"
+            placeholder="Daenerys"
+            type="search"
+            {...getFieldProps('nickName', {
+              initialValue: '',
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true}]
+            })}
+            errors={getFieldError('nickName')}
+          />
 
-        <InputField
-          label="Email:"
-          placeholder="reinadedragones@example.com"
-          type="search"
-          {...getFieldProps( 'email', {
-            initialValue: '',
-            validateFirst: true,
-            validateTrigger: 'onblur',
-            rules: [{ required: true, validator: checkEmail }]
-          })}
-          errors={getFieldError('email')}
-        />
+          <InputField
+            label="Email:"
+            placeholder="reinadedragones@example.com"
+            type="search"
+            {...getFieldProps( 'email', {
+              initialValue: '',
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true, validator: checkEmail }]
+            })}
+            errors={getFieldError('email')}
+          />
 
-        <InputField
-          label="Contraseña:"
-          placeholder="123Abc"
-          type="password"
-          {...getFieldProps('password', {
-            initialValue: '',
-            validateFirst: true,
-            validateTrigger: 'onblur',
-            rules: [{ required: true, validator: checkPassword }]
-          })}
-          errors={getFieldError('password')}
-        />
+          <InputField
+            label="Contraseña:"
+            placeholder="123Abc"
+            type="password"
+            {...getFieldProps('password', {
+              initialValue: '',
+              validateFirst: true,
+              validateTrigger: 'onblur',
+              rules: [{ required: true, validator: checkPassword }]
+            })}
+            errors={getFieldError('password')}
+          />
 
-        <FileInput
-          label="Imagen de perfil:"
-          form={form}
-          name="fileProfile"
-        />
+          <FileInput
+            label="Imagen de perfil:"
+            form={form}
+            name="fileProfile"
+          />
 
-        {errors && Object.keys(errors).length > 0 && (
-          Object.keys(errors).map((key, index) => (
-          <Box key={index}>
-            <Text 
-              alignSelf="center"
-              size="small" 
-              color="status-error" 
-              margin={{top: "medium", left:"small"}}>
-              {getErrorText(errors[key].message)}
-            </Text>
-          </Box>
-          )) 
-        )}
+          {errors && Object.keys(errors).length > 0 && (
+            Object.keys(errors).map((key, index) => (
+            <Box key={index}>
+              <Text 
+                alignSelf="center"
+                size="small" 
+                color="status-error" 
+                margin={{top: "medium", left:"small"}}>
+                {getErrorText(errors[key].message)}
+              </Text>
+            </Box>
+            )) 
+          )}
 
-        <Button 
-        type="submit" primary label="Registrarme" margin={{top: "medium", bottom: "small"}} fill />
-      
-      </Form>
+          <Button style={{height: "45px"}} className="login-btn"
+          type="submit" primary label="Registrarme" margin={{top: "medium", bottom: "small"}} fill />
+        
+        </Form>
 
-      <Text size="small" alignSelf="center">
-        ¿Ya estás registrado? 
-        <Link to="/login" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Entra</Link>
-      </Text>
-    </Box>
+        <Text size="small" alignSelf="center">
+          ¿Ya estás registrado? 
+          <Link to="/login" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Entra</Link>
+        </Text>
+      </div>
+    </div>
     )
   }
 }

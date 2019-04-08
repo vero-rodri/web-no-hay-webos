@@ -208,9 +208,9 @@ class SearchItem extends Component {
         {<div className="media align-items-center mx-0 my-2 border rounded-lg row card-search">
           
             <div className="col-3 p-0" onClick={this.goToDetail}>
-          {/* <Link to={`/challenges/${id}`} className="w-auto m-0"> */}
+          <Link to={`/challenges/${id}`} className="w-auto m-0">
               <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
-          {/* </Link> */}
+          </Link>
             </div>  
           <div className="media-body col-9 p-0">
             <div className="d-flex justify-content-between">
