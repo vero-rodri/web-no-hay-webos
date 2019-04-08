@@ -82,6 +82,11 @@ const createUserChallenge = (challenge) => {
     .then(response => response.data)
 }
 
+const updateUserChallenge = (userChallenge) => {
+  return http.put(`/user-challenges/${userChallenge}`)
+    .then(response => response.data)
+}
+
 
 const addChallengeToLikes = (challengeId) => {
   return http.post(`/challenges/${challengeId}/likes`)
@@ -182,6 +187,7 @@ export default {
   onUserChallengesChange,
   onUsersChallengeDetailChange,
   createUserChallenge,
+  updateUserChallenge,
   addChallengeToLikes,
   removeChallengeFromLikes,
   addUserChallengeToLikes,

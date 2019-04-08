@@ -23,9 +23,9 @@ class InputField extends Component {
     const hasErrors = errors && errors.length > 0;
 
     return (
-      <Box margin={{top: "medium"}}>
+      <Box margin={{top: "medium"}} >
         <Text margin={{bottom: "xsmall"}}>{label}</Text>
-        <TextInput 
+        <TextInput className="bg-white"
           align="center"
           margin=""
           onChange={onChange}

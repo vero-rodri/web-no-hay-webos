@@ -45,10 +45,10 @@ class NavBar extends Component {
                 <img className="nav-bar-img" src={user.avatarURL} alt={user.nickName}></img>
               </div>
             </Link>
-            <span>{user.nickName}</span>
+            { !pathname.startsWith('/search') && <span>{user.nickName}</span> }
           </div>
 
-          {pathname.startsWith('/search') &&<InputSearch className="my-search-bar col-3" />}
+          { pathname.startsWith('/search') &&<InputSearch />}
 
   
           <div className="dropdown">

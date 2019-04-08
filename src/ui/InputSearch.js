@@ -10,8 +10,7 @@ const InputSearch = (props) => {
   }
 
   return (
-    <Box
-    width="small"
+    <Box className="my-search-bar"
     direction="row"
     margin="xsmall"
     align="center"
@@ -22,10 +21,8 @@ const InputSearch = (props) => {
     <TextInput
       plain
       placeholder="Buscar..."
-      // type={reveal ? "text" : "password"}
       value={props.search}
       onChange={handleSearch}
-      //icon={<View size="medium" />}
     />
     <Button
       icon={<FormSearch size="medium" />}
