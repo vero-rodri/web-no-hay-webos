@@ -9,7 +9,7 @@ const CardsScroll = (props) => {
   if ( origin && origin === "userChallenge") {
     return ( 
         <div className="cards-scroll mx-1">
-          { items.map((item, index) => <CardItem key={index} item={item} origin="userChallenge"/>)}
+          { items.map((item, index) => <CardItem key={index} item={item} origin="userChallenge" onDeleteEvidence={props.onDeleteEvidence}/>)}
         </div>
     )
   }

@@ -5,8 +5,12 @@ import InputField from '../misc/forms/InputField';
 import { createForm } from '../../utils/createForm'
 import authService  from '../../services/authService';
 import errors from '../../utils/errors.json';
+import icons from '../../utils/icons.json';
+
 
 const getErrorText = text => errors[text];
+const getIconText = text => icons[text];
+
 
 class Login extends Component {
   state = {
@@ -49,58 +53,61 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <Box margin="large">
-        <Form onSubmit={this.handleSubmit}>
+      <div className="main-bg">
+        <div ><img className="logo login" src={getIconText("logo")} alt="logo"></img></div>
+        <div className="intro-form-container">
+          <Form onSubmit={this.handleSubmit}>
 
-          <InputField
-            label="Email:"
-            placeholder="reinadedragones@example.com"
-            type="search"
-            {...getFieldProps( 'email', {
-              initialValue: '',
-              validateFirst: true,
-              validateTrigger: 'onblur',
-              rules: [{ required: true }]
-            })}
-            errors={getFieldError('email')}
-          />
+            <InputField
+              label="Email:"
+              placeholder="reinadedragones@example.com"
+              type="search"
+              {...getFieldProps( 'email', {
+                initialValue: '',
+                validateFirst: true,
+                validateTrigger: 'onblur',
+                rules: [{ required: true }]
+              })}
+              errors={getFieldError('email')}
+            />
 
-          <InputField
-            label="Contraseña:"
-            placeholder="123Abc"
-            type="password"
-            {...getFieldProps('password', {
-              initialValue: '',
-              validateFirst: true,
-              validateTrigger: 'onblur',
-              rules: [{ required: true }]
-            })}
-            errors={getFieldError('password')}
-          />
+            <InputField
+              label="Contraseña:"
+              placeholder="123Abc"
+              type="password"
+              {...getFieldProps('password', {
+                initialValue: '',
+                validateFirst: true,
+                validateTrigger: 'onblur',
+                rules: [{ required: true }]
+              })}
+              errors={getFieldError('password')}
+            />
 
-          {errors && Object.keys(errors).length > 0 && (
-            Object.keys(errors).map((key, index) => (
-            <Box key={index}>
-              <Text
-                alignSelf="center"
-                size="small" 
-                color="status-error" 
-                margin={{top: "medium", left:"small"}}>
-                {getErrorText(errors[key])}
-              </Text>
-            </Box>
-            )) 
-          )}
+            {errors && Object.keys(errors).length > 0 && (
+              Object.keys(errors).map((key, index) => (
+              <Box key={index}>
+                <Text
+                  alignSelf="center"
+                  size="small" 
+                  color="status-error" 
+                  margin={{top: "medium", left:"small"}}>
+                  {getErrorText(errors[key])}
+                </Text>
+              </Box>
+              )) 
+            )}
 
-          <Button 
-          type="submit" primary label="Iniciar sesión" margin={{top: "medium", bottom: "small"}} fill />
-        </Form>
+            <Button style={{height: "45px"}} className="login-btn"
+            type="submit" primary label="Iniciar sesión" margin={{top: "medium", bottom: "small"}} fill />
+          </Form>
 
-        <Text size="small" alignSelf="center">
-          ¿Aún no tienes una cuenta? 
-          <Link to="/register" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Regístrate</Link>
-        </Text>
-      </Box>
+          <Text size="small" alignSelf="center">
+            ¿Aún no tienes una cuenta? 
+            <Link to="/register" style={{ "textDecoration": "none", "fontWeight": "bold", "color": "#404040" }}>  Regístrate</Link>
+          </Text>
+        </div>
+      </div>
     )
   }
 }

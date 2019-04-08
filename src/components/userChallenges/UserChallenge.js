@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Box, Form, Text, RangeInput } from 'grommet';
+import { Button, Box, Form, Text } from 'grommet';
 import InputField from '../misc/forms/InputField';
 import FileInput from '../misc/forms/FileInput';
 import { createForm } from '../../utils/createForm'
@@ -12,6 +12,7 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import authService from '../../services/authService';
 import evidencesService from '../../services/evidencesService';
+import ProgressBar from '../../ui/ProgressBar';
 
 
 const getErrorText = text => errors[text];
@@ -22,15 +23,17 @@ class UserChallenge extends Component {
   state = {
     userChallenge: {},
     evidences: {},
+    totalEvidences: 1,
     errors: {},
     challengeOwner: {},
+    isFinished: false,
     isVisibleForm: false,
-    rangeValue: 4,
+    rangeValue: 1,
     opacityHen: {
       opacity: "1"
     },
     opacityViking: {
-      opacity: "0.1"
+      opacity: "0.15"
     }
   }
 
@@ -41,33 +44,79 @@ class UserChallenge extends Component {
         this.setState({
         ...this.state,
         userChallenge: userChallenge,
-        evidences: userChallenge.evidences
+        evidences: userChallenge.evidences,
+        isFinished: userChallenge.isFinished
         })
+        if ( this.state.userChallenge.challengeId.periodicity ) {
+          this.setState({
+            ...this.state,
+            totalEvidences: this.state.userChallenge.challengeId.duration / this.state.userChallenge.challengeId.periodicity
+          })
+        } 
+
         authService.getUserDetail(userChallenge.challengeId.owner)
           .then( challengeOwner => {
             this.setState({
               ...this.state,
               challengeOwner: challengeOwner
             })
+            this.getProgressStatus();
           })
         }
       )
   }
 
-
   onClickEvidenceForm = () => {
     this.setState({
       ...this.state,
-      isVisibleForm: true
+      isVisibleForm: !this.state.isVisibleForm
     })
   }
 
-  onRangeValue = () => {
-    const newRangeValue = this.state.userChallenge.evidences.length
+  getProgressStatus = () => {
+    const newRangeValue = this.state.evidences.length / this.state.totalEvidences
+    console.log(newRangeValue); 
     this.setState({
       ...this.state,
-      rangeValue: newRangeValue
+      rangeValue: newRangeValue,
+      opacityHen: {
+        opacity: (newRangeValue === 1 ) ? "0.15" : 1 - newRangeValue  
+      },
+      opacityViking: {
+        opacity: (newRangeValue === 0 ) ? "0.15" : newRangeValue
+      }
     })
+
+    if ( newRangeValue === 1 ) {
+      challengesService.updateUserChallenge(this.state.userChallenge.id)
+        .then(this.setState({
+          ...this.state,
+          isFinished: true
+          })
+        )
+    } else {
+      challengesService.updateUserChallenge(this.state.userChallenge.id)
+        .then(this.setState({
+          ...this.state,
+          isFinished: false
+          })
+        )
+
+    }
+  }
+
+  onDeleteEvidence = (evidenceId) => {
+    console.log("Entrando en la función de UserChallenge", evidenceId)
+    const newEvidences = this.state.evidences.filter(evidence => evidenceId !== evidence.id)
+    this.setState({
+      ...this.state,
+      evidences: newEvidences
+    },() => this.getProgressStatus())
+    evidencesService.evidenceDelete(this.state.userChallenge.id, evidenceId)
+      .then(
+        console.log("después del then, vacío:", this.state.evidences)
+        // this.getProgressStatus()
+      )
   }
 
   handleSubmit = (event) => {
@@ -83,11 +132,12 @@ class UserChallenge extends Component {
           () => { this.setState({ isVisibleForm: false });
                   evidencesService.getEvidencesList(this.state.userChallenge.id)
                   .then(evidences => {
+                    console.log(evidences)
                     this.setState({
                     ...this.state,
-                    evidences: evidences
+                    evidences: evidences.reverse()
                     })
-                    console.log("las evidencias que llegan a UserChallenge: ", evidences);
+                    this.getProgressStatus();
                   })
           }       
         , 
@@ -111,15 +161,18 @@ class UserChallenge extends Component {
         const { getFieldProps, getFieldError } = form;
         const { errors, 
                 userChallenge,
-                evidences, 
+                evidences,
+                totalEvidences, 
                 rangeValue, 
-                challengeOwner, 
+                challengeOwner,
+                isFinished, 
                 opacityHen, 
                 opacityViking } = this.state;
+        const currentEvidences = totalEvidences - evidences.length
         
         return (
           <div className="container">
-            { userChallenge.challengeId &&
+            { userChallenge.challengeId && !this.state.isVisibleForm &&
             <Link to={`/challenges/${userChallenge.challengeId.id}`} className="no-decoration">
               <div className="challenge-summary row mx-2 px-3 justify-content-start">
                 <div className="col-6 p-0">
@@ -146,9 +199,11 @@ class UserChallenge extends Component {
 
               <h6>Logros</h6>
               <div className="row py-2 scroll-container">
-                <div className="add-evidence-btn" onClick={this.onClickEvidenceForm}>
-                  <i className="fas fa-plus-circle text-white"></i>
-                </div>
+                { ( !isFinished ) &&
+                  <div className="add-evidence-btn" onClick={this.onClickEvidenceForm}>
+                    <i className="fas fa-plus-circle text-white"></i>
+                  </div>
+                }
                 { evidences && evidences.length === 0 && (
                 <div className="row ml-2">
                   <div className="default-card mr-2"/>
@@ -157,12 +212,12 @@ class UserChallenge extends Component {
                 )}
                 { evidences && evidences.length > 0 && (
                 <div className="col cards-scroll user-challenge-scroll">
-                  <CardScroll items={evidences} origin="userChallenge"/>
+                  <CardScroll items={evidences} origin="userChallenge" onDeleteEvidence={this.onDeleteEvidence}/>
                 </div>
                 )}
               </div>
-
-            { ( this.state.isVisibleForm ) && (
+              
+              { ( this.state.isVisibleForm ) && (
               <div>
                 <Box margin="large">
                   <Form onSubmit={this.handleSubmit}>
@@ -196,25 +251,33 @@ class UserChallenge extends Component {
                         {getErrorText(errors[key].message)}
                       </Text>
                     </Box>
-                    )) 
-                  )}
+                  )) 
+                )}
     
                   <Button 
                   type="submit" primary label="Añadir logro" margin={{top: "medium", bottom: "small"}} fill />
     
                 </Form>
               </Box>
-            </div>
-            )}
+              </div>
+              )}
 
             <div className="d-flex justify-content-center mt-3 pt-2">
-              <p className="mb-4">Faltan XX logros para superar el reto</p>
+              { ( currentEvidences > 1 ) && (
+                <p className="mb-4">Faltan { currentEvidences } logros para superar el reto</p>
+              )}
+              { ( currentEvidences === 1 ) && (
+                <p className="mb-4">Falta { currentEvidences } logro para superar el reto</p>
+              )}
+              { ( currentEvidences === 0 ) && (
+                <p className="mb-4 h5 font-weight-bold text-danger">Reto superado!</p>
+              )}
             </div>
 
             <div className="achievement">
               <div><img src={getIconText("hen")} alt="hen" style={opacityHen}/></div>
               <div className="pl-1 pr-2">
-                <RangeInput value={rangeValue} min={0} max={10} step={1} onChange={this.onRangeValue}/>
+                <ProgressBar gradient={ ( rangeValue === 0 ) ? 90 : 100 - (rangeValue * 100) }/>
               </div>
               <div><img src={getIconText("viking")} alt="viking" style={opacityViking}/></div>
             </div>

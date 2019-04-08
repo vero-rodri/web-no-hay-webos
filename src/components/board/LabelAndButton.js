@@ -7,12 +7,15 @@ const LabelAndButton = (props) => {
   const { items, link, type, sort, label } = props
 
   return (
-    <div className="row my-1 mx-2 align-items-center my-1">
-      <Link to={{ pathname: link,
-            items, type, sort }}>
-        <i className="fas fa-plus-circle icon-plus"></i>
-      </Link>
+    <div className="row align-items-center justify-content-between my-1 pr-3 pl-1">
       <TextCustom>{label}</TextCustom>
+        <Link to={{ pathname: link,
+              items, type, sort }}>
+          <div className="see-more-btn">
+            <p className="my-0 mx-1">ver más</p>
+            <i className="fas fa-plus icon-plus my-0 mx-1"></i>
+          </div>
+        </Link>
     </div>)
 }
 
