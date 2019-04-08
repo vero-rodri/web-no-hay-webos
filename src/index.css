@@ -10,6 +10,11 @@ a {
   color: black;
 }
 
+/* label {
+  margin: 0;
+  padding: 0;
+} */
+
 .margin-main-container {
   margin: 60px 0 60px 0;
 }
@@ -202,10 +207,13 @@ a {
 }
 
 
-
 /***MIS PRUEBAS (NO ME LAS BORRES VERO, PLIISSS!*****/
 .icon-selected {
-  color: orange;
+  color: rgb(255,198,41)
+}
+
+.icon-unselected {
+  color: rgb(131, 128, 128)
 }
 
 .search-barr {
@@ -218,16 +226,35 @@ a {
   width: 220px;
 }
 
+/********HASTA AQUI*******/
+
+
+/* SEARCH */
+
 
 .avatar-user {
   max-height: 25px;
   width: 25px;
 }
 
-.is-active {
-  color: green;
-  opacity: 100;
+.card-search {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.4);
 }
+
+/*este era para aumentarlo un poco al hacer un hover, pero dará problemas en la demostración para movil..*/
+/* .card-search:hover {
+  transform: scale(1.05);
+  background-color: #e3f5fd
+} */
+
+.card-media-item {
+  height: 100px;
+  flex: column;
+  justify-content: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
 
 .img-in-search {
   width: 33%;
@@ -251,6 +278,8 @@ a {
   color: white;
   align-self: center;
 }
+
+.media
 
 /* CHALLENGE DETAIL */
 
@@ -282,6 +311,47 @@ a {
 .chl-det-header:hover .overlay {
   width: 30%;
   left: 70%;
+}
+
+ul.avatars {
+  display: flex;
+  list-style-type: none;
+  margin: auto;
+  padding: 0px 7px 0px 0px;
+  --flex-direction: row-reverse;  /*si quisieramos que se mostraran en orden inverso*/
+}
+
+li.avatars-img {
+  width: 45px;
+  height: 45px;
+  margin: 0px 0px 0px 0px ;
+  padding: 0px 0px 0px 0px ;
+  position: relative ;
+  -webkit-transition: 2s ease;
+  transition: 2s ease;
+}
+
+img.avatars-img,
+span.avatars-others {
+  background-color: #ffc629;
+  border: 2px solid #1F2532;
+  border-radius: 100px 100px 100px 100px;
+  color: #FFFFFF;
+  display: block;
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  width: 45px;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.4);
+}
+
+li:nth-child(n+2) { margin-left: -20px; }
+
+ul:hover li:nth-child(n+2) {
+  margin-left: -5px;
 }
 
 /* USER CHALLENGE: */

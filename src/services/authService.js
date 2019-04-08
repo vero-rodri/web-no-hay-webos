@@ -44,6 +44,14 @@ const authenticate = (user) => {
     )
 }
 
+const logout = () => 
+  http.get('/logout')
+    .then(response => {
+      user = {};
+      localStorage.removeItem(CURRENT_USER_KEY);
+      return response.data
+    });
+
 
 const getUserDetail = (userId) => {
   return http.get(`/user/${userId}`)
@@ -63,6 +71,7 @@ const onUserChange = () => user$.asObservable()
 export default {
   register,
   authenticate,
+  logout,
   onUserChange,
   getUserDetail,
   getSession

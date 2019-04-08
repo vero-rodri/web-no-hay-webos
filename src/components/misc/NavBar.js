@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 import authService from '../../services/authService';
 import icons from '../../utils/icons.json';
 import InputSearch from '../../ui/InputSearch';
@@ -26,6 +26,14 @@ class NavBar extends Component {
 
   componentWillUnmount() {
     this.userSubscription.unsubscribe()
+  }
+
+  handleLogout = () => {
+    authService.logout()
+      .then(() => {
+        //return <Redirect to="/login" />
+        this.props.history.push('/login')
+      })
   }
 
   render() {
@@ -64,7 +72,7 @@ class NavBar extends Component {
           </button>      
   
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-              <Link className="dropdown-item" to="#">Action</Link>
+              <button onClick={this.handleLogout} className="dropdown-item">Logout</button>
               <Link className="dropdown-item" to="#">Another action</Link>
               <Link className="dropdown-item" to="#">Something else here</Link>
             </div>

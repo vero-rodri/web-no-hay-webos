@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select, FormField } from 'grommet';
 import { SELECT_TYPES, SELECT_SORTS, } from '../../constants';
+/* import SelectCustom from '../../ui/SelectCustom'; */
 
 const SearchFilters  = (props) => {
 
@@ -13,11 +14,21 @@ const SearchFilters  = (props) => {
   }
 
   return (
-    <div className="row px-2">
+    <div className="row px-2 mt-4">
+
       <div className="col-4">
-        <FormField label="Filtrar:">
+{/*         //He intentato hacer un componente para no repetirlo, y simplemente llamarlo 2 veces, pero de moemnto no ha funcionado..
+ */}        {/* <SelectCustom
+          title="Filtrar por"
+          content={SELECT_TYPES[props.type]}
+          handleChange={handleChangeType}
+          choices={Object.values(SELECT_TYPES)}
+        /> */}
+        <label className="mb-1 p-0">Filtrar por: </label>
+        <FormField className="m-0 p-0">
           <Select
-          size="small"
+            className="m-0 p-1"
+            size="small"
             value={SELECT_TYPES[props.type]}
             onChange={handleChangeType}
             options={Object.values(SELECT_TYPES)}
@@ -25,9 +36,11 @@ const SearchFilters  = (props) => {
         </FormField>
       </div>
       <div className="col-4">
-        <FormField label="Ordenar:">
+          <label className="mb-1 p-0">Ordenar por: </label>
+        <FormField className="m-0 p-0">
           <Select
-          size="small"
+            className="m-0 p-1"
+            size="small"
             value={SELECT_SORTS[props.sort]}
             onChange={handleChangeSort}
             options={Object.values(SELECT_SORTS)}
