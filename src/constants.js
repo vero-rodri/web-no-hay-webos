@@ -1,5 +1,5 @@
-const LIMIT_DESCRIPTION = 100;
-const LIMIT_TITLE = 40;
+const LIMIT_DESCRIPTION = 55;
+const LIMIT_TITLE = 15;
 const SELECT_TYPES = {
   'challenge': 'Reto', 
   'userChallenge': 'UC',

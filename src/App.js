@@ -13,7 +13,10 @@ import FooterBar from './components/misc/FooterBar';
 import Search from '../src/components/search/Search';
 import PrivateRoute from './guards/PrivateRoute';
 
+
 class App extends Component {
+
+
   render() {
     return (
       <div className="App">
@@ -27,7 +30,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/board" component={Board} />
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile/:userId" component={Profile} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/challenges/create" component={ChallengeCreate} />
             <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />

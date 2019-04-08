@@ -48,11 +48,13 @@ class SearchItemsList extends Component {
           id: challenge.id,
           title: challenge.title,
           description: challenge.description,
+          userId: challenge.owner.id,
           userName: challenge.owner.nickName,
           avatarURL: challenge.owner.avatarURL,
           views: challenge.views,
           likes: challenge.likes,
-          file: challenge.photo
+          file: challenge.photo,
+          createdAt: challenge.createdAt
         }
         return <SearchItem key={info.id} {...info} onReprint={this.handleReprint}/>
       })
@@ -69,11 +71,13 @@ class SearchItemsList extends Component {
           id: userChallenge.id,
           title: userChallenge.challengeId.title,
           description: userChallenge.challengeId.description,
+          userId: userChallenge.userId.id,
           userName: userChallenge.userId.nickName,
           avatarURL: userChallenge.userId.avatarURL,
           views: userChallenge.views,
           likes: userChallenge.likes,
-          file: userChallenge.evidences[0].file     
+          file: userChallenge.evidences[0].file  ,
+          createdAt: userChallenge.evidences[0].createdAt    
         }
         return <SearchItem key={info.id} {...info} onReprint={this.handleReprint} />
     })

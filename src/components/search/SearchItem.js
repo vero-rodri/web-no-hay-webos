@@ -5,6 +5,8 @@ import $ from 'jquery';
 import challengeService from '../../services/challengesService';
 import authService from '../../services/authService';
 import { withAuthConsumer } from '../../context/AuthStore';
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 
 class SearchItem extends Component {
@@ -43,10 +45,13 @@ class SearchItem extends Component {
 
   goToDetail = () => {
 
-    const { id, type } = this.state.info
+    console.log("HE HECHO CLIK EN LA FOTO")
+
+    /* const { id, type } = this.state.info
     return (
       (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
       .then((views) => {
+        console.log("toca cambiar el estado...")
         this.setState({
           info:{
             ...this.state.info,
@@ -55,8 +60,26 @@ class SearchItem extends Component {
           redirectToDetail: true
         })
       })
-    )
-  }
+    ) */
+//no funcionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const { id, type } = this.state.info
+    return (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
+      .then((views) => {
+        this.setState({
+          info:{
+            ...this.state.info,
+            views:views
+          },
+          redirectToDetail: true
+        }, 
+        () => {
+          if(type ==='challenge') {
+            console.log("haciendo redirec...")
+            return <Redirect to={`/challenges/${id}`} />;        
+          }
+      })
+  })
+}
     
 
   toggleIcon = (event) => {
@@ -161,46 +184,61 @@ class SearchItem extends Component {
     return (arrAux.includes(objIdAux))
   }
 
+  infoTooLonger = () => {
+
+  }
+
   
   render() {
-    const { type, id, title, description, userName, avatarURL, views, likes, file } = this.state.info;
+    const formatedProps = this.formatFields();
+    const { type, id, title, description, userName, avatarURL, views, likes, file, createdAt, userId } = formatedProps;
     const { itemsLiked } = this.state;
 
     if (this.state.redirectToDetail) {
+      console.log("\n\nvamos a redirigir!!\n")
       if (type === 'challenge') {
         return <Redirect to={`/challenges/${id}/`} />
       } else {
         return <Redirect to={`/user-challenges/${id}/`} />
       }
     }
-    
+
     return (
       <Fragment>
-        {<div className="media align-items-center mx-1 my-2 border rounded-lg row">
+        {<div className="media align-items-center mx-0 my-2 border rounded-lg row card-search">
           
-            <div className="col-3 p-0">
-          <Link to={`/challenges/${id}`} className="w-auto m-0">
+            <div className="col-3 p-0" onClick={this.goToDetail}>
+          {/* <Link to={`/challenges/${id}`} className="w-auto m-0"> */}
               <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
-          </Link>
+          {/* </Link> */}
             </div>  
-          <div className="media-body col-9 p-0 h-100">
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="px-2 col-9" onClick={this.goToDetail}>
-                <h6 className="m-0 mb-1"><u>{title}</u></h6>
-                <p className="m-0 my-1">{description}</p>
-                <div className="mt-1">
-                  <img className="rounded-circle avatar-user" src={avatarURL} alt={id} />
-                  <span className="mx-1"><small><strong>{userName}</strong></small></span>
+          <div className="media-body col-9 p-0">
+            <div className="d-flex justify-content-between">
+              <div className="px-2 col-9 card-media-item">
+                <h6 className="m-0 my-1" data-container="body" data-toggle="popover" data-placement="top" data-content={this.state.info.title}><u>{title}</u></h6>
+                <p className="m-0" data-container="body" data-toggle="popover" data-placement="bottom" data-content={this.state.info.description}>{description}</p>
+                <div className="m-0 my-1 d-flex justify-content-between align-items-center">
+                  <Link to={`/profile/${userId}`} className="m-0 p-0">
+                    <img className="rounded-circle avatar-user" src={avatarURL} alt={id} />
+                    <span className="mx-1"><small><strong>{userName}</strong></small></span>
+                  </Link>
+                  <div>
+                    <small className="p-0 m-0"><Moment format="DD/MM/YYYY">{createdAt}</Moment></small>
+                  </div>
                 </div>
               </div>
-              <div className="px-1 col-3 text-center group-icons">
-                <div>
-                  <p className="m-0 mb-1"><i className="fas fa-eye"></i><span className="mx-1">{views}</span></p>
-                  <p className={`m-0 my-1 ${(itemsLiked && this.objectIdInArray(id, itemsLiked)) ? 'icon-selected' : null}`} onClick={this.toggleIcon}>
-                    <span><i className="fas fa-thumbs-up mx-1">{likes}</i></span>
+              <div className="px-1 col-3 text-center card-media-item">
+                <div className="align-content-between">
+                  <p className="m-0 my-1 row align-items-center icon-unselected">
+                    <i className="fas fa-eye col p-0"></i>
+                    <span className="mx-1 p-0 col text-left font-weight-bold">{views}</span>
+                  </p>
+                  <p className={`m-0 my-1 row align-items-center ${(itemsLiked && this.objectIdInArray(id, itemsLiked)) ? 'icon-selected' : 'icon-unselected'}`} onClick={this.toggleIcon}>
+                    <i className="fas fa-thumbs-up col p-0"></i>
+                    <span className="mx-1 p-0 col text-left font-weight-bold">{likes}</span>
                   </p>
                 </div> 
-                <p className="m-0 mt-3"><i className="fas fa-exclamation-triangle"></i></p>
+                <p className="m-0 my-1 icon-unselected"><i className="fas fa-exclamation-triangle"></i></p>
               </div>
             </div>
           </div>
