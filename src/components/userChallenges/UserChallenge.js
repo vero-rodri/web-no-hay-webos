@@ -13,6 +13,9 @@ import 'moment-timezone';
 import authService from '../../services/authService';
 import evidencesService from '../../services/evidencesService';
 import ProgressBar from '../../ui/ProgressBar';
+import { DEFAULT_ICON_OPACITY } from '../../constants'
+import Modal from '../misc/Modal';
+import Carousel from '../../ui/Carousel';
 
 
 const getErrorText = text => errors[text];
@@ -34,7 +37,9 @@ class UserChallenge extends Component {
     },
     opacityViking: {
       opacity: "0.15"
-    }
+    },
+    showModal: false,
+    modalOrder: 0
   }
 
 
@@ -73,50 +78,49 @@ class UserChallenge extends Component {
     })
   }
 
+  onShowModal = (order) => {
+    this.setState({
+      ...this.state,
+      showModal: !this.state.showModal,
+      modalOrder: ( order >= 0 ) ? order : this.state.modalOrder
+    })
+  }
+
   getProgressStatus = () => {
-    const newRangeValue = this.state.evidences.length / this.state.totalEvidences
-    console.log(newRangeValue); 
+    const newRangeValue = this.state.evidences.length / this.state.totalEvidences;
+    const prevFinished = this.state.isFinished;
     this.setState({
       ...this.state,
       rangeValue: newRangeValue,
       opacityHen: {
-        opacity: (newRangeValue === 1 ) ? "0.15" : 1 - newRangeValue  
+        opacity: (newRangeValue === 1 ) ? DEFAULT_ICON_OPACITY : 1 - newRangeValue  
       },
       opacityViking: {
-        opacity: (newRangeValue === 0 ) ? "0.15" : newRangeValue
+        opacity: (newRangeValue === 0 ) ? DEFAULT_ICON_OPACITY : newRangeValue
+      },
+      isFinished: newRangeValue === 1
+    }, () => {
+      if ( newRangeValue === 1 && this.state.isFinished !== prevFinished ) {
+        challengesService.updateUserChallenge(this.state.userChallenge.id, this.state.isFinished)
+          .then(console.log("actualiza la API a ", this.state.isFinished))
+      } 
+      if ( newRangeValue !== 1 && this.state.isFinished !== prevFinished ) {
+        challengesService.updateUserChallenge(this.state.userChallenge.id, this.state.isFinished)
+          .then(console.log("actualiza la API a ", this.state.isFinished))
       }
     })
 
-    if ( newRangeValue === 1 ) {
-      challengesService.updateUserChallenge(this.state.userChallenge.id)
-        .then(this.setState({
-          ...this.state,
-          isFinished: true
-          })
-        )
-    } else {
-      challengesService.updateUserChallenge(this.state.userChallenge.id)
-        .then(this.setState({
-          ...this.state,
-          isFinished: false
-          })
-        )
-
-    }
   }
 
   onDeleteEvidence = (evidenceId) => {
-    console.log("Entrando en la función de UserChallenge", evidenceId)
     const newEvidences = this.state.evidences.filter(evidence => evidenceId !== evidence.id)
     this.setState({
       ...this.state,
       evidences: newEvidences
-    },() => this.getProgressStatus())
-    evidencesService.evidenceDelete(this.state.userChallenge.id, evidenceId)
-      .then(
-        console.log("después del then, vacío:", this.state.evidences)
-        // this.getProgressStatus()
-      )
+    },() => {this.getProgressStatus()
+      evidencesService.evidenceDelete(this.state.userChallenge.id, evidenceId)
+      }
+    )
   }
 
   handleSubmit = (event) => {
@@ -167,11 +171,39 @@ class UserChallenge extends Component {
                 challengeOwner,
                 isFinished, 
                 opacityHen, 
+                modalOrder,
                 opacityViking } = this.state;
         const currentEvidences = totalEvidences - evidences.length
         
         return (
           <div className="container">
+            {this.state.showModal && (
+              <Modal>
+                <div className="col-2 modal-col">
+                  <div className="modal-header">
+                    <div className="mb-1 pr-5 align-self-end">
+                      <h5>{userChallenge.challengeId.title}</h5>
+                      <div className="mt-3">
+                        <span><small>Reto de </small></span>
+                        <img className="rounded-circle avatar-user ml-1" src={challengeOwner.avatarURL} alt={challengeOwner.nickName}></img>
+                        <span className="mx-1 pl-1"><strong>{challengeOwner.nickName}</strong></span>
+                      </div>
+                    </div>
+                    <div className="modal-close" onClick={this.onShowModal}><i className="fas fa-times-circle"></i></div>
+                  </div>
+                </div>
+                <div className="col-8 modal-col">
+                  <Carousel evidences={evidences} order={modalOrder}/>
+                </div>
+                <div className="col-2 modal-col">
+                  <div className="" >{evidences[0].comments}</div>
+                  <div className="" >
+                    <Moment className="h6" format="DD/MM/YYYY">{evidences[0].createdAt}</Moment>
+                  </div>
+                </div>
+
+              </Modal>
+            )}
             { userChallenge.challengeId && !this.state.isVisibleForm &&
             <Link to={`/challenges/${userChallenge.challengeId.id}`} className="no-decoration">
               <div className="challenge-summary row mx-2 px-3 justify-content-start">
@@ -181,7 +213,7 @@ class UserChallenge extends Component {
                 <div className="col-6 p-0 challenge-descrp">
                   <div className="h6">{userChallenge.challengeId.title}</div>
                   <div >
-                    <span><small>Por:</small></span>
+                    <span><small>Creado por:</small></span>
                     <div className="my-1">
                       <img className="rounded-circle avatar-user" src={challengeOwner.avatarURL} alt={challengeOwner.nickName}></img>
                       <span className="mx-1 pl-1"><strong>{challengeOwner.nickName}</strong></span>
@@ -211,6 +243,7 @@ class UserChallenge extends Component {
                 </div>
                 )}
                 { evidences && evidences.length > 0 && (
+
                 // <div className="col cards-scroll user-challenge-scroll">
                   <CardScroll 
                     items={evidences} 
@@ -218,7 +251,9 @@ class UserChallenge extends Component {
                     origin="userChallenge"
                     textAlternative="¡Vamos, comienza a postar tus retos!" 
                     onDeleteEvidence={this.onDeleteEvidence}/>
+                    onShowModal={this.onShowModal}
                 // </div>
+
                 )}
               </div>
               

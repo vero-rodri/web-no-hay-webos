@@ -46,21 +46,10 @@ import { Redirect, Route } from 'react-router-dom';
 
 
 const PrivateRoute = ({component: Component, ...rest}) => {
+
   return (
-    <AuthContext.Consumer>
-      {( { isAuthenticated } ) => (
-      <Route {...rest} render={ (props) => {
-        if (isAuthenticated()) {
-          
-            return (<Component {...props} />);
-          
-        }
-        return <Redirect to="/login" />; 
-      }}/>
-      )}
-    </AuthContext.Consumer>
+    <Route {...rest} component={Component} />
   );
 }
 
-export default PrivateRoute; */
-
+export default withAuthConsumer(PrivateRoute);

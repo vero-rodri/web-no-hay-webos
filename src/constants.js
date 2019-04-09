@@ -27,7 +27,10 @@ const SELECT_CATEGORIES = [
 ];
 const LIMIT_AVATARS_LIST = 2;
 
+const DEFAULT_ICON_OPACITY = "0.15";
+
 const REGEX_IMAGE = /\.(jpg|jpeg|png|JPG|JPEG|PNG)$/;
+
 const REGEX_VIDEO = /\.(avi|gif|mp4|wmv|webm|ogv|flv|mpg)$/;
 
 export {
@@ -39,6 +42,7 @@ export {
   MIRROR_SELECT_TYPES,
   MIRROR_SELECT_SORTS,
   LIMIT_AVATARS_LIST,
+  DEFAULT_ICON_OPACITY,
   REGEX_IMAGE,
   REGEX_VIDEO
 }

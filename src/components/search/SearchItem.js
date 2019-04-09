@@ -158,6 +158,7 @@ class SearchItem extends Component {
   render() {
     const formattedProps = this.formattedFields();
     const { type, id, title, description, userName, avatarURL, views, likes, file, createdAt, userId } = formattedProps;
+
     const { itemsLiked, redirectToDetail } = this.state;
 
     if (redirectToDetail) {
