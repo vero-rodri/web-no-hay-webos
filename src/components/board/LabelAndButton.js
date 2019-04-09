@@ -7,7 +7,7 @@ const LabelAndButton = (props) => {
   const { items, link, type, sort, label } = props
 
   return (
-    <div className="row align-items-center justify-content-between my-1 pr-3 pl-1">
+    <div className="row align-items-center justify-content-between my-0 pr-3 pl-1">
       <TextCustom>{label}</TextCustom>
         <Link to={{ pathname: link,
               items, type, sort }}>

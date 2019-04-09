@@ -211,9 +211,14 @@ class UserChallenge extends Component {
                 </div>
                 )}
                 { evidences && evidences.length > 0 && (
-                <div className="col cards-scroll user-challenge-scroll">
-                  <CardScroll items={evidences} origin="userChallenge" onDeleteEvidence={this.onDeleteEvidence}/>
-                </div>
+                // <div className="col cards-scroll user-challenge-scroll">
+                  <CardScroll 
+                    items={evidences} 
+                    type="evidence"
+                    origin="userChallenge"
+                    textAlternative="¡Vamos, comienza a postar tus retos!" 
+                    onDeleteEvidence={this.onDeleteEvidence}/>
+                // </div>
                 )}
               </div>
               

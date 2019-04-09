@@ -1,5 +1,8 @@
 const LIMIT_DESCRIPTION = 55;
 const LIMIT_TITLE = 15;
+
+export const LIMIT_TEXT_CARD_ITEM = 10;
+
 const SELECT_TYPES = {
   'challenge': 'Reto', 
   'userChallenge': 'UC',
@@ -24,6 +27,9 @@ const SELECT_CATEGORIES = [
 ];
 const LIMIT_AVATARS_LIST = 2;
 
+const REGEX_IMAGE = /\.(jpg|jpeg|png|JPG|JPEG|PNG)$/;
+const REGEX_VIDEO = /\.(avi|gif|mp4|wmv|webm|ogv|flv|mpg)$/;
+
 export {
   LIMIT_DESCRIPTION,
   LIMIT_TITLE,
@@ -32,5 +38,7 @@ export {
   SELECT_CATEGORIES,
   MIRROR_SELECT_TYPES,
   MIRROR_SELECT_SORTS,
-  LIMIT_AVATARS_LIST
+  LIMIT_AVATARS_LIST,
+  REGEX_IMAGE,
+  REGEX_VIDEO
 }

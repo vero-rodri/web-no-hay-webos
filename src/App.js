@@ -30,7 +30,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/board" component={Board} />
-            <Route exact path="/profile/:userId" component={Profile} />
+            <Route exact path="/profile/:userId" component={Profile}/>
             <Route exact path="/search" component={Search} />
             <Route exact path="/challenges/create" component={ChallengeCreate} />
             <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />
@@ -43,7 +43,7 @@ class App extends Component {
             {/* <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/board" component={Board} />
-            <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/profile/:userId" component={Profile} />
             <PrivateRoute exact path="/search" component={Search} />
             <PrivateRoute exact path="/challenges/create" component={ChallengeCreate} />
             <PrivateRoute exact path="/challenges/:challengeId" component={ChallengeDetail} />

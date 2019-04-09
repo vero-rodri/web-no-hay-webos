@@ -44,6 +44,7 @@ const authenticate = (user) => {
     )
 }
 
+
 const logout = () => 
   http.get('/logout')
     .then(response => {
@@ -74,5 +75,5 @@ export default {
   logout,
   onUserChange,
   getUserDetail,
-  getSession
+  getSession 
 }

@@ -10,13 +10,10 @@ const PrivateRoute = ({component: Component, ...rest}) => {
       console.log("ESTOY EN RUTA PRIVADA con el user", user)
       return <Route {...rest} render={ (props) => {
         if (isAuthenticated()) {
-          if (!rest.role || rest.role === user.role) {
-            return (<Component {...props} />);
-          } else {
-            return <Redirect to="/forbidden" />; 
-          }
-        }
-        return <Redirect to="/login" />; 
+          return (<Component {...props} />);
+        } else {
+          return <Redirect to="/login" />; 
+        } 
       }}/>
       }}
     </AuthContext.Consumer>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Text, Button, Select } from 'grommet';
+import { Text, Button, Select, FormField } from 'grommet';
 import authService from '../../services/authService';
 import challengesService from '../../services/challengesService';
 import CardsScroll from '../../ui/CardsScroll';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../constants';
+import { listByFilters } from '../../utils/handleLogicSelects';
 
 
 class ChallengeDetail extends Component {
@@ -12,21 +13,17 @@ class ChallengeDetail extends Component {
   state = {
     user: {},
     challenge: {},
-    usersChallenge: [],
+    userChallenges: [],
     isAlreadyJoined: false,
     isJoinedNow: '',
-    optionFiltered: SELECT_SORTS['createDate']
+    optionFiltered: SELECT_SORTS['likes']
   }
 
   userSubscription = undefined;
 
-  objectIdInArray = (userId, userChallenge) => {
-    let arrAux = userChallenge.map(object => object.userId)
-    return (arrAux.includes(userId))
-  }
 
+  
   componentDidMount() {
-    
     this.userSubscription = authService.onUserChange().subscribe((user) => {
       this.setState({
         ...this.state,
@@ -37,30 +34,31 @@ class ChallengeDetail extends Component {
     const p1 = challengesService.getChallengeDetail(this.props.match.params.challengeId)
     const p2 = challengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId)
 
-    Promise.all([p1, p2])
+      Promise.all([p1, p2])
       .then(([challenge, userChallenges]) => {
         this.setState({
         ...this.state,
         challenge: challenge,
         userChallenges: userChallenges
-        });
-
-        if (this.objectIdInArray(this.state.user.id, this.state.challenge.usersChallenge) ) {
-          this.setState({
-            ...this.state,
-            isAlreadyJoined: true
-            });
-        }
+        })
       })
       .catch(err => console.log(err));
-  }
+  } 
+
 
   componentWillUnmount() {
     this.userSubscription.unsubscribe();
   }
 
-  onClickJoin = () => {
-            
+
+  objectIdInArray = (userId, userChallenge) => {
+    let userIdAux = JSON.stringify(userId);
+    let arrAux = userChallenge.map(object => JSON.stringify(object.userId.id));
+    return arrAux.includes(userIdAux);
+  }
+
+
+  onClickJoin = () => {       
     challengesService.createUserChallenge(this.state.challenge.id)
       .then(
         (response) => 
@@ -72,60 +70,24 @@ class ChallengeDetail extends Component {
       )
   }
 
+
   onClickChallengeOthers = () => {
     console.log('retar a otros')
     //IMPLEMENTAR LA LÓGICA PARA RETAR A OTROS!!!
   }
 
-  countUsersChallenge = () => 
-    (this.state.challenge.usersChallenge) ?
-      this.state.challenge.usersChallenge.length : 0;
+
+  countUserChallenges = () => 
+    (this.state.challenge.userChallenges) ?
+      this.state.challenge.userChallenges.length : 0;
   
 
-  countUsersChallengeFinished = () =>   
-    (this.state.challenge.usersChallenge) ?
-      this.state.challenge.usersChallenge
+  countUserChallengesFinished = () =>   
+    (this.state.challenge.userChallenges) ?
+      this.state.challenge.userChallenges
         .filter(userChallenge => userChallenge.Finished)
         .length : 0;
 
-  
-  showUsersChallenge = () => {
-
-    const topLikesUserChallenges = () => this.state.userChallenges
-      .sort((a, b) => b.likes - a.likes)
-      .slice(0, 10);
-  
-  
-    const topViewsUserChallenges = () => this.state.userChallenges
-      .sort((a, b) => b.views - a.views)
-      .slice(0, 10);
-  
-  
-    const latestUserChallenges = () => this.state.userChallenges
-      .sort((a, b) => {
-        return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
-      })
-      .slice(0, 10);
-
-    const { optionFiltered } = this.state;
-    let userChallengesFiltered = [];
-    switch (MIRROR_SELECT_SORTS[optionFiltered]) {
-      case "likes": {
-        userChallengesFiltered = topLikesUserChallenges();
-        break;
-      }
-      case "views": {
-        userChallengesFiltered = topViewsUserChallenges();
-        break;
-      }
-      case "createDate": {
-        userChallengesFiltered = latestUserChallenges();
-        break;
-      }
-      default: {}
-    }
-    return <CardsScroll items={userChallengesFiltered} origin="challenge" />
-  }
 
   createListAvatarsUserChallenges = () => {
     const { userChallenges } = this.state;
@@ -153,7 +115,11 @@ class ChallengeDetail extends Component {
 
   render() {
 
+    
     const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
+    const { optionFiltered, userChallenges, user } = this.state;
+   
+    
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
@@ -174,11 +140,11 @@ class ChallengeDetail extends Component {
             </div>
             <div className="row justify-content-around align-items-center my-2 mx-1">
               <p className="m-0"><i className=" m-0 fas fa-users fa-lg"></i></p>
-              <h5 className="m-0">{this.countUsersChallenge()}</h5>
+              <h5 className="m-0">{this.countUserChallenges()}</h5>
             </div>
             <div className="row justify-content-around align-items-center my-2 mx-1">
               <p className="m-0"><i className=" m-0 fas fa-trophy fa-lg"></i></p>
-              <h5 className="m-0">{this.countUsersChallengeFinished()}</h5>
+              <h5 className="m-0">{this.countUserChallengesFinished()}</h5>
             </div>
           </div>
           </div>
@@ -194,7 +160,7 @@ class ChallengeDetail extends Component {
           </div>
           <hr className="my-1"></hr>
           <div className="col-12 m-0 d-flex flex-row justify-content-around">
-            <Button className="py-1 px-2 m-1" type="submit" primary label="Unirse al reto!" disabled={this.state.isAlreadyJoined} onClick={this.onClickJoin}  />
+            <Button className="py-1 px-2 m-1" type="submit" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
             <Button className="py-1 px-2 m-1" type="submit" primary label="Retar a otros" disabled={!isFinished} onClick={this.onClickChallengeOthers} />
           </div>
 
@@ -207,20 +173,25 @@ class ChallengeDetail extends Component {
             </ul>
             </div>
             <div className="col-5">
-              <Select
-                className="p-1"
-                placeholder="Ordenar por"
-                options={Object.values(SELECT_SORTS)}
-                value={this.state.optionFiltered}
-                size="small"
-                onChange={event => { this.setState({ optionFiltered: event.option })}}
-              />
+              <FormField>
+                <Select
+                  className="p-1"
+                  placeholder="Ordenar por"
+                  options={Object.values(SELECT_SORTS)}
+                  value={this.state.optionFiltered}
+                  size="small"
+                  onChange={event => { this.setState({ optionFiltered: event.option })}}
+                />
+              </FormField>
             </div>
-            
           </div>
-          <div className=" my-2">
-            {this.state.challenge.usersChallenge && this.showUsersChallenge()}
-          </div>
+          
+          <CardsScroll 
+            items={listByFilters(userChallenges, "userChallenge", MIRROR_SELECT_SORTS[optionFiltered])} 
+            type="userChallenge" 
+            origin="challenge"
+            textAlternative="No ha habido Webos aún de hacer este reto..." 
+          />
         </div>
       </div>
     )
