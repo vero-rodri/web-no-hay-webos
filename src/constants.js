@@ -1,5 +1,8 @@
 const LIMIT_DESCRIPTION = 55;
 const LIMIT_TITLE = 15;
+
+export const LIMIT_TEXT_CARD_ITEM = 10;
+
 const SELECT_TYPES = {
   'challenge': 'Reto', 
   'userChallenge': 'UC',

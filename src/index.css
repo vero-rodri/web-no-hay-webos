@@ -226,6 +226,16 @@ a {
   width: 220px;
 }
 
+
+/*para el card-item*/
+.height-line {
+  line-height: 13px;
+}
+
+/********HASTA AQUI*******/
+
+
+
 /* SEARCH */
 
 .avatar-user {

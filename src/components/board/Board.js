@@ -43,6 +43,7 @@ class Board extends Component {
 
   render() {
     const { challenges, userChallenges } = this.state;
+
     return (
       <div className="container mt-2">  
         <LabelAndButton 
@@ -66,12 +67,17 @@ class Board extends Component {
           type="userChallenge"
           sort="createDate"
           labelButton="Más"
-          />
-        <div className="row py-2 ml-2">
-          <div className="col cards-scroll user-challenge-scroll">
-            {<CardsScroll items={this.latestUserChallenges()} origin="board"/>}
-          </div>
-        </div>
+        />
+
+        {console.log("\n\nultimoss ", this.latestUserChallenges())}
+       
+        {userChallenges.length && <CardsScroll 
+          items={this.latestUserChallenges()} 
+          type="userChallenge" 
+          origin="board"
+          textAlternative="Nadie aún con Webos de subir su logro..." 
+        />}
+         
 
         <LabelAndButton 
           label="Logros más virales"
@@ -80,12 +86,14 @@ class Board extends Component {
           type="userChallenge"
           sort="views"
           labelButton="Más"
-          />
-          <div className="row py-2 ml-2">
-            <div className="col cards-scroll user-challenge-scroll">
-              {<CardsScroll items={this.topUserChallenges()} origin="board"/>}
-            </div>
-          </div>
+        />
+            
+        {userChallenges.length && <CardsScroll 
+          items={this.topUserChallenges()} 
+          type="userChallenge" 
+          origin="board"
+          textAlternative="Nadie aún con Webos de subir su logro..." 
+        />}   
       </div>
     )
   }

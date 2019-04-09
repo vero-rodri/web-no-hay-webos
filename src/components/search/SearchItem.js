@@ -31,7 +31,7 @@ class SearchItem extends Component {
   }
 
 
-  formatFields = () => {
+  formattedFields = () => {
 
     let formatedProps  = {...this.state.info}
     formatedProps.description = (formatedProps.description.length > LIMIT_DESCRIPTION) ?
@@ -154,14 +154,11 @@ class SearchItem extends Component {
     return (arrAux.includes(objIdAux))
   }
 
-  infoTooLonger = () => {
-
-  }
-
   
   render() {
-    const formatedProps = this.formatFields();
-    const { type, id, title, description, userName, avatarURL, views, likes, file, createdAt, userId } = formatedProps;
+    const formattedProps = this.formattedFields();
+    const { type, id, title, description, userName, avatarURL, views, likes, file, createdAt, userId } = formattedProps;
+
     const { itemsLiked, redirectToDetail } = this.state;
 
     if (redirectToDetail) {
