@@ -21,7 +21,6 @@ class SearchItem extends Component {
 
       authService.getSession()
         .then(user => {
-          console.log("el puto user es", user)
           let itemsLiked;
           (this.state.info.type === 'challenge') ? itemsLiked = [...user.challengesLiked] : itemsLiked = [...user.userChallengesLiked];
           this.setState({
@@ -44,41 +43,12 @@ class SearchItem extends Component {
 
 
   goToDetail = () => {
-
-    console.log("HE HECHO CLIK EN LA FOTO")
-
-    /* const { id, type } = this.state.info
-    return (
-      (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
-      .then((views) => {
-        console.log("toca cambiar el estado...")
-        this.setState({
-          info:{
-            ...this.state.info,
-            views:views 
-          },
-          redirectToDetail: true
-        })
-      })
-    ) */
-//no funcionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const { id, type } = this.state.info
-    return (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id)
-      .then((views) => {
-        this.setState({
-          info:{
-            ...this.state.info,
-            views:views
-          },
-          redirectToDetail: true
-        }, 
-        () => {
-          if(type ==='challenge') {
-            console.log("haciendo redirec...")
-            return <Redirect to={`/challenges/${id}`} />;        
-          }
+    const actionType = type ==='challenge' ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
+    actionType
+      .then(() => {
+        this.setState({ redirectToDetail: true })
       })
-  })
 }
     
 
@@ -192,10 +162,9 @@ class SearchItem extends Component {
   render() {
     const formatedProps = this.formatFields();
     const { type, id, title, description, userName, avatarURL, views, likes, file, createdAt, userId } = formatedProps;
-    const { itemsLiked } = this.state;
+    const { itemsLiked, redirectToDetail } = this.state;
 
-    if (this.state.redirectToDetail) {
-      console.log("\n\nvamos a redirigir!!\n")
+    if (redirectToDetail) {
       if (type === 'challenge') {
         return <Redirect to={`/challenges/${id}/`} />
       } else {
@@ -208,9 +177,10 @@ class SearchItem extends Component {
         {<div className="media align-items-center mx-0 my-2 border rounded-lg row card-search">
           
             <div className="col-3 p-0" onClick={this.goToDetail}>
-          <Link to={`/challenges/${id}`} className="w-auto m-0">
+          {/* <Link to={`/challenges/${id}`} className="w-auto m-0">
               <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
-          </Link>
+          </Link> */}
+              <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
             </div>  
           <div className="media-body col-9 p-0">
             <div className="d-flex justify-content-between">

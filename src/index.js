@@ -13,6 +13,7 @@ import 'moment-timezone';
 import $ from 'jquery';
 
 import { SearchStore } from '../src/context/SearchStore';
+import { AuthStore } from './context/AuthStore';
 
 $(function () {
   $('[data-toggle="popover"]').popover()
@@ -21,11 +22,13 @@ $(function () {
 
 ReactDOM.render(
   <BrowserRouter>
-    <SearchStore>
-      <Grommet  theme={customTheme}>
-        <App />
-      </Grommet>
-    </SearchStore>
+    <AuthStore>
+      <SearchStore>
+        <Grommet  theme={customTheme}>
+          <App />
+        </Grommet>
+      </SearchStore>
+    </AuthStore>
   </BrowserRouter>,
  document.getElementById('root'));
 serviceWorker.unregister();
