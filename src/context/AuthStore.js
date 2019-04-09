@@ -7,12 +7,8 @@ const AuthContext = React.createContext();
 
 class AuthStore extends Component {
 
- /*  state = {
-    user: JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || '{}')
-  } */
-
   state = {
-    user: {}
+    user: JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || '{}')
   }
   userChangeSubscription = {}
 

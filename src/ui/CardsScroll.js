@@ -4,15 +4,18 @@ import CardItem from './CardItem';
 const CardsScroll = (props) => {
   
   const { items, origin } = props;
-  // const items = props.items;
-  // const origin = props.origin;
-
-  console.log("en cardsCROLL", items)
 
   if (origin === "userChallenge") {
     return ( 
         <div className="cards-scroll mx-1">
-          { items.map((item, index) => <CardItem key={index} item={item} origin="userChallenge" onDeleteEvidence={props.onDeleteEvidence}/>)}
+          { items.map((item, index) => <CardItem  key={index} 
+                                                  item={item} 
+                                                  origin="userChallenge" 
+                                                  order={index}
+                                                  onDeleteEvidence={props.onDeleteEvidence} 
+                                                  onShowModal={props.onShowModal}
+                                                  onOrderModal={props.onOrderModal}
+        />)}
         </div>
     )
   }

@@ -46,8 +46,8 @@ const createChallenge = (challenge, imgKey) => {
       data.append(key, challenge[key])
     }
   })
-  return http.post('/challenges', data, config).
-    then(response => {
+  return http.post('/challenges', data, config)
+  .then(response => {
       getChallenges();
       return response.data;
     })
@@ -81,7 +81,6 @@ const getUserChallenges = () => {
 }
 
 const getUserChallengesFinishedByChallenge = (challengeId) => {
-  console.log("estoy en el serviciooo")
   return http.get(`challenges/${challengeId}/user-challenges`)
     .then(response => response.data)
 }
@@ -92,8 +91,8 @@ const createUserChallenge = (challenge) => {
     .then(response => response.data)
 }
 
-const updateUserChallenge = (userChallenge) => {
-  return http.put(`/user-challenges/${userChallenge}`)
+const updateUserChallenge = (userChallenge, isFinished) => {
+  return http.post(`/user-challenges/${userChallenge}`, {isFinished})
     .then(response => response.data)
 }
 

@@ -12,7 +12,7 @@ const LabelAndButton = (props) => {
         <Link to={{ pathname: link,
               items, type, sort }}>
           <div className="see-more-btn">
-            <p className="my-0 mx-1">ver más</p>
+            <p className="my-0 mx-1">ver</p>
             <i className="fas fa-plus icon-plus my-0 mx-1"></i>
           </div>
         </Link>
