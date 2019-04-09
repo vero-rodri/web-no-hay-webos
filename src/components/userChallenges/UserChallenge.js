@@ -250,8 +250,9 @@ class UserChallenge extends Component {
                     type="evidence"
                     origin="userChallenge"
                     textAlternative="¡Vamos, comienza a postar tus retos!" 
-                    onDeleteEvidence={this.onDeleteEvidence}/>
+                    onDeleteEvidence={this.onDeleteEvidence}
                     onShowModal={this.onShowModal}
+                    />
                 // </div>
 
                 )}

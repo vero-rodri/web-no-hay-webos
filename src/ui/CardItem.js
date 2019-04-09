@@ -11,6 +11,10 @@ const CardItem = (props) => {
     props.onDeleteEvidence(item.id)
   } */
 
+  const onShowModal = () => {
+    props.onShowModal(props.order)
+  }
+
   const createInfoCard = (element, type) => {
     switch (type) {
       case "challenge": {
@@ -55,9 +59,6 @@ const CardItem = (props) => {
   const formattedText = (text) => ((text.length > LIMIT_TEXT_CARD_ITEM) ?  
     (`${text.slice(0, LIMIT_TEXT_CARD_ITEM)} [...]`) : text);    
 
-  const onShowModal = () => {
-    props.onShowModal(props.order)
-  }
 
   return (
     <Stack key={item.id} anchor='center' className="card-content mx-1">

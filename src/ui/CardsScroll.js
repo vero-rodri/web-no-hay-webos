@@ -16,7 +16,14 @@ const CardsScroll = (props) => {
         <div className="col cards-scroll user-challenge-scroll">
           <div className="cards-scroll mx-1">
             {items.length ?
-              items.map((item, index) => <CardItem key={index} item={item} origin={origin} type={type} onDeleteEvidence={onDeleteEvidence} />)
+              items.map((item, index) => <CardItem  key={index} 
+                                                    item={item} 
+                                                    origin={origin} 
+                                                    type={type} 
+                                                    onDeleteEvidence={onDeleteEvidence}
+                                                    onShowModal={props.onShowModal}
+                                                    onOrderModal={props.onOrderModal}
+                                                    />)
               : <h6 className="text-center m-2 w-100">{textAlternative}</h6>} 
           </div>
         </div>

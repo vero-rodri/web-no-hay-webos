@@ -52,4 +52,4 @@ const PrivateRoute = ({component: Component, ...rest}) => {
   );
 }
 
-export default withAuthConsumer(PrivateRoute);
+export default withAuthConsumer(PrivateRoute);*/
