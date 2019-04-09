@@ -1,4 +1,20 @@
 import React from 'react'
+import { withAuthConsumer } from '../context/AuthStore'
+import { Redirect, Route } from 'react-router-dom';
+
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
+  if (!isAuthenticated()) {
+    return <Redirect to="/forbidden" />
+  }
+  return (
+    <Route {...rest} component={Component} />
+  );
+}
+
+export default withAuthConsumer(PrivateRoute);
+
+
+/* import React from 'react'
 import { AuthContext } from '../context/AuthStore'
 import { Redirect, Route } from 'react-router-dom';
 
@@ -20,7 +36,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
   );
 }
 
-export default PrivateRoute;
+export default PrivateRoute; */
 
 
 

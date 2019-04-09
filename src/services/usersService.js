@@ -7,7 +7,7 @@ const http = axios.create({
 })
 
 
-const getUserChallengesFinishedByUser = (userId) => {
+const getUserChallengesByUser = (userId) => {
   console.log("en UC por user");
   return http.get(`users/${userId}/user-challenges`)
     .then(response => response.data)
@@ -21,6 +21,6 @@ const getChallengesByUser = (userId) => {
 }
 
 export default {
-  getUserChallengesFinishedByUser,
+  getUserChallengesByUser,
   getChallengesByUser
 }

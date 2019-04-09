@@ -23,13 +23,14 @@ const CardItem = (props) => {
         }
       }
       case "userChallenge": {
+
         return {
           text: element.challengeId.title,
-          date: element.evidences[0].createdAt,
+          date: (element.evidences.length) ? element.evidences[0].createdAt: undefined,
           owner: element.userId.nickName,
           likes: element.likes,
           views: element.views,
-          photo: element.evidences[0].file
+          photo: (element.evidences.length) ? element.evidences[0].file: undefined
         }
       }
       case "evidence": {
@@ -58,13 +59,14 @@ const CardItem = (props) => {
     <Stack key={item.id} anchor='center' className="card-content mx-1">
       <Box >
         <div className="card">
-          { ( photo.match(REGEX_VIDEO) ) && 
+          {(!photo) && <span className="card-img-top img-card-size"><h6 className="h-100 m-0 d-flex align-items-center"> CLIKEAME PARA SUBIR TU LOGRO</h6></span>}
+          {((photo) && (photo.match(REGEX_VIDEO))) && 
           <video className="video-card" width="125" height="80">
             <source src={photo} type="video/ogg"/>
           </video> 
           }
 
-          { ( photo.match(REGEX_IMAGE) ) && 
+          {((photo) && (photo.match(REGEX_IMAGE))) && 
           <img src={photo} className="card-img-top img-card-size" alt="" />
           }
           <div className="card-body m-0 p-0 text-center">
