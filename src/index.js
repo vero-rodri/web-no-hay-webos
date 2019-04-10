@@ -8,21 +8,16 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Grommet } from 'grommet';
 import customTheme from './utils/theme-grommet'
-import { BrowserRouter } from 'react-router-dom';
+//import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import 'moment-timezone';
-import $ from 'jquery';
-
 import { SearchStore } from '../src/context/SearchStore';
 import { AuthStore } from './context/AuthStore';
 
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
-
-
 
 ReactDOM.render(
-  <BrowserRouter>
+  // <BrowserRouter basename={process.env.PUBLIC_URL}>
+  <HashRouter basename={process.env.PUBLIC_URL}>
     <AuthStore>
       <SearchStore>
         <Grommet  theme={customTheme}>
@@ -30,6 +25,7 @@ ReactDOM.render(
         </Grommet>
       </SearchStore>
     </AuthStore>
-  </BrowserRouter>,
+  </HashRouter>,
+  // </BrowserRouter>,
  document.getElementById('root'));
 serviceWorker.unregister();

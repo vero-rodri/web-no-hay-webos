@@ -42,14 +42,27 @@ class SearchItem extends Component {
   }
 
 
+  // goToDetail = () => {
+  //   const { id, type } = this.state.info
+  //   const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
+  //   actionType
+  //     .then(() => {
+  //       this.setState({ redirectToDetail: true })
+  //     })
+
+
+  //     this.props.onShowModal(id)
+  // }
+
   goToDetail = () => {
     const { id, type } = this.state.info
     const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
     actionType
       .then(() => {
-        this.setState({ redirectToDetail: true })
+        ( type === 'userChallenge' ) ? this.props.onShowModal(id) : this.setState({ redirectToDetail: true })
       })
-}
+  }
+
     
 
   toggleIcon = (event) => {
@@ -164,9 +177,7 @@ class SearchItem extends Component {
     if (redirectToDetail) {
       if (type === 'challenge') {
         return <Redirect to={`/challenges/${id}/`} />
-      } else {
-        return <Redirect to={`/user-challenges/${id}/`} />
-      }
+      } 
     }
 
     return (

@@ -469,7 +469,6 @@ ul:hover li:nth-child(n+2) {
   width: 100%;
   height: 100vh;
   background-color: rgba(0,0,0,0.8);
-  --background-color: rgb(109, 108, 108);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -516,14 +515,19 @@ ul:hover li:nth-child(n+2) {
   height: 400px;
 }
 
+.carousel-item.active {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .crsl-img {
   max-height: 100%;  
   max-width: 100%; 
-  position: absolute;  
-  top: 0;  
-  bottom: 0;  
-  left: 0;  
-  right: 0;  
+  --position: absolute;  
+  --top: 0;  
+  --bottom: 0;  
+  --left: 0;  
+  --right: 0;  
   margin: auto;
 }

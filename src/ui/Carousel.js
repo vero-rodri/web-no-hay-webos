@@ -1,4 +1,6 @@
 import React from 'react';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import { REGEX_IMAGE, REGEX_VIDEO } from '../constants'
 
 const Carousel = (props) => {
@@ -11,10 +13,10 @@ const Carousel = (props) => {
     if ( evidence.file.match(REGEX_IMAGE )) {
       return (
         <div className={`crsl-container carousel-item ${isActive(index)}`} key={index}>
-        {/* <div class="d-flex align-items-center justify-content-center"> */}
-          {/* <img className="d-block w-100" src={evidence.file} alt={`slide ${index}`}/> */}
           <img className="crsl-img" src={evidence.file} alt={`slide ${index}`}/>
-        {/* </div> */}
+          <Moment className="h6" format="DD/MM/YYYY">{evidence.createdAt}</Moment>
+          <div>{evidence.comments}</div>
+
       </div>)
     }
     if ( evidence.file.match(REGEX_VIDEO )) {

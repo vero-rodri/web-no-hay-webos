@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import authService from '../services/authService';
 import { Redirect, Link } from 'react-router-dom';
 import { Box, Stack} from  'grommet';
 import { REGEX_IMAGE, REGEX_VIDEO, LIMIT_TEXT_CARD_ITEM } from '../constants';
@@ -9,11 +10,30 @@ import 'moment-timezone';
 class CardItem extends Component {
 
   state = {
+    user: {},
     isRedirectedToItem: false
   }
   
+  userSubscription = undefined;
 
-  onRedirectToItem = (event) => {
+  componentDidMount() {
+    let userAux = {};
+    this.userSubscription = authService.onUserChange().subscribe((user) => {
+      userAux = user;
+    });
+
+    this.setState({
+      ...this.state,
+      user: userAux,
+    })
+  }
+
+  componentWillUnmount() {
+    this.userSubscription.unsubscribe();
+  }
+
+
+  onRedirectToItem = () => {
     this.setState({
       ...this.state,
       isRedirectedToItem: true
@@ -27,7 +47,9 @@ class CardItem extends Component {
 
 
   onShowModal = () => {
-    this.props.onShowModal(this.props.order, this.props.item.id)
+    ( this.props.origin === 'profile' && this.props.item.userId.id === this.state.user.id )
+     ? this.onRedirectToItem() 
+     : this.props.onShowModal(this.props.order, this.props.item.id)
   }
 
 
@@ -73,10 +95,10 @@ class CardItem extends Component {
     const { isRedirectedToItem, isRedirectedToUser } = this.state;
     const { item, type, origin, onShowModal } = this.props
     const infoCard = this.createInfoCard(item, type);
-    console.log ("la info a pintar en la carta es =>", infoCard)
     const { text, date, owner, ownerId, likes, views, photo } = infoCard;
     const formattedText = (text) => ((text.length > LIMIT_TEXT_CARD_ITEM) ?  
-      (`${text.slice(0, LIMIT_TEXT_CARD_ITEM)} [...]`) : text);   
+      (`${text.slice(0, LIMIT_TEXT_CARD_ITEM)} [...]`) : text);
+
       
       
     if (isRedirectedToItem) {

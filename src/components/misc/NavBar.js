@@ -16,27 +16,31 @@ class NavBar extends Component {
     userChallengesPending: []
   }
 
-  userSubscription = undefined;
+  userSubscription = {};
   usersChallengesPendingSubscription = undefined;
 
   componentDidMount() {
-    let userAux = {};
-    let userChallengesPendingAux = [];
+    // let userAux = {};
+    // let userChallengesPendingAux = [];
     
     this.userSubscription = authService.onUserChange().subscribe((user) => {
-      userAux = user;
+      this.setState({
+        user
+      })
     });
 
     this.userChallengesPendingSubscription = userChallengesService.onUserChallengesPendingChange().subscribe((userChallengesPending) => {
-      userChallengesPendingAux = userChallengesPending;
+      this.setState({
+        userChallengesPending: userChallengesPending
+      })
     });
 
-    console.log("\n\n\nlas notif pendientes son: ", userChallengesPendingAux)
-    this.setState({
-      ...this.state,
-      user: userAux,
-      userChallengesPending: userChallengesPendingAux
-    })
+    // console.log("\n\n\nlas notif pendientes son: ", userChallengesPendingAux)
+    // this.setState({
+    //   ...this.state,
+    //   user: userAux,
+    //   userChallengesPending: userChallengesPendingAux
+    // })
   }
 
   componentWillUnmount() {
