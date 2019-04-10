@@ -12,6 +12,7 @@ import NavBar from './components/misc/NavBar';
 import FooterBar from './components/misc/FooterBar';
 import Search from '../src/components/search/Search';
 import PrivateRoute from './guards/PrivateRoute';
+import Ejemplo from './components/misc/selectPrueba';
 
 
 class App extends Component {
@@ -27,7 +28,7 @@ class App extends Component {
         <div className="container-fluid px-0 py-1 margin-main-container">
           <Switch>
             {/* esto va guay, pero vamos a probar protegiendo rutas */}
-            {/* <Route exact path="/register" component={Register} />
+            <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/board" component={Board} />
             <Route exact path="/profile" component={Profile}/>
@@ -36,12 +37,14 @@ class App extends Component {
             <Route exact path="/challenges/create" component={ChallengeCreate} />
             <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />
             <Route exact path="/user-challenges/:userChallengeId" component={UserChallenge} />
-            <Redirect to="/board" /> */}
+            <Route exact path="/notifications" component={Notification} />
+            <Route exact path="/ejemplo" component={Ejemplo} />
+            <Redirect to="/board" />
 
 
 
             {/* //He intentado las rutas privadas pero siempre isAuthenticated es undefinde...me he vuelto loco y no he dado con ello aún */}
-            <Route exact path="/register" component={Register} />
+           {/*  <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/board" component={Board} />
             <PrivateRoute exact path="/profile" component={Profile}/>
@@ -49,7 +52,7 @@ class App extends Component {
             <PrivateRoute exact path="/search" component={Search} />
             <PrivateRoute exact path="/challenges/create" component={ChallengeCreate} />
             <PrivateRoute exact path="/challenges/:challengeId" component={ChallengeDetail} />
-            <PrivateRoute exact path="/user-challenges/:userChallengeId" component={UserChallenge} />
+            <PrivateRoute exact path="/user-challenges/:userChallengeId" component={UserChallenge} /> */}
             {/* <PrivateRoute exact path="/admin" role={"admin"} component={AdminMessage} />
             <Route exact path="/forbidden" component={Forbidden}/>
             <Route exact path="/not-found" component={NotFound}/>

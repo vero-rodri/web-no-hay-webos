@@ -9,8 +9,8 @@ const http = axios.create({
 
 
 let userChallengeDetail = [];
-let CURRENT_CHALLENGES_KEY = 'current_challenges';
-let CURRENT_USER_CHALLENGES_KEY = 'current_userchallenges'
+let CURRENT_CHALLENGES_KEY = 'current-challenges';
+let CURRENT_USER_CHALLENGES_KEY = 'current-user-challenges'
 let challenges = JSON.parse(localStorage.getItem(CURRENT_CHALLENGES_KEY) || '[]')
 let userChallenges = JSON.parse(localStorage.getItem(CURRENT_USER_CHALLENGES_KEY) || '[]')
 const challenges$ = new BehaviorSubject(challenges);

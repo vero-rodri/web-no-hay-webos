@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import { Link, withRouter, Redirect } from 'react-router-dom';
 import authService from '../../services/authService';
+import userChallengesService from '../../services/userChallengesService';
 import icons from '../../utils/icons.json';
 import InputSearch from '../../ui/InputSearch';
 
@@ -11,22 +12,36 @@ const getIconText = text => icons[text];
 
 class NavBar extends Component {
   state = {
-    user: {}
+    user: {},
+    userChallengesPending: []
   }
 
   userSubscription = undefined;
+  usersChallengesPendingSubscription = undefined;
 
   componentDidMount() {
+    let userAux = {};
+    let userChallengesPendingAux = [];
+    
     this.userSubscription = authService.onUserChange().subscribe((user) => {
-      this.setState({
-        ...this.state,
-        user: user
-      })
+      userAux = user;
+    });
+
+    this.userChallengesPendingSubscription = userChallengesService.onUserChallengesPendingChange().subscribe((userChallengesPending) => {
+      userChallengesPendingAux = userChallengesPending;
+    });
+
+    console.log("\n\n\nlas notif pendientes son: ", userChallengesPendingAux)
+    this.setState({
+      ...this.state,
+      user: userAux,
+      userChallengesPending: userChallengesPendingAux
     })
   }
 
   componentWillUnmount() {
-    this.userSubscription.unsubscribe()
+    this.userSubscription.unsubscribe();
+    this.userChallengesPendingSubscription.unsubscribe()
   }
 
   handleLogout = () => {
@@ -38,7 +53,7 @@ class NavBar extends Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { user, userChallengesPending } = this.state;
     const { pathname } = this.props.history.location;
 
     if ( pathname === '/login' || pathname === '/register') {
@@ -57,7 +72,7 @@ class NavBar extends Component {
             { !pathname.startsWith('/search') && <span>{user.nickName}</span> }
           </div>
 
-          { pathname.startsWith('/search') &&<InputSearch />}
+          { pathname.startsWith('/search') && <InputSearch />}
 
   
           <div className="dropdown">
@@ -69,15 +84,17 @@ class NavBar extends Component {
                     aria-haspopup="true" 
                     aria-expanded="false"
             >
+            {userChallengesPending.length 
+              && <small class="badge badge-danger">AVISO</small>}
             <img className="navbar-icon" src={getIconText("eggs")} alt="eggs" ></img>
           </button>      
   
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-              <button onClick={this.handleLogout} className="dropdown-item">Logout</button>
-              <Link className="dropdown-item" to="#">Another action</Link>
+              {<button className="dropdown-item" onClick={this.handleLogout}>Logout</button>}
+              <Link className="dropdown-item" to="/notifications">Mis notificaciones<small class="badge badge-danger">AVISO</small></Link>
               <Link className="dropdown-item" to="#">Something else here</Link>
             </div>
-          </div>      
+          </div> 
         </nav>
       </div>
       )

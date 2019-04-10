@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Select, FormField } from 'grommet';
+import { TextArea, Button, Select, FormField, Form } from 'grommet';
 import authService from '../../services/authService';
+import usersService from '../../services/usersService';
 import challengesService from '../../services/challengesService';
-import CardsScroll from '../../ui/CardsScroll';
+import CardsScroll from '../../ui/CardsScroll.backup';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../constants';
 import { listByFilters } from '../../utils/handleLogicSelects';
 import Modal from '../misc/Modal';
+import SelectUsers from '../../ui/SelectUsers';
+import userChallengesServices from '../../services/userChallengesService';
 
 
 class ChallengeDetail extends Component {
@@ -21,6 +24,9 @@ class ChallengeDetail extends Component {
     showModal: false,
     itemToShow: {},
     modalOrder: 0
+    listUsers: [],
+    usersSelected: [],
+    comment:''
   }
 
   userSubscription = undefined;
@@ -77,7 +83,23 @@ class ChallengeDetail extends Component {
 
   onClickChallengeOthers = () => {
     console.log('retar a otros')
+    usersService.getUsers()
+      .then(response => {
+        this.setState({
+          ...this.state,
+          showModal: !this.state.showModal,
+          listUsers: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
+         // pruebaSelect: true
+        })
+      })
     //IMPLEMENTAR LA LÓGICA PARA RETAR A OTROS!!!
+  }
+
+  onHideModal = () => {
+    this.setState({
+      ...this.state,
+      showModal: false
+    })
   }
 
 
@@ -126,20 +148,99 @@ class ChallengeDetail extends Component {
     })
   }
 
+  listUsersOptions = () => this.state.listUsers.map((user, index) => {
+    return {
+      ...user,
+      label: user.nickName,
+      value: index
+    }});
+
+  handleChangeUsersSelectedModal = (event) => {
+    console.log("\n\n\nel event target lleva ", event)
+    this.setState({
+      ...this.state,
+      usersSelected: event
+    })
+  }
+
+  handleCommentModal = (event) => {
+    this.setState({
+      ...this.state,
+      comment: event.target.value
+    })
+  }
+
+  handleSubmitModal = (event) => {
+    event.preventDefault();
+    const body = {
+      usersId: this.state.usersSelected.map(user => user.id),
+      challengeId: this.state.challenge.id,
+      message: this.state.comment
+    };
+    userChallengesServices.createUserChallengesByNotifications(body)
+      .then(() => {
+        console.log('userChallenges created ok')
+        this.setState({
+          ...this.state,
+          showModal: false
+        })
+      });
+  }
 
   render() {
 
     
     const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
-    const { optionFiltered, userChallenges, user, modalOrder, itemToShow } = this.state;
+
+    const { optionFiltered, userChallenges, user, listUsers, ListUsersFiltered, modalOrder, itemToShow } = this.state;
    
     
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
+
+    // if ( this.state.pruebaSelect ) {
+    //   return <Redirect to={`/Ejemplo`} />
+    // }
     
     return (
-      <div>
+
+      <div className="d-flex flex-column m-0 p-0">
+
+        {console.log()}
+        {this.state.showModal && 
+          <Modal>
+            <div className=" align-items-center">
+              <div className="modal-close" onClick={this.onHideModal}>
+                <span className="text-right w-100"><i className="fas fa-times-circle"></i></span>
+              </div>
+              <div className="py-3 text-center">
+                <h5>Lanza este reto a algún amigo!!</h5>
+              </div>
+              <Form onSubmit={this.state.handleSubmitModal}>
+                <div className="py-3">
+                  <SelectUsers  handleChange={this.handleChangeUsersSelectedModal}
+                              options={this.listUsersOptions()}
+                              value={this.state.usersSelected}
+                              placeholder="Escoja uno o varios usuarios..."
+                  />
+                </div>
+                <div className="py-3">
+                  <TextArea
+                    placeholder="Pícalos con algún comentario..."
+                    value={this.state.comment}
+                    onChange={this.handleCommentModal}
+                  />
+                </div>
+        
+                <div className="d-flex justify-content-center py-3">
+                  <Button className="" type="submit" primary label="Notificar!" onClick={this.SendChallengeToUsers} />
+                </div>
+              </Form>
+            </div>
+          </Modal>
+        }
+
         {this.state.showModal && (
           <Modal title={title} 
                   propAvatar={itemToShow.userId.avatarURL} 
@@ -149,45 +250,44 @@ class ChallengeDetail extends Component {
                   onShowModal={this.onShowModal}
           />
         )}
-
-        <div className="d-flex flex-column m-0 p-0">
-          <div className="chl-det-header p-0">
-            <img src={photo} alt={title}></img>
-            <div className="overlay p-0 container">
-            <div className="">
-              <div className="row justify-content-around align-items-center my-2 mx-1">
-                <p className="m-0"><i className="m-0 fas fa-thumbs-up fa-lg"></i></p>
-                <h5 className="m-0">{likes}</h5>
-              </div>
-              <div className="row justify-content-around align-items-center my-2 mx-1">
-                <p className="m-0"><i className=" m-0 fas fa-eye fa-lg"></i></p>
-                <h5 className="m-0">{views}</h5>
-              </div>
-              <div className="row justify-content-around align-items-center my-2 mx-1">
-                <p className="m-0"><i className=" m-0 fas fa-users fa-lg"></i></p>
-                <h5 className="m-0">{this.countUserChallenges()}</h5>
-              </div>
-              <div className="row justify-content-around align-items-center my-2 mx-1">
-                <p className="m-0"><i className=" m-0 fas fa-trophy fa-lg"></i></p>
-                <h5 className="m-0">{this.countUserChallengesFinished()}</h5>
-              </div>
+      
+        <div className="chl-det-header p-0">
+          <img src={photo} alt={title}></img>
+          <div className="overlay p-0 container">
+          <div className="">
+            <div className="row justify-content-around align-items-center my-2 mx-1">
+              <p className="m-0"><i className="m-0 fas fa-thumbs-up fa-lg"></i></p>
+              <h5 className="m-0">{likes}</h5>
             </div>
+            <div className="row justify-content-around align-items-center my-2 mx-1">
+              <p className="m-0"><i className=" m-0 fas fa-eye fa-lg"></i></p>
+              <h5 className="m-0">{views}</h5>
+            </div>
+            <div className="row justify-content-around align-items-center my-2 mx-1">
+              <p className="m-0"><i className=" m-0 fas fa-users fa-lg"></i></p>
+              <h5 className="m-0">{this.countUserChallenges()}</h5>
+            </div>
+            <div className="row justify-content-around align-items-center my-2 mx-1">
+              <p className="m-0"><i className=" m-0 fas fa-trophy fa-lg"></i></p>
+              <h5 className="m-0">{this.countUserChallengesFinished()}</h5>
             </div>
           </div>
-          <div className="container">
-            <div className="col-12 mt-2 p-0">
-              <h3><u>{title}</u></h3>
-              <span>{description}</span>
-              <p className="m-0 text-right">Creado por:  
-                <img src={owner && owner.avatarURL} className="avatar-user rounded-circle ml-2 mr-1"></img>
-                <span className="font-weight-bold">{owner && owner.nickName }</span>
-              </p>
-            </div>
-            <hr className="my-1"></hr>
-            <div className="col-12 m-0 d-flex flex-row justify-content-around">
-              <Button className="py-1 px-2 m-1" type="submit" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
-              <Button className="py-1 px-2 m-1" type="submit" primary label="Retar a otros" disabled={!isFinished} onClick={this.onClickChallengeOthers} />
-            </div>
+          </div>
+        </div>
+        <div className="container">
+          <div className="col-12 mt-2 p-0">
+            <h3><u>{title}</u></h3>
+            <span>{description}</span>
+            <p className="m-0 text-right">Creado por:  
+              <img src={owner && owner.avatarURL} className="avatar-user rounded-circle ml-2 mr-1"></img>
+              <span className="font-weight-bold">{owner && owner.nickName }</span>
+            </p>
+          </div>
+          <hr className="my-1"></hr>
+          <div className="col-12 m-0 d-flex flex-row justify-content-around">
+            <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
+            <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
+          </div>
 
             <h6 className="mt-3">Logros conseguidos por otros usuarios:</h6>
             <div className="row justify-content-between align-items-center my-1">
@@ -218,7 +318,6 @@ class ChallengeDetail extends Component {
               textAlternative="No ha habido Webos aún de hacer este reto..."
               onShowModal={this.onShowModal} 
             />
-          </div>
         </div>
       </div>
     )

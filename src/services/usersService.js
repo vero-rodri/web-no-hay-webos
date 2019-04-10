@@ -20,7 +20,14 @@ const getChallengesByUser = (userId) => {
     .then(response => response.data)
 }
 
+const getUsers = () => {
+  console.log("en servicio obteniendo listado users");
+  return http.get('users')
+    .then(response => response.data)
+}
+
 export default {
   getUserChallengesByUser,
-  getChallengesByUser
+  getChallengesByUser,
+  getUsers
 }

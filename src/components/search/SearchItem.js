@@ -44,7 +44,7 @@ class SearchItem extends Component {
 
   goToDetail = () => {
     const { id, type } = this.state.info
-    const actionType = type ==='challenge' ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
+    const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
     actionType
       .then(() => {
         this.setState({ redirectToDetail: true })
