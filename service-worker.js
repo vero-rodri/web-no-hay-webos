@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://vero-rodri.github.io/web-no-hay-webos/precache-manifest.00c425f45aa8712904daf735497a06f5.js"
+  "/web-no-hay-webos/precache-manifest.84c25300975964c49ebdcfdca3e1268c.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("https://vero-rodri.github.io/web-no-hay-webos/index.html", {
+workbox.routing.registerNavigationRoute("/web-no-hay-webos/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
