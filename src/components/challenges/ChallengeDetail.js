@@ -9,8 +9,7 @@ import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../con
 import { listByFilters } from '../../utils/handleLogicSelects';
 import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
-import userChallengesServices from '../../services/userChallengesService'
-
+import userChallengesServices from '../../services/userChallengesService';
 
 
 class ChallengeDetail extends Component {
@@ -23,8 +22,9 @@ class ChallengeDetail extends Component {
     isJoinedNow: '',
     optionFiltered: SELECT_SORTS['likes'],
     showModal: false,
+    itemToShow: {},
+    modalOrder: 0
     listUsers: [],
-    //pruebaSelect: false,
     usersSelected: [],
     comment:''
   }
@@ -138,6 +138,16 @@ class ChallengeDetail extends Component {
     }
   }
 
+  onShowModal = (order, itemId) => {
+    const item = this.state.userChallenges.filter( userChallenge => userChallenge.id === itemId ); 
+    this.setState({
+      ...this.state,
+      showModal: !this.state.showModal,
+      modalOrder: ( order >= 0 ) ? order : this.state.modalOrder,
+      itemToShow: item[0]
+    })
+  }
+
   listUsersOptions = () => this.state.listUsers.map((user, index) => {
     return {
       ...user,
@@ -177,12 +187,12 @@ class ChallengeDetail extends Component {
       });
   }
 
-
   render() {
 
     
     const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
-    const { optionFiltered, userChallenges, user, listUsers, ListUsersFiltered } = this.state;
+
+    const { optionFiltered, userChallenges, user, listUsers, ListUsersFiltered, modalOrder, itemToShow } = this.state;
    
     
     if ( this.state.isJoinedNow ) {
@@ -194,6 +204,7 @@ class ChallengeDetail extends Component {
     // }
     
     return (
+
       <div className="d-flex flex-column m-0 p-0">
 
         {console.log()}
@@ -230,6 +241,15 @@ class ChallengeDetail extends Component {
           </Modal>
         }
 
+        {this.state.showModal && (
+          <Modal title={title} 
+                  propAvatar={itemToShow.userId.avatarURL} 
+                  propNickname={itemToShow.userId.nickName} 
+                  evidences={itemToShow.evidences} 
+                  modalOrder={modalOrder}
+                  onShowModal={this.onShowModal}
+          />
+        )}
       
         <div className="chl-det-header p-0">
           <img src={photo} alt={title}></img>
@@ -269,34 +289,35 @@ class ChallengeDetail extends Component {
             <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
           </div>
 
-          <h6 className="mt-3">Logros conseguidos por otros usuarios:</h6>
-          <div className="row justify-content-between align-items-center my-1">
+            <h6 className="mt-3">Logros conseguidos por otros usuarios:</h6>
+            <div className="row justify-content-between align-items-center my-1">
 
-            <div className="col">
-            <ul className="avatars">
-              { this.createListAvatarsUserChallenges()}
-            </ul>
+              <div className="col">
+              <ul className="avatars">
+                { this.createListAvatarsUserChallenges()}
+              </ul>
+              </div>
+              <div className="col-5">
+                <FormField>
+                  <Select
+                    className="p-1"
+                    placeholder="Ordenar por"
+                    options={Object.values(SELECT_SORTS)}
+                    value={this.state.optionFiltered}
+                    size="small"
+                    onChange={event => { this.setState({ optionFiltered: event.option })}}
+                  />
+                </FormField>
+              </div>
             </div>
-            <div className="col-5">
-              <FormField>
-                <Select
-                  className="p-1"
-                  placeholder="Ordenar por"
-                  options={Object.values(SELECT_SORTS)}
-                  value={this.state.optionFiltered}
-                  size="small"
-                  onChange={event => { this.setState({ optionFiltered: event.option })}}
-                />
-              </FormField>
-            </div>
-          </div>
-          
-          <CardsScroll 
-            items={listByFilters(userChallenges, "userChallenge", MIRROR_SELECT_SORTS[optionFiltered])} 
-            type="userChallenge" 
-            origin="challenge"
-            textAlternative="No ha habido Webos aún de hacer este reto..." 
-          />
+            
+            <CardsScroll 
+              items={listByFilters(userChallenges, "userChallenge", MIRROR_SELECT_SORTS[optionFiltered])} 
+              type="userChallenge" 
+              origin="challenge"
+              textAlternative="No ha habido Webos aún de hacer este reto..."
+              onShowModal={this.onShowModal} 
+            />
         </div>
       </div>
     )

@@ -26,8 +26,8 @@ class CardItem extends Component {
   }
 
 
-  onShowModal = () => {
-    this.props.onShowModal(this.props.order)
+  const onShowModal = () => {
+    props.onShowModal(props.order, props.item.id)
   }
 
 

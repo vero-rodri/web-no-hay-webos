@@ -3,6 +3,7 @@ import challengesService from '../../services/challengesService';
 import userChallengesService from '../../services/userChallengesService';
 import ChallengesScroll from './ChallengesScroll';
 import LabelAndButton from './LabelAndButton';
+import Modal from '../misc/Modal';
 import CardsRow from '../../ui/CardsRow';
 
 class Board extends Component {
@@ -10,6 +11,9 @@ class Board extends Component {
   state = {
     challenges: [],
     userChallenges: [],
+    showModal: false,
+    itemToShow: {},
+    modalOrder: 0,
     userChallengesPending: []
   }
 
@@ -44,12 +48,33 @@ class Board extends Component {
     })
     .slice(0, 10);
 
+  onShowModal = (order, itemId) => {
+    const item = this.state.userChallenges.filter( userChallenge => userChallenge.id === itemId ); 
+    this.setState({
+      ...this.state,
+      showModal: !this.state.showModal,
+      modalOrder: ( order >= 0 ) ? order : this.state.modalOrder,
+      itemToShow: item[0]
+    })
+  }
+  
 
   render() {
-    const { challenges, userChallenges } = this.state;
+    const { challenges, userChallenges, itemToShow, modalOrder } = this.state;
 
     return (
-      <div className="container mt-2">  
+      <div className="container mt-2">
+      
+        {this.state.showModal && (
+          <Modal title={itemToShow.challengeId.title} 
+                  propAvatar={itemToShow.userId.avatarURL} 
+                  propNickname={itemToShow.userId.nickName} 
+                  evidences={itemToShow.evidences} 
+                  modalOrder={modalOrder}
+                  onShowModal={this.onShowModal}
+          />
+        )}
+
         <LabelAndButton 
           label="Top Retos"
           items={challenges}
@@ -58,8 +83,8 @@ class Board extends Component {
           link="/search"
           labelButton="Más"
           />
-        <div className="row py-2 ml-2">
-          <div className="col cards-scroll user-challenge-scroll">
+        <div className="row py-2">
+          <div className="col cards-scroll user-challenge-scroll mx-1 pl-1 pr-2">
             <ChallengesScroll items={this.topChallenges()} className="content" />
           </div>
         </div>
@@ -80,6 +105,7 @@ class Board extends Component {
           type="userChallenge" 
           origin="board"
           textAlternative="Nadie aún con Webos de subir su logro..." 
+          onShowModal={this.onShowModal}
         />}
          
 
@@ -97,6 +123,7 @@ class Board extends Component {
           type="userChallenge" 
           origin="board"
           textAlternative="Nadie aún con Webos de subir su logro..." 
+          onShowModal={this.onShowModal}
         />}   
       </div>
     )
