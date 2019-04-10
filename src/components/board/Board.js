@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import challengesService from '../../services/challengesService';
+import userChallengesService from '../../services/userChallengesService';
 import ChallengesScroll from './ChallengesScroll';
 import LabelAndButton from './LabelAndButton';
-import CardsScroll from '../../ui/CardsScroll'
+import CardsRow from '../../ui/CardsRow';
 
 class Board extends Component {
 
   state = {
     challenges: [],
-    userChallenges: []
+    userChallenges: [],
+    userChallengesPending: []
   }
 
 
@@ -16,11 +18,13 @@ class Board extends Component {
 
     const p1 = challengesService.getChallenges();
     const p2 = challengesService.getUserChallenges();
-    Promise.all([p1, p2])
-      .then(([challenges, userChallenges]) => 
+    const p3 = userChallengesService.getUserChallengesPending();
+    Promise.all([p1, p2, p3])
+      .then(([challenges, userChallenges, userChallengesPending]) => 
         this.setState({
         challenges: challenges,
-        userChallenges: userChallenges
+        userChallenges: userChallenges,
+        userChallengesPending
         }))    
   }
 
@@ -71,7 +75,7 @@ class Board extends Component {
 
         {console.log("\n\nultimoss ", this.latestUserChallenges())}
        
-        {userChallenges.length && <CardsScroll 
+        {userChallenges.length && <CardsRow 
           items={this.latestUserChallenges()} 
           type="userChallenge" 
           origin="board"
@@ -88,7 +92,7 @@ class Board extends Component {
           labelButton="Más"
         />
             
-        {userChallenges.length && <CardsScroll 
+        {userChallenges.length && <CardsRow 
           items={this.topUserChallenges()} 
           type="userChallenge" 
           origin="board"
