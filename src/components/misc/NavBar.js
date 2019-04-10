@@ -85,13 +85,13 @@ class NavBar extends Component {
                     aria-expanded="false"
             >
             {userChallengesPending.length 
-              && <small class="badge badge-danger">AVISO</small>}
+              && <small className="badge badge-danger">AVISO</small>}
             <img className="navbar-icon" src={getIconText("eggs")} alt="eggs" ></img>
           </button>      
   
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
               {<button className="dropdown-item" onClick={this.handleLogout}>Logout</button>}
-              <Link className="dropdown-item" to="/notifications">Mis notificaciones<small class="badge badge-danger">AVISO</small></Link>
+              <Link className="dropdown-item" to="/notifications">Mis notificaciones<small className="badge badge-danger">AVISO</small></Link>
               <Link className="dropdown-item" to="#">Something else here</Link>
             </div>
           </div> 

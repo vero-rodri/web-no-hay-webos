@@ -3,7 +3,7 @@ import CardItem from './CardItem';
 
 const CardsScroll = (props) => {
   
-  const { items, textAlternative, type, origin, onDeleteEvidence } = props;
+  const { items, textAlternative, type, origin, onDeleteEvidence, onShowModal } = props;
   // const items = props.items;
   // const origin = props.origin;
 
@@ -22,12 +22,13 @@ const CardsScroll = (props) => {
                                                   order={index}
                                                   type={type} 
                                                   onDeleteEvidence={(id) => onDeleteEvidence(id)}
-                                                  onShowModal={props.onShowModal}
+                                                  onShowModal={(order, id ) => onShowModal(order, id)}
                                                   onOrderModal={props.onOrderModal}
                                                   />)
             : <h6 className="text-center m-2 w-100">{textAlternative}</h6>} 
 
         </div>
+      </div>
     )
   }
 
@@ -41,7 +42,8 @@ const CardsScroll = (props) => {
                                                   item={item} 
                                                   origin={origin}
                                                   order={0} 
-                                                  type={type} 
+                                                  type={type}
+                                                  onShowModal={props.onShowModal} 
                                                   onDeleteEvidence={onDeleteEvidence} />)
             : <h6 className="text-center m-2 w-100">{textAlternative}</h6>} 
         </div>

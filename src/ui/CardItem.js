@@ -26,8 +26,8 @@ class CardItem extends Component {
   }
 
 
-  const onShowModal = () => {
-    props.onShowModal(props.order, props.item.id)
+  onShowModal = () => {
+    this.props.onShowModal(this.props.order, this.props.item.id)
   }
 
 
@@ -82,7 +82,7 @@ class CardItem extends Component {
     if (isRedirectedToItem) {
       if (type ==='challenge') {
         return <Redirect push to={`/challenges/${item.id}`} />
-      } else {
+      } else if ( origin === 'profile') {
         return <Redirect push to={`/user-challenges/${item.id}`} /> 
       }
     }

@@ -4,12 +4,13 @@ import { TextArea, Button, Select, FormField, Form } from 'grommet';
 import authService from '../../services/authService';
 import usersService from '../../services/usersService';
 import challengesService from '../../services/challengesService';
-import CardsScroll from '../../ui/CardsScroll.backup';
+import CardsRow from '../../ui/CardsRow';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../constants';
 import { listByFilters } from '../../utils/handleLogicSelects';
 import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
 import userChallengesServices from '../../services/userChallengesService';
+import EvidencesModal from '../../ui/EvidencesModal';
 
 
 class ChallengeDetail extends Component {
@@ -21,9 +22,10 @@ class ChallengeDetail extends Component {
     isAlreadyJoined: false,
     isJoinedNow: '',
     optionFiltered: SELECT_SORTS['likes'],
-    showModal: false,
+    showModalEvidences: false,
+    showModalSendChallenge: false,
     itemToShow: {},
-    modalOrder: 0
+    modalOrder: 0,
     listUsers: [],
     usersSelected: [],
     comment:''
@@ -87,7 +89,7 @@ class ChallengeDetail extends Component {
       .then(response => {
         this.setState({
           ...this.state,
-          showModal: !this.state.showModal,
+          showModalSendChallenge: !this.state.showModalSendChallenge,
           listUsers: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
          // pruebaSelect: true
         })
@@ -95,13 +97,12 @@ class ChallengeDetail extends Component {
     //IMPLEMENTAR LA LÓGICA PARA RETAR A OTROS!!!
   }
 
-  onHideModal = () => {
+  onHideModalSendChallenge = () => {
     this.setState({
       ...this.state,
-      showModal: false
+      showModalSendChallenge: false
     })
   }
-
 
   countUserChallenges = () => 
     (this.state.challenge.userChallenges) ?
@@ -138,11 +139,11 @@ class ChallengeDetail extends Component {
     }
   }
 
-  onShowModal = (order, itemId) => {
+  onShowModalEvidences = (order, itemId) => {
     const item = this.state.userChallenges.filter( userChallenge => userChallenge.id === itemId ); 
     this.setState({
       ...this.state,
-      showModal: !this.state.showModal,
+      showModalEvidences: !this.state.showModalEvidences,
       modalOrder: ( order >= 0 ) ? order : this.state.modalOrder,
       itemToShow: item[0]
     })
@@ -182,7 +183,7 @@ class ChallengeDetail extends Component {
         console.log('userChallenges created ok')
         this.setState({
           ...this.state,
-          showModal: false
+          showModalSendChallenge: false
         })
       });
   }
@@ -208,10 +209,10 @@ class ChallengeDetail extends Component {
       <div className="d-flex flex-column m-0 p-0">
 
         {console.log()}
-        {this.state.showModal && 
+        {this.state.showModalSendChallenge && 
           <Modal>
             <div className=" align-items-center">
-              <div className="modal-close" onClick={this.onHideModal}>
+              <div className="modal-close" onClick={this.onHideModalSendChallenge}>
                 <span className="text-right w-100"><i className="fas fa-times-circle"></i></span>
               </div>
               <div className="py-3 text-center">
@@ -241,14 +242,16 @@ class ChallengeDetail extends Component {
           </Modal>
         }
 
-        {this.state.showModal && (
-          <Modal title={title} 
-                  propAvatar={itemToShow.userId.avatarURL} 
-                  propNickname={itemToShow.userId.nickName} 
-                  evidences={itemToShow.evidences} 
-                  modalOrder={modalOrder}
-                  onShowModal={this.onShowModal}
+        {this.state.showModalEvidences && (
+          <Modal>
+          <EvidencesModal title={title} 
+                          propAvatar={itemToShow.userId.avatarURL} 
+                          propNickname={itemToShow.userId.nickName} 
+                          evidences={itemToShow.evidences} 
+                          modalOrder={modalOrder}
+                          onShowModal={this.onShowModalEvidences}
           />
+          </Modal>
         )}
       
         <div className="chl-det-header p-0">
@@ -311,12 +314,12 @@ class ChallengeDetail extends Component {
               </div>
             </div>
             
-            <CardsScroll 
+            <CardsRow
               items={listByFilters(userChallenges, "userChallenge", MIRROR_SELECT_SORTS[optionFiltered])} 
               type="userChallenge" 
               origin="challenge"
               textAlternative="No ha habido Webos aún de hacer este reto..."
-              onShowModal={this.onShowModal} 
+              onShowModal={this.onShowModalEvidences} 
             />
         </div>
       </div>

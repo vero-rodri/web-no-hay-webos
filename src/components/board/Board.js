@@ -5,6 +5,7 @@ import ChallengesScroll from './ChallengesScroll';
 import LabelAndButton from './LabelAndButton';
 import Modal from '../misc/Modal';
 import CardsRow from '../../ui/CardsRow';
+import EvidencesModal from '../../ui/EvidencesModal';
 
 class Board extends Component {
 
@@ -66,13 +67,15 @@ class Board extends Component {
       <div className="container mt-2">
       
         {this.state.showModal && (
-          <Modal title={itemToShow.challengeId.title} 
-                  propAvatar={itemToShow.userId.avatarURL} 
-                  propNickname={itemToShow.userId.nickName} 
-                  evidences={itemToShow.evidences} 
-                  modalOrder={modalOrder}
-                  onShowModal={this.onShowModal}
-          />
+          <Modal>
+            <EvidencesModal title={itemToShow.challengeId.title} 
+                            propAvatar={itemToShow.userId.avatarURL} 
+                            propNickname={itemToShow.userId.nickName} 
+                            evidences={itemToShow.evidences} 
+                            modalOrder={modalOrder}
+                            onShowModal={this.onShowModal}
+            />
+          </Modal>
         )}
 
         <LabelAndButton 
