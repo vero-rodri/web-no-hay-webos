@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import usersService from '../../services/usersService';
-import CardsScroll from '../../ui/CardsScroll';
+import CardsRow from '../../ui/CardsRow';
 import { withAuthConsumer } from '../../context/AuthStore';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS } from '../../constants';
 import { Select, FormField } from 'grommet';
@@ -18,22 +18,6 @@ class Profile extends Component {
     optionUserChallengeFinishedFiltered: SELECT_SORTS['createDate'],
     optionChallengeFiltered: SELECT_SORTS['createDate']
   }
-
- /*  userSubscription = undefined;
-
-  componentDidMount() {
-    this.userSubscription = authService.onUserChange().subscribe((user) => {
-      this.setState({
-        ...this.state,
-        user: user
-      })
-    })
-  }
-
-  componentWillUnmount() {
-    this.userSubscription.unsubscribe()
-  } */
-
   
   componentDidMount() {
     
@@ -101,7 +85,7 @@ class Profile extends Component {
               </FormField>
             </div>
           </div>
-          <CardsScroll 
+          <CardsRow 
             items={listByFilters(userChallengesInProcess, "userChallenges", MIRROR_SELECT_SORTS[optionUserChallengeInProcessFiltered])} 
             type="userChallenge"
             origin="profile"
@@ -124,7 +108,7 @@ class Profile extends Component {
               </FormField>
             </div>
           </div>
-          <CardsScroll 
+          <CardsRow 
             items={listByFilters(userChallengesFinished, "userChallenges", MIRROR_SELECT_SORTS[optionUserChallengeFinishedFiltered])} 
             type="userChallenge"
             origin="profile"
@@ -146,7 +130,7 @@ class Profile extends Component {
               </FormField>
             </div>
           </div>
-          <CardsScroll 
+          <CardsRow 
             items={listByFilters(challenges, "challenges", MIRROR_SELECT_SORTS[optionChallengeFiltered])} 
             type="challenge"
             origin="profile"
