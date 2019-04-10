@@ -12,7 +12,7 @@ const CardItem = (props) => {
   } */
 
   const onShowModal = () => {
-    props.onShowModal(props.order)
+    props.onShowModal(props.order, props.item.id)
   }
 
   const createInfoCard = (element, type) => {

@@ -15,7 +15,7 @@ import evidencesService from '../../services/evidencesService';
 import ProgressBar from '../../ui/ProgressBar';
 import { DEFAULT_ICON_OPACITY } from '../../constants'
 import Modal from '../misc/Modal';
-import Carousel from '../../ui/Carousel';
+// import Carousel from '../../ui/Carousel';
 
 
 const getErrorText = text => errors[text];
@@ -178,31 +178,36 @@ class UserChallenge extends Component {
         return (
           <div className="container">
             {this.state.showModal && (
-              <Modal>
-                <div className="col-2 modal-col">
-                  <div className="modal-header">
-                    <div className="mb-1 pr-5 align-self-end">
-                      <h5>{userChallenge.challengeId.title}</h5>
-                      <div className="mt-3">
-                        <span><small>Reto de </small></span>
-                        <img className="rounded-circle avatar-user ml-1" src={challengeOwner.avatarURL} alt={challengeOwner.nickName}></img>
-                        <span className="mx-1 pl-1"><strong>{challengeOwner.nickName}</strong></span>
-                      </div>
-                    </div>
-                    <div className="modal-close" onClick={this.onShowModal}><i className="fas fa-times-circle"></i></div>
-                  </div>
-                </div>
-                <div className="col-8 modal-col">
-                  <Carousel evidences={evidences} order={modalOrder}/>
-                </div>
-                <div className="col-2 modal-col">
-                  <div className="" >{evidences[0].comments}</div>
-                  <div className="" >
-                    <Moment className="h6" format="DD/MM/YYYY">{evidences[0].createdAt}</Moment>
-                  </div>
-                </div>
-
-              </Modal>
+              <Modal title={userChallenge.challengeId.title} 
+                      propAvatar={userChallenge.userId.avatarURL} 
+                      propNickname={userChallenge.userId.nickName} 
+                      evidences={evidences} 
+                      modalOrder={modalOrder}
+                      onShowModal={this.onShowModal}
+              />
+                // {/* <div className="col-2 modal-col">
+                //   <div className="modal-header">
+                //     <div className="mb-1 pr-5 align-self-end">
+                //       <h5>{userChallenge.challengeId.title}</h5>
+                //       <div className="mt-3">
+                //         <span><small>Reto de </small></span>
+                //         <img className="rounded-circle avatar-user ml-1" src={challengeOwner.avatarURL} alt={challengeOwner.nickName}></img>
+                //         <span className="mx-1 pl-1"><strong>{challengeOwner.nickName}</strong></span>
+                //       </div>
+                //     </div>
+                //     <div className="modal-close" onClick={this.onShowModal}><i className="fas fa-times-circle"></i></div>
+                //   </div>
+                // </div>
+                // <div className="col-8 modal-col">
+                //   <Carousel evidences={evidences} order={modalOrder}/>
+                // </div>
+                // <div className="col-2 modal-col">
+                //   <div className="" >{evidences[0].comments}</div>
+                //   <div className="" >
+                //     <Moment className="h6" format="DD/MM/YYYY">{evidences[0].createdAt}</Moment>
+                //   </div>
+                // </div> */}
+              // </Modal>
             )}
             { userChallenge.challengeId && !this.state.isVisibleForm &&
             <Link to={`/challenges/${userChallenge.challengeId.id}`} className="no-decoration">
@@ -243,8 +248,6 @@ class UserChallenge extends Component {
                 </div>
                 )}
                 { evidences && evidences.length > 0 && (
-
-                // <div className="col cards-scroll user-challenge-scroll">
                   <CardScroll 
                     items={evidences} 
                     type="evidence"
@@ -253,8 +256,6 @@ class UserChallenge extends Component {
                     onDeleteEvidence={this.onDeleteEvidence}
                     onShowModal={this.onShowModal}
                     />
-                // </div>
-
                 )}
               </div>
               
