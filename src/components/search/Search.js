@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SearchFilters from './SearchFiters';
+import SearchFilters from './SearchFilters';
 import { MIRROR_SELECT_TYPES, MIRROR_SELECT_SORTS } from '../../constants';
 import SearchItemsList from './SearchItemsList';
 

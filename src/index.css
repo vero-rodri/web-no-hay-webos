@@ -139,6 +139,7 @@ a {
   font-size: 1.7rem;
 }
 
+
 .search-bar {
   --position: fixed;
   text-align: center;
@@ -526,4 +527,13 @@ ul:hover li:nth-child(n+2) {
   left: 0;  
   right: 0;  
   margin: auto;
+}
+
+
+/* NOTIFICATIONS */
+
+.img-notification {
+  --width: 33%;
+  margin: 0;
+  height: 150px;
 }

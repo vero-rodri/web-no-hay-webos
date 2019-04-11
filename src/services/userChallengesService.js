@@ -12,28 +12,42 @@ let userChallengesPending = JSON.parse(localStorage.getItem(CURRENT_USER_CHALLEN
 const userChallengesPending$ = new BehaviorSubject(userChallengesPending);
 
 
-const createUserChallengesByNotifications = (body) => {
-  return http.post('/user-challenges/create-notifications', body)
-    .then(response => response.data)
-}
+const createUserChallengesByNotifications = (body) => 
+  http.post('/user-challenges/create-notifications', body)
+    .then(response => response.data);
 
 
-const getUserChallengesPending = () => {
-  return http.get('/user-challenges/pending')
+const deleteUserChallenge = (userChallengeId) => 
+  http.delete(`/user-challenges/${userChallengeId}`)
+    .then(() => getUserChallengesPendingBySession());
+
+
+const getUserChallengesPendingBySession = () => 
+  http.get('/user-challenges/pending-by-session')
     .then(response => {
       const userChallengesPending = response.data;
       localStorage.setItem(CURRENT_USER_CHALLENGES_PENDING_KEY, JSON.stringify(userChallengesPending));
       userChallengesPending$.next(userChallengesPending);
       return userChallengesPending;
     })
-}
 
 
-const onUserChallengesPendingChange = () => userChallengesPending$.asObservable();
+    const acceptUserChallenge = (userChallengeId) =>
+    http.post(`/user-challenges/${userChallengeId}/accept`)
+      .then((response) => {
+        getUserChallengesPendingBySession();
+        return response.data;
+      });
+
+
+      const onUserChallengesPendingChange = () => 
+  userChallengesPending$.asObservable();
 
 
 export default {
   createUserChallengesByNotifications,
-  getUserChallengesPending,
-  onUserChallengesPendingChange
+  deleteUserChallenge,
+  getUserChallengesPendingBySession,
+  onUserChallengesPendingChange,
+  acceptUserChallenge
 } 

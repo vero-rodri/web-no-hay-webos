@@ -9,14 +9,14 @@ class SelectUsers extends Component {
   }
 
   handleMenuToggle = () => {
-  console.log("mnajejador TOGGLLEEEEE ", this.state.isOpen)
+  //console.log("mnajejador TOGGLLEEEEE ", this.state.isOpen)
     this.setState({
       isOpen: !this.state.isOpen
     })
   }
 
   handleChange = (event) => {
-    console.log("ONCHANGEE ", this.state.isOpen)
+    //console.log("ONCHANGEE ", this.state.isOpen)
     this.props.handleChangeUsers(event);
   }
 

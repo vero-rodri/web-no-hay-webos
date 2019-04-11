@@ -15,7 +15,7 @@ class Board extends Component {
     showModal: false,
     itemToShow: {},
     modalOrder: 0,
-    userChallengesPending: []
+    userChallengesPendingBySession: []
   }
 
 
@@ -23,15 +23,16 @@ class Board extends Component {
 
     const p1 = challengesService.getChallenges();
     const p2 = challengesService.getUserChallenges();
-    const p3 = userChallengesService.getUserChallengesPending();
+    const p3 = userChallengesService.getUserChallengesPendingBySession();
     Promise.all([p1, p2, p3])
-      .then(([challenges, userChallenges, userChallengesPending]) => 
+      .then(([challenges, userChallenges, userChallengesPendingBySession]) => 
         this.setState({
         challenges: challenges,
         userChallenges: userChallenges,
-        userChallengesPending
+        userChallengesPendingBySession: userChallengesPendingBySession
         }))    
   }
+
 
   topChallenges = () => this.state.challenges
     .sort((a, b) => b.likes - a.likes)

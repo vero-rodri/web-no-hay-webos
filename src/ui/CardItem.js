@@ -73,7 +73,7 @@ class CardItem extends Component {
     const { isRedirectedToItem, isRedirectedToUser } = this.state;
     const { item, type, origin, onShowModal } = this.props
     const infoCard = this.createInfoCard(item, type);
-    console.log ("la info a pintar en la carta es =>", infoCard)
+    //console.log ("la info a pintar en la carta es =>", infoCard)
     const { text, date, owner, ownerId, likes, views, photo } = infoCard;
     const formattedText = (text) => ((text.length > LIMIT_TEXT_CARD_ITEM) ?  
       (`${text.slice(0, LIMIT_TEXT_CARD_ITEM)} [...]`) : text);   

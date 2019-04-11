@@ -7,10 +7,10 @@ const CardsScroll = (props) => {
   // const items = props.items;
   // const origin = props.origin;
 
-  console.log("en cardsCROLL", items)
+  //console.log("en cardsCROLL", items)
 
   if (type === "challenge" || type === "evidence") {
-    console.log("el scroll va a ser de tipo challenge", items)
+    //console.log("el scroll va a ser de tipo challenge", items)
     return ( 
 
       <div className="col cards-scroll user-challenge-scroll">
@@ -33,7 +33,7 @@ const CardsScroll = (props) => {
   }
 
   if (type === "userChallenge") {
-    console.log("el scroll va a ser de tipo userchallenge", items)
+   // console.log("el scroll va a ser de tipo userchallenge", items)
     return ( 
       <div className="col cards-scroll user-challenge-scroll">
         <div className="cards-scroll mx-1">

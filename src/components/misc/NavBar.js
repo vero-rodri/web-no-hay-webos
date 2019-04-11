@@ -20,28 +20,32 @@ class NavBar extends Component {
   usersChallengesPendingSubscription = undefined;
 
   componentDidMount() {
-    let userAux = {};
-    let userChallengesPendingAux = [];
+    // let userAux = {};
+    // let userChallengesPendingAux = [];
     
     this.userSubscription = authService.onUserChange().subscribe((user) => {
-      userAux = user;
+      this.setState({
+        user
+      })
     });
 
     this.userChallengesPendingSubscription = userChallengesService.onUserChallengesPendingChange().subscribe((userChallengesPending) => {
-      userChallengesPendingAux = userChallengesPending;
+      this.setState({
+        userChallengesPending
+      })
     });
 
-    console.log("\n\n\nlas notif pendientes son: ", userChallengesPendingAux)
-    this.setState({
-      ...this.state,
-      user: userAux,
-      userChallengesPending: userChallengesPendingAux
-    })
+    // console.log("\n\n\nlas notif pendientes son: ", userChallengesPendingAux)
+    // this.setState({
+    //   ...this.state,
+    //   user: userAux,
+    //   userChallengesPending: userChallengesPendingAux
+    // })
   }
 
   componentWillUnmount() {
     this.userSubscription.unsubscribe();
-    this.userChallengesPendingSubscription.unsubscribe()
+    this.userChallengesPendingSubscription.unsubscribe();
   }
 
   handleLogout = () => {
@@ -51,6 +55,8 @@ class NavBar extends Component {
         this.props.history.push('/login')
       })
   }
+
+  areThereNotifications = () => (this.state.userChallengesPending.length) ? true : false;
 
   render() {
     const { user, userChallengesPending } = this.state;
@@ -84,14 +90,18 @@ class NavBar extends Component {
                     aria-haspopup="true" 
                     aria-expanded="false"
             >
-            {userChallengesPending.length 
-              && <small className="badge badge-danger">AVISO</small>}
-            <img className="navbar-icon" src={getIconText("eggs")} alt="eggs" ></img>
+            {this.areThereNotifications() 
+              && <sup><small className="badge badge-pill badge-danger">{userChallengesPending.length}</small></sup>}
+              <img className="navbar-icon" src={getIconText("eggs")} alt="eggs" ></img>
           </button>      
   
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
               {<button className="dropdown-item" onClick={this.handleLogout}>Logout</button>}
-              <Link className="dropdown-item" to="/notifications">Mis notificaciones<small className="badge badge-danger">AVISO</small></Link>
+              <Link className="dropdown-item" to="/notifications">
+                Mis notificaciones
+                {this.areThereNotifications() 
+                  && <sup className=""><small className="badge badge-pill badge-danger">{userChallengesPending.length}</small></sup>}
+              </Link>
               <Link className="dropdown-item" to="#">Something else here</Link>
             </div>
           </div> 

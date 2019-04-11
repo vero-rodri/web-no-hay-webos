@@ -4,6 +4,7 @@ import { TextArea, Button, Select, FormField, Form } from 'grommet';
 import authService from '../../services/authService';
 import usersService from '../../services/usersService';
 import challengesService from '../../services/challengesService';
+import userChallengesService from '../../services/userChallengesService';
 import CardsRow from '../../ui/CardsRow';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../constants';
 import { listByFilters } from '../../utils/handleLogicSelects';
@@ -26,9 +27,9 @@ class ChallengeDetail extends Component {
     showModalSendChallenge: false,
     itemToShow: {},
     modalOrder: 0,
-    listUsers: [],
-    usersSelected: [],
-    comment:''
+    listAllUsersEnabledForSending: [],
+    usersSelectedForSending: [],
+    comeBackToNotifications: false
   }
 
   userSubscription = undefined;
@@ -84,13 +85,12 @@ class ChallengeDetail extends Component {
 
 
   onClickChallengeOthers = () => {
-    console.log('retar a otros')
-    usersService.getUsers()
+    usersService.getUsersEnabledForSending(this.state.challenge.id)
       .then(response => {
         this.setState({
           ...this.state,
           showModalSendChallenge: !this.state.showModalSendChallenge,
-          listUsers: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
+          listAllUsersEnabledForSending: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
          // pruebaSelect: true
         })
       })
@@ -149,7 +149,7 @@ class ChallengeDetail extends Component {
     })
   }
 
-  listUsersOptions = () => this.state.listUsers.map((user, index) => {
+  listUsersOptions = () => this.state.listAllUsersEnabledForSending.map((user, index) => {
     return {
       ...user,
       label: user.nickName,
@@ -172,8 +172,10 @@ class ChallengeDetail extends Component {
   }
 
   handleSubmitModal = (event) => {
+    console.log("entro en el submittt")
     event.preventDefault();
     const body = {
+      sender: this.state.user.id,
       usersId: this.state.usersSelected.map(user => user.id),
       challengeId: this.state.challenge.id,
       message: this.state.comment
@@ -188,6 +190,28 @@ class ChallengeDetail extends Component {
       });
   }
 
+  onAcceptChallenge = (event) => {
+    const { userChallengeId } = this.props.location.state
+    userChallengesServices.acceptUserChallenge(userChallengeId)
+      .then(response =>
+        this.setState({
+          ...this.state,
+          isJoinedNow: userChallengeId
+        }),
+      error => console.log(error));
+  }
+
+  onRefuseUserChallenge = (event) => {
+    const { userChallengeId } = this.props.location.state
+    userChallengesServices.deleteUserChallenge(userChallengeId)
+      .then(() => 
+        this.setState({
+          ...this.state,
+          comeBackToNotifications: true
+        }))
+  }
+
+
   render() {
 
     
@@ -200,11 +224,19 @@ class ChallengeDetail extends Component {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
 
+    if ( this.state.comeBackToNotifications ) {
+      return <Redirect to={`/notifications`} />
+    }
+
     // if ( this.state.pruebaSelect ) {
     //   return <Redirect to={`/Ejemplo`} />
     // }
     
+    console.log("las props en challenge detail =>", this.props)
+
     return (
+
+
 
       <div className="d-flex flex-column m-0 p-0">
 
@@ -218,7 +250,7 @@ class ChallengeDetail extends Component {
               <div className="py-3 text-center">
                 <h5>Lanza este reto a algún amigo!!</h5>
               </div>
-              <Form onSubmit={this.state.handleSubmitModal}>
+              <Form onSubmit={this.handleSubmitModal}>
                 <div className="py-3">
                   <SelectUsers  handleChange={this.handleChangeUsersSelectedModal}
                               options={this.listUsersOptions()}
@@ -235,7 +267,7 @@ class ChallengeDetail extends Component {
                 </div>
         
                 <div className="d-flex justify-content-center py-3">
-                  <Button className="" type="submit" primary label="Notificar!" onClick={this.SendChallengeToUsers} />
+                  <Button type="submit" primary label="Notificar!" />
                 </div>
               </Form>
             </div>
@@ -287,10 +319,23 @@ class ChallengeDetail extends Component {
             </p>
           </div>
           <hr className="my-1"></hr>
-          <div className="col-12 m-0 d-flex flex-row justify-content-around">
-            <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
-            <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
-          </div>
+
+          {this.props.location.pathname.startsWith('/notifications') 
+            && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Acepto reto!" onClick={this.onAcceptChallenge}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Creo que paso" onClick={this.onRefuseUserChallenge} />
+                </div>
+          )}
+
+          {this.props.location.pathname.startsWith('/challenges')
+            && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
+                </div>
+          )}
+
+
+
 
             <h6 className="mt-3">Logros conseguidos por otros usuarios:</h6>
             <div className="row justify-content-between align-items-center my-1">
