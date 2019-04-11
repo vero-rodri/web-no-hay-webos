@@ -12,7 +12,8 @@ import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
 import userChallengesServices from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
-
+import EmailInput from '../../emails/EmailInput';
+import EmailList from '../../emails/EmailList';
 
 class ChallengeDetail extends Component {
   
@@ -29,7 +30,9 @@ class ChallengeDetail extends Component {
     modalOrder: 0,
     listAllUsersEnabledForSending: [],
     usersSelectedForSending: [],
-    comeBackToNotifications: false
+    comeBackToNotifications: false,
+    email: '',
+    emailsList : []
   }
 
   userSubscription = undefined;
@@ -211,6 +214,17 @@ class ChallengeDetail extends Component {
         }))
   }
 
+  addEmailToList = (event) => {
+    console.log("Dentro de la fn de añadit al List")
+    this.setState({
+      ...this.state,
+      emailsList: [
+        ...this.state.emailsList,
+        event.target.value
+      ]
+    })
+  }
+
 
   render() {
 
@@ -265,6 +279,12 @@ class ChallengeDetail extends Component {
                     onChange={this.handleCommentModal}
                   />
                 </div>
+
+                  <h6>¡Puedes también mandar este reto por correo a algún amig@!</h6>
+                  <div>
+                    <EmailInput addEmail={this.addEmailToList} />
+                    <EmailList {...this.state.emailsList} />                
+                  </div>
         
                 <div className="d-flex justify-content-center py-3">
                   <Button type="submit" primary label="Notificar!" />
@@ -373,3 +393,20 @@ class ChallengeDetail extends Component {
 }
 
 export default ChallengeDetail;
+
+
+
+
+// transporter.sendMail({
+//   from: '"NearBy" <alwaysneaby@gmail.com>',
+//   to: req.user.email,
+//   subject: `Asistirás a: ${event.name}`,
+//   text: `Te acabas de inscribir al evento: ${event.name}! añádelo a tu calendario con el fichero adjunto.`,
+//   html: `<h3>Te acabas de inscribir al evento: </h3><a href="https://git-project-02.herokuapp.com/detail/${req.params.id}"><h2>${event.name}</h2></a>
+//         <img src=${event.picture} height="400px"></img>`,
+//   icalEvent: {
+//     filename: 'eventReminder.ics',
+//     method: 'request',
+//     content: reminder
+//   }
+// })
