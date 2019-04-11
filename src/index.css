@@ -546,7 +546,7 @@ ul:hover li:nth-child(n+2) {
 .img-notification {
   --width: 33%;
   margin: 0;
-  height: 150px;
+}
   
 .crsl-date {
   margin: 10px 0 10px 235px;
