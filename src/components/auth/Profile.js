@@ -5,6 +5,8 @@ import { withAuthConsumer } from '../../context/AuthStore';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS } from '../../constants';
 import { Select, FormField } from 'grommet';
 import { listByFilters } from '../../utils/handleLogicSelects'; 
+import Modal from '../misc/Modal';
+import EvidencesModal from '../../ui/EvidencesModal';
 
 
 class Profile extends Component {
@@ -16,7 +18,10 @@ class Profile extends Component {
     challenges: [],
     optionUserChallengeInProcessFiltered: SELECT_SORTS['createDate'],
     optionUserChallengeFinishedFiltered: SELECT_SORTS['createDate'],
-    optionChallengeFiltered: SELECT_SORTS['createDate']
+    optionChallengeFiltered: SELECT_SORTS['createDate'],
+    showModal: false,
+    itemToShow: {},
+    modalOrder: 0,
   }
   
   componentDidMount() {
@@ -24,7 +29,6 @@ class Profile extends Component {
     //const { userId } = this.props.match.params;
 
     const { userId } = this.state;
-    console.log("el usuario de perfil es ", userId)
     const p1 = usersService.getChallengesByUser(userId);
     const p2 = usersService.getUserChallengesByUser(userId);
     //const p3 = usersService.getUserChallengesInProcessByUser(userId);
@@ -61,15 +65,52 @@ class Profile extends Component {
         return [];
       }
     } */
+
+    onShowModal = (order, itemId) => {
+      const itemFinished = this.state.userChallengesFinished.filter( userChallenge => userChallenge.id === itemId ); 
+      const itemInProcess = this.state.userChallengesInProcess.filter( userChallenge => userChallenge.id === itemId ); 
+      let item = [];
+      ( itemFinished.length !== 0 ) ? item = itemFinished : item = itemInProcess
+      this.setState({
+        ...this.state,
+        showModal: !this.state.showModal,
+        modalOrder: ( order >= 0 ) ? order : this.state.modalOrder,
+        itemToShow: item[0]
+      })
+    }
     
     
     render() {
     
-      const { challenges,  userChallengesInProcess, userChallengesFinished, optionChallengeFiltered, optionUserChallengeInProcessFiltered, optionUserChallengeFinishedFiltered } = this.state;
+      const { challenges,
+              modalOrder,
+              itemToShow,  
+              userChallengesInProcess, 
+              userChallengesFinished, 
+              optionChallengeFiltered, 
+              optionUserChallengeInProcessFiltered, 
+              optionUserChallengeFinishedFiltered } = this.state;
+
      // const formattedChallenges = this.formatFieldsChallenges();
      // console.log(("fortmateados: ", formattedChallenges))
+
       return (        
         <div className="container my-3">
+
+        
+
+          {this.state.showModal && (
+            <Modal>
+              <EvidencesModal title={itemToShow.challengeId.title} 
+                              propAvatar={itemToShow.userId.avatarURL} 
+                              propNickname={itemToShow.userId.nickName} 
+                              evidences={itemToShow.evidences} 
+                              modalOrder={modalOrder}
+                              onShowModal={this.onShowModal}
+              />
+            </Modal>
+          )}
+
           <div className="row justify-content-between align-items-center mx-0 mb-0 mt-2">
             <h6 className="m-0">Logros en proceso:</h6>
             <div className="col-5">
@@ -89,7 +130,8 @@ class Profile extends Component {
             items={listByFilters(userChallengesInProcess, "userChallenges", MIRROR_SELECT_SORTS[optionUserChallengeInProcessFiltered])} 
             type="userChallenge"
             origin="profile"
-            textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..." 
+            textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..."
+            onShowModal={this.onShowModal} 
           />
 
         
@@ -112,7 +154,8 @@ class Profile extends Component {
             items={listByFilters(userChallengesFinished, "userChallenges", MIRROR_SELECT_SORTS[optionUserChallengeFinishedFiltered])} 
             type="userChallenge"
             origin="profile"
-            textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..." 
+            textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..."
+            onShowModal={this.onShowModal} 
           />
 
           <div className="row justify-content-between align-items-center mx-0 mb-0 mt-2">
@@ -134,7 +177,7 @@ class Profile extends Component {
             items={listByFilters(challenges, "challenges", MIRROR_SELECT_SORTS[optionChallengeFiltered])} 
             type="challenge"
             origin="profile"
-            textAlternative="¡Venga! anímate y lanza algún reto!" 
+            textAlternative="¡Venga! anímate y lanza algún reto!"
           />
       </div>
     );

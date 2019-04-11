@@ -16,7 +16,7 @@ class NavBar extends Component {
     userChallengesPending: []
   }
 
-  userSubscription = undefined;
+  userSubscription = {};
   usersChallengesPendingSubscription = undefined;
 
   componentDidMount() {

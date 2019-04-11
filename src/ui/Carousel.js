@@ -1,4 +1,6 @@
 import React from 'react';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import { REGEX_IMAGE, REGEX_VIDEO } from '../constants'
 
 const Carousel = (props) => {
@@ -11,10 +13,12 @@ const Carousel = (props) => {
     if ( evidence.file.match(REGEX_IMAGE )) {
       return (
         <div className={`crsl-container carousel-item ${isActive(index)}`} key={index}>
-        {/* <div class="d-flex align-items-center justify-content-center"> */}
-          {/* <img className="d-block w-100" src={evidence.file} alt={`slide ${index}`}/> */}
           <img className="crsl-img" src={evidence.file} alt={`slide ${index}`}/>
-        {/* </div> */}
+          <div className="crsl-comment">
+            <Moment className="crsl-date" format="DD/MM/YYYY">{evidence.createdAt}</Moment>
+            <div className="">{evidence.comments}</div>
+          </div>
+
       </div>)
     }
     if ( evidence.file.match(REGEX_VIDEO )) {
@@ -34,11 +38,11 @@ const Carousel = (props) => {
           { evidences.map( (evidence, index) => { return isImageOrVideo(evidence, index) }) }
         </div>
 
-        <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a className="carousel-control-prev crsl-arrows" href="#carouselExampleControls" role="button" data-slide="prev">
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
           <span className="sr-only">Previous</span>
         </a>
-        <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <a className="carousel-control-next crsl-arrows" href="#carouselExampleControls" role="button" data-slide="next">
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
           <span className="sr-only">Next</span>
         </a>

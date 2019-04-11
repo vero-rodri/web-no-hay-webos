@@ -1,5 +1,5 @@
-const LIMIT_DESCRIPTION = 55;
-const LIMIT_TITLE = 15;
+const LIMIT_DESCRIPTION = 45;
+const LIMIT_TITLE = 18;
 
 export const LIMIT_TEXT_CARD_ITEM = 10;
 
