@@ -1,7 +1,5 @@
 import React from 'react';
 import Carousel from './Carousel';
-import Moment from 'react-moment';
-import 'moment-timezone';
 
 
 const EvidencesModal = (props) => {
@@ -31,12 +29,12 @@ const EvidencesModal = (props) => {
       <div className="col-8 modal-col">
         <Carousel evidences={evidences} order={modalOrder}/>
       </div>
-      <div className="col-2 modal-col">
+      {/* <div className="col-2 modal-col">
         <div className="" >{evidences[0].comments}</div>
         <div className="" >
           <Moment className="h6" format="DD/MM/YYYY">{evidences[0].createdAt}</Moment>
         </div>
-      </div>
+      </div> */}
     </React.Fragment>
   )
 }
