@@ -35,9 +35,9 @@ class SearchItem extends Component {
 
     let formatedProps  = {...this.state.info}
     formatedProps.description = (formatedProps.description.length > LIMIT_DESCRIPTION) ?
-      (`${formatedProps.description.slice(0, LIMIT_DESCRIPTION)} [...]`) : formatedProps.description;
+      (`${formatedProps.description.slice(0, LIMIT_DESCRIPTION)} ...`) : formatedProps.description;
     formatedProps.title = (formatedProps.title.length > LIMIT_TITLE) ?
-      (`${formatedProps.title.slice(0, LIMIT_TITLE)} [...]`) : formatedProps.title;
+      (`${formatedProps.title.slice(0, LIMIT_TITLE)} ...`) : formatedProps.title;
     return formatedProps;
   }
 
@@ -182,18 +182,15 @@ class SearchItem extends Component {
 
     return (
       <Fragment>
-        {<div className="media align-items-center mx-0 my-2 border rounded-lg row card-search">
+        {<div className="media align-items-center mx-0 my-3 border rounded-lg row card-search">
           
             <div className="col-3 p-0" onClick={this.goToDetail}>
-          {/* <Link to={`/challenges/${id}`} className="w-auto m-0">
-              <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
-          </Link> */}
               <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
             </div>  
           <div className="media-body col-9 p-0">
             <div className="d-flex justify-content-between">
               <div className="px-2 col-9 card-media-item">
-                <h6 className="m-0 my-1" data-container="body" data-toggle="popover" data-placement="top" data-content={this.state.info.title}><u>{title}</u></h6>
+                <h6 className="m-0 my-1" data-container="body" data-toggle="popover" data-placement="top" data-content={this.state.info.title}><p className="mb-0">{title}</p></h6>
                 <p className="m-0" data-container="body" data-toggle="popover" data-placement="bottom" data-content={this.state.info.description}>{description}</p>
                 <div className="m-0 my-1 d-flex justify-content-between align-items-center">
                   <Link to={`/profile/${userId}`} className="m-0 p-0">
@@ -205,18 +202,18 @@ class SearchItem extends Component {
                   </div>
                 </div>
               </div>
-              <div className="px-1 col-3 text-center card-media-item">
-                <div className="align-content-between">
+              <div className="p-2 col-3 text-center card-media-item align-content-around">
+                {/* <div className="align-content-between"> */}
                   <p className="m-0 my-1 row align-items-center icon-unselected">
-                    <i className="fas fa-eye col p-0"></i>
+                    <i className="far fa-eye col p-0"></i>
                     <span className="mx-1 p-0 col text-left font-weight-bold">{views}</span>
                   </p>
                   <p className={`m-0 my-1 row align-items-center ${(itemsLiked && this.objectIdInArray(id, itemsLiked)) ? 'icon-selected' : 'icon-unselected'}`} onClick={this.toggleIcon}>
-                    <i className="fas fa-thumbs-up col p-0"></i>
-                    <span className="mx-1 p-0 col text-left font-weight-bold">{likes}</span>
+                    <i className="fas fa-heart col p-0"></i>
+                    <span className="mx-1 p-0 col text-left font-weight-bold icon-unselected">{likes}</span>
                   </p>
-                </div> 
-                <p className="m-0 my-1 icon-unselected"><i className="fas fa-exclamation-triangle"></i></p>
+                  <p className="m-0 my-1 icon-unselected align-self-start"><i className="fas fa-exclamation-triangle"></i></p>
+                {/* </div>  */}
               </div>
             </div>
           </div>

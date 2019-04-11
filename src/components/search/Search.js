@@ -71,7 +71,7 @@ class Search extends Component {
 
   render() {
    
-    const { type, sort, itemToShow, modalOrder } = this.state;
+    const { type, sort, itemToShow } = this.state;
     return (
       <div className="container">
 
@@ -81,7 +81,7 @@ class Search extends Component {
                             propAvatar={itemToShow.userId.avatarURL} 
                             propNickname={itemToShow.userId.nickName} 
                             evidences={itemToShow.evidences} 
-                            modalOrder={modalOrder}
+                            modalOrder={0}
                             onShowModal={this.onShowModal}
             />
           </Modal>

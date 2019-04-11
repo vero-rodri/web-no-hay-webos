@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-//import challengeService from '../../services/challengesService';
 import SearchItem from './SearchItem';
 import { withSearchConsumer } from '../../context/SearchStore';
 import { listByFilters } from '../../utils/handleLogicSelects';
@@ -19,31 +18,6 @@ class SearchItemsList extends Component {
     userChallenges: this.props.userChallenges
     })
   }
-
-  // challengesSubscription = undefined;
-  // userChallengesSubscription = undefined;
-
-
-  // componentDidMount() {
-
-  //   this.challengesSubscription = challengeService
-  //     .onChallengesChange()
-  //     .subscribe(challenges => {
-  //       this.setState({challenges: challenges});
-  //     })
-
-  //   this.userChallengesSubscription = challengeService
-  //     .onUserChallengesChange()
-  //     .subscribe(userChallenges => {
-  //       this.setState({userChallenges: userChallenges});
-  //     })
-  // }
-
-
-  // componentWillUnmount() {
-  //   this.challengesSubscription.unsubscribe();
-  //   this.userChallengesSubscription.unsubscribe();
-  // }
 
 
   listChallenges = (items) => {
@@ -90,7 +64,8 @@ class SearchItemsList extends Component {
         return <SearchItem key={info.id}
                            {...info} 
                            onReprint={this.handleReprint}
-                           onShowModal={this.props.onShowModal}/>
+                           onShowModal={this.props.onShowModal}
+                           />
     })
   }
   

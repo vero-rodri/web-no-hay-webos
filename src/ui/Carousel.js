@@ -14,8 +14,10 @@ const Carousel = (props) => {
       return (
         <div className={`crsl-container carousel-item ${isActive(index)}`} key={index}>
           <img className="crsl-img" src={evidence.file} alt={`slide ${index}`}/>
-          <Moment className="h6" format="DD/MM/YYYY">{evidence.createdAt}</Moment>
-          <div>{evidence.comments}</div>
+          <div className="crsl-comment">
+            <Moment className="crsl-date" format="DD/MM/YYYY">{evidence.createdAt}</Moment>
+            <div className="">{evidence.comments}</div>
+          </div>
 
       </div>)
     }
@@ -36,11 +38,11 @@ const Carousel = (props) => {
           { evidences.map( (evidence, index) => { return isImageOrVideo(evidence, index) }) }
         </div>
 
-        <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a className="carousel-control-prev crsl-arrows" href="#carouselExampleControls" role="button" data-slide="prev">
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
           <span className="sr-only">Previous</span>
         </a>
-        <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <a className="carousel-control-next crsl-arrows" href="#carouselExampleControls" role="button" data-slide="next">
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
           <span className="sr-only">Next</span>
         </a>

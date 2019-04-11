@@ -92,7 +92,7 @@ class CardItem extends Component {
     }
   }
   render() {
-    const { isRedirectedToItem, isRedirectedToUser } = this.state;
+    const { isRedirectedToItem } = this.state;
     const { item, type, origin, onShowModal } = this.props
     const infoCard = this.createInfoCard(item, type);
     const { text, date, owner, ownerId, likes, views, photo } = infoCard;
