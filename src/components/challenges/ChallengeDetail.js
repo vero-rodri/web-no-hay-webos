@@ -4,6 +4,7 @@ import { TextArea, Button, Select, FormField, Form } from 'grommet';
 import authService from '../../services/authService';
 import usersService from '../../services/usersService';
 import challengesService from '../../services/challengesService';
+import userChallengesService from '../../services/userChallengesService';
 import CardsRow from '../../ui/CardsRow';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../constants';
 import { listByFilters } from '../../utils/handleLogicSelects';
@@ -11,7 +12,8 @@ import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
 import userChallengesServices from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
-
+import EmailInput from '../../emails/EmailInput';
+import EmailList from '../../emails/EmailList';
 
 class ChallengeDetail extends Component {
   
@@ -26,9 +28,11 @@ class ChallengeDetail extends Component {
     showModalSendChallenge: false,
     itemToShow: {},
     modalOrder: 0,
-    listUsers: [],
-    usersSelected: [],
-    comment:''
+    listAllUsersEnabledForSending: [],
+    usersSelectedForSending: [],
+    comeBackToNotifications: false,
+    email: '',
+    emailsList : []
   }
 
   userSubscription = undefined;
@@ -84,13 +88,12 @@ class ChallengeDetail extends Component {
 
 
   onClickChallengeOthers = () => {
-    console.log('retar a otros')
-    usersService.getUsers()
+    usersService.getUsersEnabledForSending(this.state.challenge.id)
       .then(response => {
         this.setState({
           ...this.state,
           showModalSendChallenge: !this.state.showModalSendChallenge,
-          listUsers: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
+          listAllUsersEnabledForSending: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
          // pruebaSelect: true
         })
       })
@@ -149,7 +152,7 @@ class ChallengeDetail extends Component {
     })
   }
 
-  listUsersOptions = () => this.state.listUsers.map((user, index) => {
+  listUsersOptions = () => this.state.listAllUsersEnabledForSending.map((user, index) => {
     return {
       ...user,
       label: user.nickName,
@@ -172,8 +175,10 @@ class ChallengeDetail extends Component {
   }
 
   handleSubmitModal = (event) => {
+    console.log("entro en el submittt")
     event.preventDefault();
     const body = {
+      sender: this.state.user.id,
       usersId: this.state.usersSelected.map(user => user.id),
       challengeId: this.state.challenge.id,
       message: this.state.comment
@@ -188,6 +193,39 @@ class ChallengeDetail extends Component {
       });
   }
 
+  onAcceptChallenge = (event) => {
+    const { userChallengeId } = this.props.location.state
+    userChallengesServices.acceptUserChallenge(userChallengeId)
+      .then(response =>
+        this.setState({
+          ...this.state,
+          isJoinedNow: userChallengeId
+        }),
+      error => console.log(error));
+  }
+
+  onRefuseUserChallenge = (event) => {
+    const { userChallengeId } = this.props.location.state
+    userChallengesServices.deleteUserChallenge(userChallengeId)
+      .then(() => 
+        this.setState({
+          ...this.state,
+          comeBackToNotifications: true
+        }))
+  }
+
+  addEmailToList = (event) => {
+    console.log("Dentro de la fn de añadit al List")
+    this.setState({
+      ...this.state,
+      emailsList: [
+        ...this.state.emailsList,
+        event.target.value
+      ]
+    })
+  }
+
+
   render() {
 
     
@@ -200,11 +238,19 @@ class ChallengeDetail extends Component {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
 
+    if ( this.state.comeBackToNotifications ) {
+      return <Redirect to={`/notifications`} />
+    }
+
     // if ( this.state.pruebaSelect ) {
     //   return <Redirect to={`/Ejemplo`} />
     // }
     
+    console.log("las props en challenge detail =>", this.props)
+
     return (
+
+
 
       <div className="d-flex flex-column m-0 p-0">
 
@@ -218,7 +264,7 @@ class ChallengeDetail extends Component {
               <div className="py-3 text-center">
                 <h5>Lanza este reto a algún amigo!!</h5>
               </div>
-              <Form onSubmit={this.state.handleSubmitModal}>
+              <Form onSubmit={this.handleSubmitModal}>
                 <div className="py-3">
                   <SelectUsers  handleChange={this.handleChangeUsersSelectedModal}
                               options={this.listUsersOptions()}
@@ -233,9 +279,15 @@ class ChallengeDetail extends Component {
                     onChange={this.handleCommentModal}
                   />
                 </div>
+
+                  <h6>¡Puedes también mandar este reto por correo a algún amig@!</h6>
+                  <div>
+                    <EmailInput addEmail={this.addEmailToList} />
+                    <EmailList {...this.state.emailsList} />                
+                  </div>
         
                 <div className="d-flex justify-content-center py-3">
-                  <Button className="" type="submit" primary label="Notificar!" onClick={this.SendChallengeToUsers} />
+                  <Button type="submit" primary label="Notificar!" />
                 </div>
               </Form>
             </div>
@@ -287,10 +339,23 @@ class ChallengeDetail extends Component {
             </p>
           </div>
           <hr className="my-1"></hr>
-          <div className="col-12 m-0 d-flex flex-row justify-content-around">
-            <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
-            <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
-          </div>
+
+          {this.props.location.pathname.startsWith('/notifications') 
+            && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Acepto reto!" onClick={this.onAcceptChallenge}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Creo que paso" onClick={this.onRefuseUserChallenge} />
+                </div>
+          )}
+
+          {this.props.location.pathname.startsWith('/challenges')
+            && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
+                </div>
+          )}
+
+
+
 
             <h6 className="mt-3">Logros conseguidos por otros usuarios:</h6>
             <div className="row justify-content-between align-items-center my-1">
@@ -328,3 +393,20 @@ class ChallengeDetail extends Component {
 }
 
 export default ChallengeDetail;
+
+
+
+
+// transporter.sendMail({
+//   from: '"NearBy" <alwaysneaby@gmail.com>',
+//   to: req.user.email,
+//   subject: `Asistirás a: ${event.name}`,
+//   text: `Te acabas de inscribir al evento: ${event.name}! añádelo a tu calendario con el fichero adjunto.`,
+//   html: `<h3>Te acabas de inscribir al evento: </h3><a href="https://git-project-02.herokuapp.com/detail/${req.params.id}"><h2>${event.name}</h2></a>
+//         <img src=${event.picture} height="400px"></img>`,
+//   icalEvent: {
+//     filename: 'eventReminder.ics',
+//     method: 'request',
+//     content: reminder
+//   }
+// })

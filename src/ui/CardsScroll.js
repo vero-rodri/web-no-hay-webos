@@ -3,7 +3,7 @@ import CardItem from './CardItem';
 
 const CardsScroll = (props) => {
   
-  const { items, textAlternative, type, origin, onDeleteEvidence, onShowModal } = props;
+  const { items, textAlternative, type, origin, onDeleteEvidence, onShowModal } = props
 
   if (type === "challenge" ) {
     return ( 
@@ -41,7 +41,6 @@ const CardsScroll = (props) => {
       </div>
     )
   }
-
 
   if (type === "userChallenge") {
     return ( 

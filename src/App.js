@@ -13,6 +13,7 @@ import FooterBar from './components/misc/FooterBar';
 import Search from '../src/components/search/Search';
 import PrivateRoute from './guards/PrivateRoute';
 import Ejemplo from './components/misc/selectPrueba';
+import Notification from './components/notifications/Notifications'
 
 
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
             <Route exact path="/challenges/:challengeId" component={ChallengeDetail} />
             <Route exact path="/user-challenges/:userChallengeId" component={UserChallenge} />
             <Route exact path="/notifications" component={Notification} />
+            <Route exact path="/notifications/:challengeId" component={ChallengeDetail} />
             <Route exact path="/ejemplo" component={Ejemplo} />
             <Redirect to="/board" />
 
