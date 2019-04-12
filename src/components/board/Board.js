@@ -39,8 +39,8 @@ class Board extends Component {
     .slice(0, 10);
 
 
-  topUserChallenges = () => this.state.userChallenges
-    .sort((a, b) => b.likes - a.likes)
+  viralUserChallenges = () => this.state.userChallenges
+    .sort((a, b) => b.views - a.views)
     .slice(0, 10);
   
 
@@ -123,7 +123,7 @@ class Board extends Component {
         />
             
         {userChallenges.length && <CardsRow 
-          items={this.topUserChallenges()} 
+          items={this.viralUserChallenges()} 
           type="userChallenge" 
           origin="board"
           textAlternative="Nadie aún con Webos de subir su logro..." 

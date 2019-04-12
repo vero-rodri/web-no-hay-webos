@@ -3,6 +3,7 @@ import { Redirect, withRouter, Link } from 'react-router-dom'
 import {LIMIT_DESCRIPTION, LIMIT_TITLE } from '../../constants';
 import $ from 'jquery';
 import challengeService from '../../services/challengesService';
+import userChallengeService from '../../services/userChallengesService';
 import authService from '../../services/authService';
 import { withAuthConsumer } from '../../context/AuthStore';
 import Moment from 'react-moment';
@@ -58,7 +59,7 @@ class SearchItem extends Component {
 
   goToDetail = () => {
     const { id, type } = this.state.info
-    const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
+    const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : userChallengeService.addViewToUserChallenge(id);
     actionType
       .then(() => {
         ( type === 'userChallenge' ) ? this.props.onShowModal(id) : this.setState({ redirectToDetail: true })
@@ -94,7 +95,7 @@ class SearchItem extends Component {
 
     if (redirectToDetail) {
       if (type === 'challenge') {
-        return <Redirect to={`/challenges/${id}/`} />
+        return <Redirect push to={`/challenges/${id}/`} />
       } 
     }
 

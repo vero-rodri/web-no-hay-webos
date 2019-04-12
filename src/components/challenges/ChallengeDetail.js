@@ -19,6 +19,7 @@ class ChallengeDetail extends Component {
     user: {},
     challenge: {},
     userChallenges: [],
+    userChallengesOwns: [],
     isAlreadyJoined: false,
     isJoinedNow: '',
     optionFiltered: SELECT_SORTS['likes'],
@@ -36,6 +37,9 @@ class ChallengeDetail extends Component {
   userSubscription = undefined;
 
 
+  componentWillMount() {
+  }
+    
   
   componentDidMount() {
     this.userSubscription = authService.onUserChange().subscribe((user) => {
@@ -44,20 +48,40 @@ class ChallengeDetail extends Component {
         user: user
       })
     })
+     
+     
+     
+     
+     
+     
+      /*  usersService.getUserChallengesByUser(user.id)
+        .then(userChallengesOwns => {
+          // console.log("la session es ", this.state.user)
+          this.setState({ 
+            ...this.state,
+            user: user,
+            userChallengesOwns: [...userChallengesOwns] 
+          }) */
 
-    const p1 = challengesService.getChallengeDetail(this.props.match.params.challengeId)
-    const p2 = userChallengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId)
 
-      Promise.all([p1, p2])
-      .then(([challenge, userChallenges]) => {
+
+
+    const p1 = challengesService.getChallengeDetail(this.props.match.params.challengeId);
+    const p2 = userChallengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId);  
+    const p3 = userChallengesService.getUserChallengesNoRefuseByChallenge(this.props.match.params.challengeId)
+    
+
+      Promise.all([p1, p2, p3])
+      .then(([challenge, userChallenges, userChallengesOwns]) => {
         this.setState({
         ...this.state,
         challenge: challenge,
-        userChallenges: userChallenges
+        userChallenges: userChallenges,
+        userChallengesOwns: userChallengesOwns
         })
       })
       .catch(err => console.log(err));
-  } 
+    }
 
 
   componentWillUnmount() {
@@ -65,11 +89,14 @@ class ChallengeDetail extends Component {
   }
 
 
-  objectIdInArray = (userId, userChallenge) => {
-    console.log("\entro en OBJ-IN_ARRAY con ", userId, userChallenge )
+  objectIdInArray = (userId, arr) => {
+    console.log("JODERRRRRRRR", userId, arr);
+    if (arr.length) {
+      console.log(arr.userId)
     let userIdAux = JSON.stringify(userId);
-    let arrAux = userChallenge.map(object => JSON.stringify(object.userId.id));
+    let arrAux = arr.map(object => JSON.stringify(object.userId.id));
     return arrAux.includes(userIdAux);
+    }
   }
 
 
@@ -176,11 +203,12 @@ class ChallengeDetail extends Component {
 
   render() {
 
-    
     const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
 
-    const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
-   console.log("la var USERCHALLENGES trae..", userChallenges)
+    const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending, userChallengesOwns } = this.state;
+    console.log("la var USERCHALLENGES trae..", userChallenges)
+    console.log("la var UC_OWNSS ..", userChallengesOwns)
+
     
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
@@ -259,7 +287,7 @@ class ChallengeDetail extends Component {
 
           {this.props.location.pathname.startsWith('/challenges')
             && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
-                  <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallengesOwns)} onClick={this.onClickJoin}  />
                   <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
                 </div>
           )}

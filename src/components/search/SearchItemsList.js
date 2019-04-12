@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import SearchItem from './SearchItem';
 import { withSearchConsumer } from '../../context/SearchStore';
 import { listByFilters } from '../../utils/handleLogicSelects';
+import challengeService from '../../services/challengesService';
+import userChallengeService from '../../services/userChallengesService';
 
 
 class SearchItemsList extends Component {
@@ -11,8 +13,23 @@ class SearchItemsList extends Component {
     challenges: [],
     userChallenges: [this.props.userChallenges]
   }
+/* 
+  challengesSubscription = undefined;
+  userChallengesSubscription = undefined; */
 
   componentDidMount() {
+
+   /*  this.challengesSubscription = challengeService
+      .onChallengesChange()
+      .subscribe(challenges => {
+        this.setState({challenges: challenges});
+      })
+
+    this.userChallengesSubscription = userChallengeService
+      .onUserChallengesChange()
+      .subscribe(userChallenges => {
+        this.setState({userChallenges: userChallenges});
+      }) */
     this.setState({
     challenges: this.props.challenges,
     userChallenges: this.props.userChallenges
@@ -38,7 +55,10 @@ class SearchItemsList extends Component {
           file: challenge.photo,
           createdAt: challenge.createdAt
         }
-        return <SearchItem key={info.id} {...info} onReprint={this.handleReprint}/>
+        return <SearchItem  key={info.id}
+                            {...info} 
+                            //onReprint={this.handleReprint}
+                            />
       })
     }
 

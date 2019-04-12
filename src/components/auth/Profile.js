@@ -127,7 +127,7 @@ class Profile extends Component {
             </div>
           </div>
           <CardsRow 
-            items={listByFilters(userChallengesInProcess, "challenge", MIRROR_SELECT_SORTS[optionUserChallengeInProcessFiltered])} 
+            items={listByFilters(userChallengesInProcess, "userChallenge", MIRROR_SELECT_SORTS[optionUserChallengeInProcessFiltered])} 
             type="userChallenge"
             origin="profile"
             textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..."

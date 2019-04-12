@@ -49,6 +49,11 @@ const getUserChallengeDetail = (UserChallengeId) => {
 }
 
 
+const getUserChallengesNoRefuseByChallenge = (challengeId) => {
+  return http.get(`challenges/${challengeId}/user-challenges/all`)
+    .then(response => response.data)
+}
+
 const getUserChallengesFinishedByChallenge = (challengeId) => {
   return http.get(`challenges/${challengeId}/user-challenges`)
     .then(response => response.data)
@@ -70,6 +75,8 @@ const addViewToUserChallenge = (userChallengeId) => {
 
   return http.post(`/user-challenges/${userChallengeId}/views`)
     .then(response => {
+      getUserChallenges()
+        .then(() => console.log("fetch userChallenges"))
       return response.data;
     })
 }
@@ -139,5 +146,6 @@ export default {
   updateUserChallenge,
   addViewToUserChallenge,
   onUsersChallengeDetailChange,
-  onUserChallengesChange
+  onUserChallengesChange,
+  getUserChallengesNoRefuseByChallenge
 } 
