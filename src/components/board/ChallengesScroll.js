@@ -13,7 +13,7 @@ const ChallengesScroll = (props) => {
         <Link to={{
           pathname: `/challenges/${item.id}`,
           ...item }} >
-          <h5 className="link text-white text-center"><strong>{item.title.toUpperCase()}</strong></h5>
+          <h5 className="link text-white text-center" style={{ width: "150px"}}><strong>{item.title.toLowerCase()}</strong></h5>
         </Link>
       </Stack>
     )

@@ -25,13 +25,9 @@ class Profile extends Component {
   }
   
   componentDidMount() {
-    
-    //const { userId } = this.props.match.params;
-
     const { userId } = this.state;
     const p1 = usersService.getChallengesByUser(userId);
     const p2 = usersService.getUserChallengesByUser(userId);
-    //const p3 = usersService.getUserChallengesInProcessByUser(userId);
 
     
     Promise.all([p1, p2])
@@ -50,22 +46,6 @@ class Profile extends Component {
     ) 
   }
   
-  /* formatFieldsChallenges = () => {
-    const { challenges } = this.state;
-    console.log("formateando..", challenges)
-    if (challenges.length) {
-      return challenges.map(challenge => (
-        { id: challenge.id,
-          file: challenge.photo,
-          comments: challenge.title
-        }
-        ))
-        
-      } else {
-        return [];
-      }
-    } */
-
     onShowModal = (order, itemId) => {
       const itemFinished = this.state.userChallengesFinished.filter( userChallenge => userChallenge.id === itemId ); 
       const itemInProcess = this.state.userChallengesInProcess.filter( userChallenge => userChallenge.id === itemId ); 
@@ -91,8 +71,6 @@ class Profile extends Component {
               optionUserChallengeInProcessFiltered, 
               optionUserChallengeFinishedFiltered } = this.state;
 
-     // const formattedChallenges = this.formatFieldsChallenges();
-     // console.log(("fortmateados: ", formattedChallenges))
 
       return (        
         <div className="container my-3">
@@ -114,7 +92,6 @@ class Profile extends Component {
           <div className="row justify-content-between align-items-center mx-0 mb-0 mt-2">
             <h6 className="m-0">Logros en proceso:</h6>
             <div className="col-5">
-              <FormField>
                 <Select
                   className="p-1"
                   placeholder="Ordenar por"
@@ -123,7 +100,6 @@ class Profile extends Component {
                   size="small"
                   onChange={event => { this.setState({ optionUserChallengeInProcessFiltered: event.option })}}
                 />
-              </FormField>
             </div>
           </div>
           <CardsRow 
@@ -138,7 +114,6 @@ class Profile extends Component {
           <div className="row justify-content-between align-items-center mx-0 mb-0 mt-2">
             <h6 className="m-0">Logros realizados:</h6>
             <div className="col-5">
-              <FormField>
                 <Select
                   className="p-1"
                   placeholder="Ordenar por"
@@ -147,7 +122,6 @@ class Profile extends Component {
                   size="small"
                   onChange={event => { this.setState({ optionUserChallengeFinishedFiltered: event.option })}}
                 />
-              </FormField>
             </div>
           </div>
           <CardsRow 
@@ -161,7 +135,6 @@ class Profile extends Component {
           <div className="row justify-content-between align-items-center mx-0 mb-0 mt-2">
             <h6 className="m-0">Retos creados:</h6>
             <div className="col-5">
-              <FormField>
                 <Select
                   className="p-1"
                   placeholder="Ordenar por"
@@ -170,7 +143,6 @@ class Profile extends Component {
                   size="small"
                   onChange={event => { this.setState({ optionChallengeFiltered: event.option })}}
                 />
-              </FormField>
             </div>
           </div>
           <CardsRow 
