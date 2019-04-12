@@ -32,15 +32,19 @@ const getUserChallengesPendingBySession = () =>
     })
 
 
-    const acceptUserChallenge = (userChallengeId) =>
-    http.post(`/user-challenges/${userChallengeId}/accept`)
-      .then((response) => {
-        getUserChallengesPendingBySession();
-        return response.data;
-      });
+const acceptUserChallenge = (userChallengeId) =>
+http.post(`/user-challenges/${userChallengeId}/accept`)
+  .then((response) => {
+    getUserChallengesPendingBySession();
+    return response.data;
+  });
 
+const getUserChallengesNoRefuseByChallenge = (challengeId) => {
+  return http.get(`challenges/${challengeId}/user-challenges/all`)
+    .then(response => response.data)
+  }
 
-      const onUserChallengesPendingChange = () => 
+const onUserChallengesPendingChange = () => 
   userChallengesPending$.asObservable();
 
 
@@ -49,5 +53,6 @@ export default {
   deleteUserChallenge,
   getUserChallengesPendingBySession,
   onUserChallengesPendingChange,
-  acceptUserChallenge
+  acceptUserChallenge,
+  getUserChallengesNoRefuseByChallenge
 } 

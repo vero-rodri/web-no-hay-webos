@@ -3,7 +3,7 @@ import usersService from '../../services/usersService';
 import CardsRow from '../../ui/CardsRow';
 import { withAuthConsumer } from '../../context/AuthStore';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS } from '../../constants';
-import { Select, FormField } from 'grommet';
+import { Select } from 'grommet';
 import { listByFilters } from '../../utils/handleLogicSelects'; 
 import Modal from '../misc/Modal';
 import EvidencesModal from '../../ui/EvidencesModal';

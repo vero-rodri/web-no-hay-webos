@@ -164,7 +164,7 @@ class SearchItem extends Component {
 
     if (redirectToDetail) {
       if (type === 'challenge') {
-        return <Redirect to={`/challenges/${id}/`} />
+        return <Redirect push to={`/challenges/${id}/`} />
       } 
     }
 
