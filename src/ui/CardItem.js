@@ -71,8 +71,8 @@ class CardItem extends Component {
         return {
           text: element.challengeId.title,
           date: (element.evidences.length) ? element.evidences[0].createdAt: undefined,
-          owner: element.userId.nickName ? element.userId.nickName : undefined,
-          ownerId: element.userId.id ? element.userId.id : undefined,          
+          owner: (element.userId) ? element.userId.nickName : undefined,
+          ownerId: (element.userId) ? element.userId.id : undefined,          
           likes: element.likes,
           views: element.views,
           photo: (element.evidences.length) ? element.evidences[0].file: undefined
