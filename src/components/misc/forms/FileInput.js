@@ -16,7 +16,7 @@ function getFileValueProps(value) {
 function getValueFromFileEvent({ target }) {
   return {
     target,
-  };
+  }; 
 }
 
 class FileInput extends Component {

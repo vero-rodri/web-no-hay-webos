@@ -69,11 +69,10 @@ class CardItem extends Component {
       case "userChallenge": {
 
         return {
-          // origin: element.origin,
           text: element.challengeId.title,
           date: (element.evidences.length) ? element.evidences[0].createdAt: undefined,
-          owner: element.userId.nickName,
-          ownerId: element.userId.id,          
+          owner: element.userId.nickName ? element.userId.nickName : undefined,
+          ownerId: element.userId.id ? element.userId.id : undefined,          
           likes: element.likes,
           views: element.views,
           photo: (element.evidences.length) ? element.evidences[0].file: undefined
