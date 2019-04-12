@@ -12,8 +12,6 @@ import SelectUsers from '../../ui/SelectUsers';
 import userChallengesServices from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
 import ModalSendChallenge from '../misc/ModalChallenge/ModalSendChallenge';
-import EmailInput from '../../emails/EmailInput';
-import EmailList from '../../emails/EmailList';
 import icons from '../../utils/icons.json';
 
 
