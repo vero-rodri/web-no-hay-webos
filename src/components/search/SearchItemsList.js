@@ -63,7 +63,7 @@ class SearchItemsList extends Component {
         }
         return <SearchItem key={info.id}
                            {...info} 
-                           onReprint={this.handleReprint}
+                          // onReprint={this.handleReprint}
                            onShowModal={this.props.onShowModal}
                            />
     })

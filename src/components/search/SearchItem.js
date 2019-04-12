@@ -7,6 +7,7 @@ import authService from '../../services/authService';
 import { withAuthConsumer } from '../../context/AuthStore';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { handleLogicLikes, objectIdInArray } from '../../utils/handleLogicLikes';
 
 
 class SearchItem extends Component {
@@ -54,6 +55,7 @@ class SearchItem extends Component {
   //     this.props.onShowModal(id)
   // }
 
+
   goToDetail = () => {
     const { id, type } = this.state.info
     const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
@@ -63,109 +65,25 @@ class SearchItem extends Component {
       })
   }
 
-    
 
   toggleIcon = (event) => {
-
-    const handleAddLikeToChallenge = (id) => {
-      challengeService.addChallengeToLikes(id)
-        .then((response) => {
-          const {likes, itemsLiked} = response
-          this.setState({
-            ...this.state,
-            itemsLiked,
-            info: {
-              ...this.state.info,
-              likes 
-            }
-          })
-        })       
-    }
-
-    const handleAddLikeToUserChallenge = (id) => {
-      challengeService.addUserChallengeToLikes(id)
-        .then((response) => {
-          const {likes, itemsLiked} = response
-          this.setState({
-            ...this.state,
-            itemsLiked,
-            info: {
-              ...this.state.info,
-              likes 
-            }
-          })
+    const { id, type } = this.state.info;
+    const { itemsLiked } = this.state;
+    console.log("\nentro en TOGGLE ICON con ", id, type, itemsLiked)
+    handleLogicLikes(event, type, id, itemsLiked)
+    .then((response) => {
+        const {likes, itemsLiked} = response
+        this.setState({
+          ...this.state,
+          itemsLiked,
+          info: {
+            ...this.state.info,
+            likes 
+          }
         })
-    }
-
-    const handleRemoveLikeFromChallenge = (id) => {
-      challengeService.removeChallengeFromLikes(id)
-        .then((response) => {
-          const {likes, itemsLiked} = response
-          this.setState({
-            ...this.state,
-            itemsLiked,
-            info: {
-              ...this.state.info,
-              likes 
-            }
-          })
-        })
-    }
-      
-    const handleRemoveLikeFromUserChallenge = (id) => {
-      challengeService.removeUserChallengeFromLikes(id)
-        .then((response) => {
-          const {likes, itemsLiked} = response
-          this.setState({
-            ...this.state,
-            itemsLiked,
-            info: {
-              ...this.state.info,
-              likes 
-            }
-          })
-        })
-    }
-
-    const { type, id } = this.state.info;
-    const { itemsLiked } = this.state
-
-    if (this.objectIdInArray(id, itemsLiked)) {
-      $(event.target).removeClass("icon-selected");
-      switch (type) {
-        case 'challenge': {
-          handleRemoveLikeFromChallenge(id);
-          break;
-        }
-        case 'userChallenge': {
-          handleRemoveLikeFromUserChallenge(id);
-          break;
-        }
-        default:
-      }
-    } else {
-      $(event.target).addClass("icon-selected");
-      switch (type) {
-        case 'challenge': {
-          handleAddLikeToChallenge(id);
-          break;
-        }
-        case 'userChallenge': {
-          handleAddLikeToUserChallenge(id);
-          break;
-        }
-        default:
-      }
-    }
+    })
   }
 
-
-  objectIdInArray = (objId, arr) => {
-   
-    let arrAux = arr.map(objId => JSON.stringify(objId))
-    let objIdAux = JSON.stringify(objId);
-    return (arrAux.includes(objIdAux))
-  }
 
   
   render() {
@@ -208,7 +126,7 @@ class SearchItem extends Component {
                     <i className="far fa-eye col p-0"></i>
                     <span className="mx-1 p-0 col text-left font-weight-bold">{views}</span>
                   </p>
-                  <p className={`m-0 my-1 row align-items-center ${(itemsLiked && this.objectIdInArray(id, itemsLiked)) ? 'icon-selected' : 'icon-unselected'}`} onClick={this.toggleIcon}>
+                  <p className={`m-0 my-1 row align-items-center ${(itemsLiked && objectIdInArray(id, itemsLiked)) ? 'icon-selected' : 'icon-unselected'}`} onClick={this.toggleIcon}>
                     <i className="fas fa-heart col p-0"></i>
                     <span className="mx-1 p-0 col text-left font-weight-bold icon-unselected">{likes}</span>
                   </p>

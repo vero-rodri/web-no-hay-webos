@@ -5,32 +5,47 @@ import { Box, Stack} from  'grommet';
 import { REGEX_IMAGE, REGEX_VIDEO, LIMIT_TEXT_CARD_ITEM } from '../constants';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { handleLogicLikes, objectIdInArray } from '../utils/handleLogicLikes';
 
 
 class CardItem extends Component {
 
   state = {
     user: {},
+    item: this.props.item,
     isRedirectedToItem: false
   }
   
-  userSubscription = undefined;
+  //userSubscription = undefined;
 
   componentDidMount() {
-    let userAux = {};
+   /*  let userAux = {};
     this.userSubscription = authService.onUserChange().subscribe((user) => {
       userAux = user;
     });
+ */
 
-    this.setState({
+    authService.getSession()
+      .then(user => {
+        let itemsLiked;
+        (this.props.type === 'challenge') ? itemsLiked = [...user.challengesLiked] : itemsLiked = [...user.userChallengesLiked];
+        this.setState({
+          ...this.state,
+          user,
+          itemsLiked
+        })
+      })
+  
+
+   /*  this.setState({
       ...this.state,
       user: userAux,
-    })
+    }) */
   }
 
-  componentWillUnmount() {
-    this.userSubscription.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this.userSubscription.unsubscribe();
+  // }
 
 
   onRedirectToItem = () => {
@@ -66,7 +81,6 @@ class CardItem extends Component {
         }
       }
       case "userChallenge": {
-
         return {
           text: element.challengeId.title,
           date: (element.evidences.length) ? element.evidences[0].createdAt: undefined,
@@ -91,9 +105,31 @@ class CardItem extends Component {
       default: {}
     }
   }
+
+
+  toggleIcon = (event) => {
+    const { type } = this.props;
+    //const { id } = this.props.item.id
+    const { item, itemsLiked } = this.state;
+    console.log("\nentro en TOGGLE ICON con ", item.id, type, itemsLiked)
+    handleLogicLikes(event, type, item.id, itemsLiked)
+    .then((response) => {
+        const {likes, itemsLiked} = response
+        this.setState({
+          ...this.state,
+          itemsLiked,
+          item: {
+            ...this.state.item,
+            likes 
+          }
+        })
+    })
+  }
+
+
   render() {
-    const { isRedirectedToItem } = this.state;
-    const { item, type, origin, onShowModal } = this.props
+    const { isRedirectedToItem, itemsLiked, item } = this.state;
+    const { type, origin, onShowModal } = this.props
     const infoCard = this.createInfoCard(item, type);
     const { text, date, owner, ownerId, likes, views, photo } = infoCard;
     const formattedText = (text) => ((text.length > LIMIT_TEXT_CARD_ITEM) ?  
@@ -139,7 +175,8 @@ class CardItem extends Component {
                 
                   <div className="col-5 text-left p-0 pl-2 m-0">
                     {((type !== "evidence") && ((origin === "board") || (origin === "profile"))) 
-                      && <p className="m-0 height-line"><small><i className="mx-1 fas fa-thumbs-up fa-xs"></i>{likes}</small></p>}
+                      && <p className={`m-0 height-line ${(itemsLiked && objectIdInArray(item.id, itemsLiked)) ? 'icon-selected' : 'icon-unselected'}`} onClick={this.toggleIcon}>
+                        <small><i className="mx-1 fas fa-thumbs-up fa-xs"></i>{likes}</small></p>}
                     {((type !== "evidence") && ((origin === "board") || (origin === "profile"))) 
                       && <p className="m-0 height-line"><small><i className="mx-1 fas fa-eye fa-xs"></i>{views}</small></p>}
                     {(type === 'evidence')

@@ -5,6 +5,7 @@ import SearchItemsList from './SearchItemsList';
 import Modal from '../misc/Modal';
 import EvidencesModal from '../../ui/EvidencesModal';
 import challengeService from '../../services/challengesService';
+import userChallengeService from '../../services/userChallengesService';
 
 
 class Search extends Component {
@@ -30,7 +31,7 @@ class Search extends Component {
         this.setState({challenges: challenges});
       })
 
-    this.userChallengesSubscription = challengeService
+    this.userChallengesSubscription = userChallengeService
       .onUserChallengesChange()
       .subscribe(userChallenges => {
         this.setState({userChallenges: userChallenges});

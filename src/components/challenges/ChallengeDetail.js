@@ -10,7 +10,6 @@ import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../con
 import { listByFilters } from '../../utils/handleLogicSelects';
 import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
-import userChallengesServices from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
 import ModalSendChallenge from '../misc/ModalChallenge/ModalSendChallenge';
 
@@ -47,7 +46,7 @@ class ChallengeDetail extends Component {
     })
 
     const p1 = challengesService.getChallengeDetail(this.props.match.params.challengeId)
-    const p2 = challengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId)
+    const p2 = userChallengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId)
 
       Promise.all([p1, p2])
       .then(([challenge, userChallenges]) => {
@@ -154,7 +153,7 @@ class ChallengeDetail extends Component {
 
   onAcceptChallenge = (event) => {
     const { userChallengeId } = this.props.location.state
-    userChallengesServices.acceptUserChallenge(userChallengeId)
+    userChallengesService.acceptUserChallenge(userChallengeId)
       .then(response =>
         this.setState({
           ...this.state,
@@ -165,7 +164,7 @@ class ChallengeDetail extends Component {
 
   onRefuseUserChallenge = (event) => {
     const { userChallengeId } = this.props.location.state
-    userChallengesServices.deleteUserChallenge(userChallengeId)
+    userChallengesService.deleteUserChallenge(userChallengeId)
       .then(() => 
         this.setState({
           ...this.state,
