@@ -15,7 +15,7 @@ import icons from '../../utils/icons.json';
 const getErrorText = text => errors[text];
 const getIconText = text => icons[text];
 
-
+ 
 class Register extends Component {
   state = {
     errors: {},

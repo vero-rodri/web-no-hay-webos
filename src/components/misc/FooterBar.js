@@ -16,12 +16,11 @@ const FooterBar = (props) => {
   } else {
     return(
       <div className="container m-0 p-0">
-        <div className="footer-bar row m-0 p-0 justify-content-center align-items-center">
-          {/* <div onClick={handleComeBack}><i className="fas fa-arrow-left text-white"></i></div> */}
+        <div className="footer-bar row m-0 p-0 justify-content-around align-items-center">
           <IconCustom name="Volver" icon="fas fa-arrow-left" onClick={handleComeBack} link="#" color="text-white" />
+          <IconCustom name="CrearReto" icon="fas fa-plus" link="/challenges/create" color="text-white" />
           <IconCustom name="Buscar" icon="fas fa-search" link="/search" color="text-white" />
           <IconCustom name="Home" icon="fas fa-home" link="/board" color="text-white" />
-          <IconCustom name="CrearReto" icon="fas fa-plus" link="/challenges/create" color="text-white" />
         </div>
       </div>
     )

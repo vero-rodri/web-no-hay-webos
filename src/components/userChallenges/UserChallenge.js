@@ -16,6 +16,8 @@ import ProgressBar from '../../ui/ProgressBar';
 import { DEFAULT_ICON_OPACITY } from '../../constants'
 import Modal from '../misc/Modal';
 import EvidencesModal from '../../ui/EvidencesModal';
+import { checkLength } from '../../utils/formValidators';
+
 
 const getErrorText = text => errors[text];
 const getIconText = text => icons[text];
@@ -54,7 +56,7 @@ class UserChallenge extends Component {
         if ( this.state.userChallenge.challengeId.periodicity ) {
           this.setState({
             ...this.state,
-            totalEvidences: this.state.userChallenge.challengeId.duration / this.state.userChallenge.challengeId.periodicity
+            totalEvidences: Math.round(this.state.userChallenge.challengeId.duration / this.state.userChallenge.challengeId.periodicity)
           })
         } 
 
@@ -212,7 +214,7 @@ class UserChallenge extends Component {
                 <Moment className="h6" format="DD/MM/YYYY">{userChallenge.createdAt}</Moment>
               </div>
 
-              <h6>Logros</h6>
+              <h6>Pruebas:</h6>
               <div className="row py-2 scroll-container">
                 { ( !isFinished ) &&
                   <div className="add-evidence-btn" onClick={this.onClickEvidenceForm}>
@@ -246,7 +248,7 @@ class UserChallenge extends Component {
                     label="Foto o video del logro:"
                     form={form}
                     name="fileEvidence"
-                  />
+                  /> 
     
                   <InputField
                     label="Comentarios:"
@@ -255,7 +257,8 @@ class UserChallenge extends Component {
                     {...getFieldProps('comments', {
                       initialValue: '',
                       validateFirst: true,
-                      validateTrigger: 'onblur'
+                      validateTrigger: 'onblur',
+                      rules: [{ validator: checkLength }]
                     })}
                     errors={getFieldError('comments')}
                   />
@@ -284,10 +287,10 @@ class UserChallenge extends Component {
 
             <div className="d-flex justify-content-center mt-3 pt-2">
               { ( currentEvidences > 1 ) && (
-                <p className="mb-4">Faltan { currentEvidences } logros para superar el reto</p>
+                <p className="mb-4">Faltan { currentEvidences } pruebas para superar el reto</p>
               )}
               { ( currentEvidences === 1 ) && (
-                <p className="mb-4">Falta { currentEvidences } logro para superar el reto</p>
+                <p className="mb-4">Falta { currentEvidences } prueba para superar el reto</p>
               )}
               { ( currentEvidences === 0 ) && (
                 <p className="mb-4 h5 font-weight-bold text-danger">Reto superado!</p>
