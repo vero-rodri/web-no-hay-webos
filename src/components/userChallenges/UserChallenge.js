@@ -180,7 +180,8 @@ class UserChallenge extends Component {
           <div className="container">
             {this.state.showModal && (
               <Modal>
-                <EvidencesModal title={userChallenge.challengeId.title} 
+                <EvidencesModal id={userChallenge.challengeId.id}
+                                title={userChallenge.challengeId.title} 
                                 propAvatar={userChallenge.userId.avatarURL} 
                                 propNickname={userChallenge.userId.nickName} 
                                 evidences={evidences} 

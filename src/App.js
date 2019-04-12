@@ -18,7 +18,7 @@ import Notification from './components/notifications/Notifications'
 
 class App extends Component {
 
-
+ 
   render() {
     return (
       <div className="App">

@@ -77,7 +77,8 @@ class Search extends Component {
 
         {this.state.showModal && (
           <Modal>
-            <EvidencesModal title={itemToShow.challengeId.title} 
+            <EvidencesModal id={itemToShow.challengeId.id}
+                            title={itemToShow.challengeId.title} 
                             propAvatar={itemToShow.userId.avatarURL} 
                             propNickname={itemToShow.userId.nickName} 
                             evidences={itemToShow.evidences} 
