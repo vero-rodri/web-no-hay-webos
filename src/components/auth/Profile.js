@@ -127,7 +127,7 @@ class Profile extends Component {
             </div>
           </div>
           <CardsRow 
-            items={listByFilters(userChallengesInProcess, "userChallenges", MIRROR_SELECT_SORTS[optionUserChallengeInProcessFiltered])} 
+            items={listByFilters(userChallengesInProcess, "challenge", MIRROR_SELECT_SORTS[optionUserChallengeInProcessFiltered])} 
             type="userChallenge"
             origin="profile"
             textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..."
@@ -151,7 +151,7 @@ class Profile extends Component {
             </div>
           </div>
           <CardsRow 
-            items={listByFilters(userChallengesFinished, "userChallenges", MIRROR_SELECT_SORTS[optionUserChallengeFinishedFiltered])} 
+            items={listByFilters(userChallengesFinished, "userChallenge", MIRROR_SELECT_SORTS[optionUserChallengeFinishedFiltered])} 
             type="userChallenge"
             origin="profile"
             textAlternative="Ya estás tardando en echarle Webos y estrenar este área ..."
@@ -174,7 +174,7 @@ class Profile extends Component {
             </div>
           </div>
           <CardsRow 
-            items={listByFilters(challenges, "challenges", MIRROR_SELECT_SORTS[optionChallengeFiltered])} 
+            items={listByFilters(challenges, "challenge", MIRROR_SELECT_SORTS[optionChallengeFiltered])} 
             type="challenge"
             origin="profile"
             textAlternative="¡Venga! anímate y lanza algún reto!"

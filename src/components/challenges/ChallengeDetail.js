@@ -66,6 +66,7 @@ class ChallengeDetail extends Component {
 
 
   objectIdInArray = (userId, userChallenge) => {
+    console.log("\entro en OBJ-IN_ARRAY con ", userId, userChallenge )
     let userIdAux = JSON.stringify(userId);
     let arrAux = userChallenge.map(object => JSON.stringify(object.userId.id));
     return arrAux.includes(userIdAux);
@@ -73,7 +74,7 @@ class ChallengeDetail extends Component {
 
 
   onClickJoin = () => {       
-    challengesService.createUserChallenge(this.state.challenge.id)
+    userChallengesService.createUserChallenge(this.state.challenge.id)
       .then(
         (response) => 
           this.setState({
@@ -179,7 +180,7 @@ class ChallengeDetail extends Component {
     const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
 
     const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
-   
+   console.log("la var USERCHALLENGES trae..", userChallenges)
     
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />

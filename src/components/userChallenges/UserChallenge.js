@@ -4,7 +4,6 @@ import { Button, Box, Form, Text } from 'grommet';
 import InputField from '../misc/forms/InputField';
 import FileInput from '../misc/forms/FileInput';
 import { createForm } from '../../utils/createForm'
-import challengesService from '../../services/challengesService';
 import errors from '../../utils/errors.json';
 import icons from '../../utils/icons.json';
 import CardScroll from '../../ui/CardsScroll';
@@ -16,6 +15,7 @@ import ProgressBar from '../../ui/ProgressBar';
 import { DEFAULT_ICON_OPACITY } from '../../constants'
 import Modal from '../misc/Modal';
 import EvidencesModal from '../../ui/EvidencesModal';
+import userChallengesService from '../../services/userChallengesService';
 
 const getErrorText = text => errors[text];
 const getIconText = text => icons[text];
@@ -43,7 +43,7 @@ class UserChallenge extends Component {
 
 
   componentDidMount() {
-    challengesService.getUserChallengeDetail(this.props.match.params.userChallengeId)
+    userChallengesService.getUserChallengeDetail(this.props.match.params.userChallengeId)
       .then( userChallenge => {
         this.setState({
         ...this.state,
@@ -100,11 +100,11 @@ class UserChallenge extends Component {
       isFinished: newRangeValue === 1
     }, () => {
       if ( newRangeValue === 1 && this.state.isFinished !== prevFinished ) {
-        challengesService.updateUserChallenge(this.state.userChallenge.id, this.state.isFinished)
+        userChallengesService.updateUserChallenge(this.state.userChallenge.id, this.state.isFinished)
           .then(console.log("actualiza la API a ", this.state.isFinished))
       } 
       if ( newRangeValue !== 1 && this.state.isFinished !== prevFinished ) {
-        challengesService.updateUserChallenge(this.state.userChallenge.id, this.state.isFinished)
+        userChallengesService.updateUserChallenge(this.state.userChallenge.id, this.state.isFinished)
           .then(console.log("actualiza la API a ", this.state.isFinished))
       }
     })
@@ -130,7 +130,7 @@ class UserChallenge extends Component {
       const userChallengeId = this.props.match.params.userChallengeId
       const hasErrors = errors && Object.keys(errors).length > 0;
       if (!hasErrors) {
-        challengesService.createEvidence(fields, 'fileEvidence', userChallengeId)
+        evidencesService.createEvidence(fields, 'fileEvidence', userChallengeId)
         .then(
           () => { this.setState({ isVisibleForm: false });
                   evidencesService.getEvidencesList(this.state.userChallenge.id)

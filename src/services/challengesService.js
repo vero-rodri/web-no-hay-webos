@@ -88,23 +88,7 @@ const addParticipantToChallenge = (challengeId) => {
 }
 
 
-const createEvidence = (evidence, imgKey, userChallengeId) => {
-  const config = {
-    headers: {
-      'content-type': 'multipart/form-data'
-    }
-  };
-  const data = new FormData();
-  Object.keys(evidence).forEach(key => {
-    if ( key === imgKey && evidence[key]) {
-      data.append(key, evidence[key].target.files[0])
-    } else {
-      data.append(key, evidence[key])
-    }
-  })
-  return http.post(`/user-challenges/${userChallengeId}/evidences`, data, config)
-  .then(response => response.data);
-}
+
 
 const onChallengesChange = () => challenges$.asObservable();
 
@@ -117,6 +101,5 @@ export default {
   addChallengeToLikes,
   removeChallengeFromLikes,
   addViewToChallenge,
-  createEvidence,
   addParticipantToChallenge,
 }

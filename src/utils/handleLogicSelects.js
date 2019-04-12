@@ -43,13 +43,18 @@ const showUsersChallenge = (items) => {
 
 export const listByFilters = (items, type, sort) => {
 
+  console.log("entro con el tipo, ", type)
   const sortByLikes = (arr) => arr.sort((a, b) => b.likes-a.likes);
   const sortByViews = (arr) => arr.sort((a, b) => b.views-a.views);
   const sortByCreateAt = (arr) => arr.sort((a, b) => {
     if (type === 'challenge') {
       return (Date.parse(b.createdAt) - Date.parse(a.createdAt) > 0) ? 1 : -1;  
     } else { //type === 'userchallenge' ...
-      return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1;
+      return (
+        ((b.evidences) ? (Date.parse(b.evidences[b.evidences.length - 1].createdAt)) : (Date.parse(b.createdAt))) -
+        ((a.evidences) ? (Date.parse(a.evidences[a.evidences.length - 1].createdAt)) : (Date.parse(a.createdAt)))
+      )
+        //Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1;
     }
     //return (Date.parse(b.createdAt) - Date.parse(a.createdAt) > 0) ? 1 : -1
 //    return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
