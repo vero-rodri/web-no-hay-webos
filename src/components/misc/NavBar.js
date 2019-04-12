@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Link, withRouter, Redirect } from 'react-router-dom';
+import { Link, withRouter, Redirect, NavLink } from 'react-router-dom';
 import authService from '../../services/authService';
 import userChallengesService from '../../services/userChallengesService';
 import icons from '../../utils/icons.json';
@@ -70,11 +70,11 @@ class NavBar extends Component {
       <div className="pos-f-t">
         <nav className="navbar navbar-dark nav-bar-bg">
           <div className="profile-container">
-            <Link to="/profile">
+            <NavLink to="/profile" activeClassName="icon-active-footer">
               <div className="nav-bar-img-div">
                 <img className="nav-bar-img" src={user.avatarURL} alt={user.nickName}></img>
               </div>
-            </Link>
+            </NavLink>
             { !pathname.startsWith('/search') && <span>{user.nickName}</span> }
           </div>
 
@@ -91,18 +91,19 @@ class NavBar extends Component {
                     aria-expanded="false"
             >
             {this.areThereNotifications() 
-              && <sup><small className="badge badge-pill badge-danger">{userChallengesPending.length}</small></sup>}
+              && <sup className="mx-1"><small className="badge badge-pill badge-danger">{userChallengesPending.length}</small></sup>}
               <img className="navbar-icon" src={getIconText("eggs")} alt="eggs" ></img>
-          </button>      
+            </button>     
   
-            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-              {<button className="dropdown-item" onClick={this.handleLogout}>Logout</button>}
+            <div className="dropdown-menu dropdown-menu-right nav-bar-dropdown" aria-labelledby="dropdownMenuLink">
+              <Link className="dropdown-item" to="#">Editar perfil</Link>
               <Link className="dropdown-item" to="/notifications">
                 Mis notificaciones
                 {this.areThereNotifications() 
-                  && <sup className=""><small className="badge badge-pill badge-danger">{userChallengesPending.length}</small></sup>}
+                  && <span className="mx-2"><small className="badge badge-danger">{userChallengesPending.length}</small></span>}
               </Link>
-              <Link className="dropdown-item" to="#">Something else here</Link>
+              <div className="dropdown-divider"></div>
+                  {<button className="dropdown-item" onClick={this.handleLogout}>Logout</button>}
             </div>
           </div> 
         </nav>
