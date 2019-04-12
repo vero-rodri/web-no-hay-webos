@@ -1,7 +1,6 @@
 {
   "name": "web-no-hay-webos",
   "version": "0.1.0",
-  "homepage": "https://vero-rodri.github.io/web-no-hay-webos",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
@@ -28,9 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

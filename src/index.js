@@ -8,7 +8,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Grommet } from 'grommet';
 import customTheme from './utils/theme-grommet'
-import { HashRouter } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom'
 import 'moment-timezone';
 import { SearchStore } from '../src/context/SearchStore';
@@ -16,7 +15,6 @@ import { AuthStore } from './context/AuthStore';
 
 
 ReactDOM.render(
-  // <HashRouter>
      <BrowserRouter >
       <AuthStore>
         <SearchStore>
@@ -26,10 +24,5 @@ ReactDOM.render(
         </SearchStore>
       </AuthStore>
     </BrowserRouter>,
-  // </HashRouter>,
  document.getElementById('root'));
 serviceWorker.unregister();
-
-
-{/* <HashRouter basename={process.env.PUBLIC_URL}>
- */}
