@@ -1,5 +1,5 @@
 const PASSWORD_PATTERN = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-const EMAIL_PATTERN = /^(([^<>()[\].,;:\s@“]+(\.[^<>()[\].,;:\s@“]+)*)|(“.+“))@(([^<>()[\].,;:\s@“]+\.)+[^<>()[\].,;:\s@“]{2,})$/i;
+export const EMAIL_PATTERN = /^(([^<>()[\].,;:\s@“]+(\.[^<>()[\].,;:\s@“]+)*)|(“.+“))@(([^<>()[\].,;:\s@“]+\.)+[^<>()[\].,;:\s@“]{2,})$/i;
 
 
 export const isEmail = email => email && EMAIL_PATTERN.test(email);

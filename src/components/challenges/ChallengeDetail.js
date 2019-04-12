@@ -11,6 +11,7 @@ import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
 import userChallengesServices from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
+import ModalSendChallenge from '../misc/ModalChallenge/ModalSendChallenge';
 import EmailInput from '../../emails/EmailInput';
 import EmailList from '../../emails/EmailList';
 import icons from '../../utils/icons.json';
@@ -32,10 +33,10 @@ class ChallengeDetail extends Component {
     itemToShow: {},
     modalOrder: 0,
     listAllUsersEnabledForSending: [],
-    usersSelectedForSending: [],
+    //usersSelectedForSending: [],
     comeBackToNotifications: false,
-    email: '',
-    emailsList : []
+    // email: '',
+    // emailsList : []
   }
 
   userSubscription = undefined;
@@ -96,18 +97,21 @@ class ChallengeDetail extends Component {
         this.setState({
           ...this.state,
           showModalSendChallenge: !this.state.showModalSendChallenge,
-          listAllUsersEnabledForSending: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
+          listAllUsersEnabledForSending: [...response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))]
         })
       })
   }
 
+  
   onHideModalSendChallenge = () => {
+    console.log("oculandodo modalll")
     this.setState({
       ...this.state,
       showModalSendChallenge: false
     })
   }
 
+  
   countUserChallenges = () => 
     (this.state.challenge.userChallenges) ?
       this.state.challenge.userChallenges.length : 0;
@@ -143,6 +147,7 @@ class ChallengeDetail extends Component {
     }
   }
 
+
   onShowModalEvidences = (order, itemId) => {
     const item = this.state.userChallenges.filter( userChallenge => userChallenge.id === itemId ); 
     this.setState({
@@ -153,43 +158,6 @@ class ChallengeDetail extends Component {
     })
   }
 
-  listUsersOptions = () => this.state.listAllUsersEnabledForSending.map((user, index) => {
-    return {
-      ...user,
-      label: user.nickName,
-      value: index
-    }});
-
-  handleChangeUsersSelectedModal = (event) => {
-    this.setState({
-      ...this.state,
-      usersSelected: event
-    })
-  }
-
-  handleCommentModal = (event) => {
-    this.setState({
-      ...this.state,
-      comment: event.target.value
-    })
-  }
-
-  handleSubmitModal = (event) => {
-    event.preventDefault();
-    const body = {
-      sender: this.state.user.id,
-      usersId: this.state.usersSelected.map(user => user.id),
-      challengeId: this.state.challenge.id,
-      message: this.state.comment
-    };
-    userChallengesServices.createUserChallengesByNotifications(body)
-      .then(() => {
-        this.setState({
-          ...this.state,
-          showModalSendChallenge: false
-        })
-      });
-  }
 
   onAcceptChallenge = (event) => {
     const { userChallengeId } = this.props.location.state
@@ -212,25 +180,13 @@ class ChallengeDetail extends Component {
         }))
   }
 
-  addEmailToList = (event) => {
-    this.setState({
-      ...this.state,
-      emailsList: [
-        ...this.state.emailsList,
-        event.target.value
-      ]
-    })
-  }
-
-
   render() {
 
     
     const { photo, title, description, owner, likes, views  } = this.state.challenge;
 
-    const { optionFiltered, userChallenges, user, modalOrder, itemToShow } = this.state;
+    const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
    
-    
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
     }
@@ -243,43 +199,14 @@ class ChallengeDetail extends Component {
 
       <div className="d-flex flex-column m-0 p-0">
 
-        {this.state.showModalSendChallenge && 
-          <Modal>
-            <div className=" align-items-center">
-              <div className="modal-close" onClick={this.onHideModalSendChallenge}>
-                <span className="text-right w-100"><i className="fas fa-times-circle"></i></span>
-              </div>
-              <div className="py-3 text-center">
-                <h5>Lanza este reto a algún amigo!!</h5>
-              </div>
-              <Form onSubmit={this.handleSubmitModal}>
-                <div className="py-3">
-                  <SelectUsers  handleChange={this.handleChangeUsersSelectedModal}
-                              options={this.listUsersOptions()}
-                              value={this.state.usersSelected}
-                              placeholder="Escoja uno o varios usuarios..."
-                  />
-                </div>
-                <div className="py-3">
-                  <TextArea
-                    placeholder="Pícalos con algún comentario..."
-                    value={this.state.comment}
-                    onChange={this.handleCommentModal}
-                  />
-                </div>
 
-                  <h6>¡Puedes también mandar este reto por correo a algún amig@!</h6>
-                  <div>
-                    <EmailInput addEmail={this.addEmailToList} />
-                    <EmailList {...this.state.emailsList} />                
-                  </div>
-        
-                <div className="d-flex justify-content-center py-3">
-                  <Button type="submit" primary label="Notificar!" />
-                </div>
-              </Form>
-            </div>
-          </Modal>
+        {this.state.showModalSendChallenge && 
+        <ModalSendChallenge
+          usersEnabled={listAllUsersEnabledForSending}
+          onHideModal={this.onHideModalSendChallenge}
+          user={user}
+          challenge={challenge}
+          />
         }
 
         {this.state.showModalEvidences && (
@@ -386,3 +313,4 @@ class ChallengeDetail extends Component {
 }
 
 export default ChallengeDetail;
+

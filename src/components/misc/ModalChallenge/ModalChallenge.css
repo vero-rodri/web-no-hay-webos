@@ -1,0 +1,28 @@
+.input-modal {
+  background-color: #fff;
+  color: #1F2532
+}
+
+.email-btn {
+  border: 2px solid #ffb100 !important;
+  background: #ffc629 !important;
+}
+
+.email-li {
+  color: #ffc629;
+}
+
+/* estas lineas siguientes eran para intentar personalizar el multiselect, pero no soy capaz*/
+.react-select-container {
+  background-color: #fff !important;
+  
+}
+
+.react-select__menu {
+  background-color: #fff !important;
+  opacity: 0 !important
+}
+
+.react-select__value-container {
+  color: #ffc629;
+}
