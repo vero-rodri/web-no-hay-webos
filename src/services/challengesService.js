@@ -143,6 +143,8 @@ const addViewToChallenge = (challengeId) => {
 
   return http.post(`/challenges/${challengeId}/views`)
     .then(response => {
+      getChallenges()
+        .then(() => console.log("fetch challenges"))
       return response.data;
     })
 }

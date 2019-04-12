@@ -9,7 +9,7 @@ import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../con
 import { listByFilters } from '../../utils/handleLogicSelects';
 import Modal from '../misc/Modal';
 import SelectUsers from '../../ui/SelectUsers';
-import userChallengesServices from '../../services/userChallengesService';
+import userChallengesService from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
 import ModalSendChallenge from '../misc/ModalChallenge/ModalSendChallenge';
 import icons from '../../utils/icons.json';
@@ -51,15 +51,17 @@ class ChallengeDetail extends Component {
 
     const p1 = challengesService.getChallengeDetail(this.props.match.params.challengeId)
     const p2 = challengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId)
-
-      Promise.all([p1, p2])
-      .then(([challenge, userChallenges]) => {
-        this.setState({
-        ...this.state,
-        challenge: challenge,
-        userChallenges: userChallenges
-        })
-      })
+    const p3 = userChallengesService.getUserChallengesNoRefuseByChallenge(this.props.match.params.challengeId)
+      
+    Promise.all([p1, p2, p3])
+     .then(([challenge, userChallenges, userChallengesOwns]) => {
+       this.setState({
+       ...this.state,
+       challenge: challenge,
+       userChallenges: userChallenges,
+       userChallengesOwns: userChallengesOwns
+       })
+     })
       .catch(err => console.log(err));
   } 
 
@@ -159,7 +161,7 @@ class ChallengeDetail extends Component {
 
   onAcceptChallenge = (event) => {
     const { userChallengeId } = this.props.location.state
-    userChallengesServices.acceptUserChallenge(userChallengeId)
+    userChallengesService.acceptUserChallenge(userChallengeId)
       .then(response =>
         this.setState({
           ...this.state,
@@ -170,7 +172,7 @@ class ChallengeDetail extends Component {
 
   onRefuseUserChallenge = (event) => {
     const { userChallengeId } = this.props.location.state
-    userChallengesServices.deleteUserChallenge(userChallengeId)
+    userChallengesService.deleteUserChallenge(userChallengeId)
       .then(() => 
         this.setState({
           ...this.state,

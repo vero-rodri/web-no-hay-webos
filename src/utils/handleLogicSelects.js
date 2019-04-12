@@ -46,14 +46,17 @@ export const listByFilters = (items, type, sort) => {
   const sortByLikes = (arr) => arr.sort((a, b) => b.likes-a.likes);
   const sortByViews = (arr) => arr.sort((a, b) => b.views-a.views);
   const sortByCreateAt = (arr) => arr.sort((a, b) => {
-    return (Date.parse(b.createdAt) - Date.parse(a.createdAt) > 0) ? 1 : -1;  
-    // if (type === 'challenge') {
-    // } else { //type === 'userchallenge' ...
-    //   return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1;
-    // }
-    //return (Date.parse(b.createdAt) - Date.parse(a.createdAt) > 0) ? 1 : -1
-//    return (Date.parse(b.evidences[b.evidences.length - 1].createdAt) - Date.parse(a.evidences[a.evidences.length - 1].createdAt) > 0) ? 1 : -1 
-//quizas esta linea de arriba la necesite para implementar bien el creatAt cuando son userchallenges...
+    // console.log(Date.parse(b.evidences[b.evidences.length - 1].createdAt))
+    if (type === 'challenge') {
+      return (Date.parse(b.createdAt) - Date.parse(a.createdAt) > 0) ? 1 : -1;  
+    } else {
+    return (
+      //A MEJORAR, NO FUNCIONA DEL TODO BIEN
+      (((b.evidences && b.evidences.length > 0) ?
+       (Date.parse(b.evidences[b.evidences.length - 1].createdAt)) : (Date.parse(b.createdAt))) -
+      ((a.evidences && a.evidences.length > 0) ? 
+      (Date.parse(a.evidences[a.evidences.length - 1].createdAt)) : (Date.parse(a.createdAt))) > 0) ? 1 : -1
+    )}
   });
 
   let filteredArr = [];
