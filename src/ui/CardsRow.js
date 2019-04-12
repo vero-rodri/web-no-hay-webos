@@ -4,7 +4,7 @@ import CardsScroll from './CardsScroll';
 const CardsRow = (props) => {
 
   return ( 
-    <div className="row py-2 my-1 scroll-container">
+    <div className="row py-2 my-3 scroll-container">
       <CardsScroll {...props} />
       </div>
   )

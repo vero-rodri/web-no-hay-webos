@@ -1,8 +1,10 @@
 import React from 'react';
 import CardItem from './CardItem';
+import icons from '../utils/icons.json';
 
 const CardsScroll = (props) => {
   
+  const getIconText = text => icons[text];
   const { items, textAlternative, type, origin, onDeleteEvidence, onShowModal } = props
 
   if (type === "challenge" ) {
@@ -54,7 +56,11 @@ const CardsScroll = (props) => {
                                                   type={type}
                                                   onShowModal={(order, id ) => onShowModal(order, id)} 
                                                   />)
-            : <h6 className="text-center m-2 w-100">{textAlternative}</h6>} 
+            : <div className="row py-2 px-4">
+                <div className="col-3"><img src={getIconText("hen")} alt="hen" style={{width: "100%"}}/></div>
+                <div className="col-9"><h6 className="text-center m-2 w-100">{textAlternative}</h6></div>
+              </div>
+          } 
         </div>
       </div>
     )

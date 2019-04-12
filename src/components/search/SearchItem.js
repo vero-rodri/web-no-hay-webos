@@ -6,6 +6,7 @@ import challengeService from '../../services/challengesService';
 import authService from '../../services/authService';
 import { withAuthConsumer } from '../../context/AuthStore';
 import Moment from 'react-moment';
+import { OverlayTrigger } from 'react-bootstrap'
 import 'moment-timezone';
 
 
@@ -18,7 +19,6 @@ class SearchItem extends Component {
 
 
   componentDidMount() {
-
       authService.getSession()
         .then(user => {
           let itemsLiked;
@@ -30,9 +30,7 @@ class SearchItem extends Component {
         })
   }
 
-
   formattedFields = () => {
-
     let formatedProps  = {...this.state.info}
     formatedProps.description = (formatedProps.description.length > LIMIT_DESCRIPTION) ?
       (`${formatedProps.description.slice(0, LIMIT_DESCRIPTION)} ...`) : formatedProps.description;
@@ -40,19 +38,6 @@ class SearchItem extends Component {
       (`${formatedProps.title.slice(0, LIMIT_TITLE)} ...`) : formatedProps.title;
     return formatedProps;
   }
-
-
-  // goToDetail = () => {
-  //   const { id, type } = this.state.info
-  //   const actionType = (type ==='challenge') ? challengeService.addViewToChallenge(id) : challengeService.addViewToUserChallenge(id);
-  //   actionType
-  //     .then(() => {
-  //       this.setState({ redirectToDetail: true })
-  //     })
-
-
-  //     this.props.onShowModal(id)
-  // }
 
   goToDetail = () => {
     const { id, type } = this.state.info
@@ -62,8 +47,6 @@ class SearchItem extends Component {
         ( type === 'userChallenge' ) ? this.props.onShowModal(id) : this.setState({ redirectToDetail: true })
       })
   }
-
-    
 
   toggleIcon = (event) => {
 
@@ -174,6 +157,11 @@ class SearchItem extends Component {
 
     const { itemsLiked, redirectToDetail } = this.state;
 
+    const renderTooltip = text => (
+      <div className="rendertooltip">{text}</div>
+    );
+
+
     if (redirectToDetail) {
       if (type === 'challenge') {
         return <Redirect to={`/challenges/${id}/`} />
@@ -190,8 +178,22 @@ class SearchItem extends Component {
           <div className="media-body col-9 p-0">
             <div className="d-flex justify-content-between">
               <div className="px-2 col-9 card-media-item">
-                <h6 className="m-0 my-1" data-container="body" data-toggle="popover" data-placement="top" data-content={this.state.info.title}><p className="mb-0">{title}</p></h6>
-                <p className="m-0" data-container="body" data-toggle="popover" data-placement="bottom" data-content={this.state.info.description}>{description}</p>
+                <OverlayTrigger
+                  placement="bottom"
+                  delay={{ show: 200, hide: 150 }}
+                  overlay={renderTooltip(this.state.info.title)}
+                >
+                  <h6 className="m-0 my-1">{title}</h6>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="bottom"
+                  delay={{ show: 200, hide: 150 }}
+                  overlay={renderTooltip(this.state.info.description)}
+                >
+                  <p className="m-0">{description}</p>
+                </OverlayTrigger>
+
                 <div className="m-0 my-1 d-flex justify-content-between align-items-center">
                   <Link to={`/profile/${userId}`} className="m-0 p-0">
                     <img className="rounded-circle avatar-user" src={avatarURL} alt={id} />
@@ -203,17 +205,18 @@ class SearchItem extends Component {
                 </div>
               </div>
               <div className="p-2 col-3 text-center card-media-item align-content-around">
-                {/* <div className="align-content-between"> */}
                   <p className="m-0 my-1 row align-items-center icon-unselected">
                     <i className="far fa-eye col p-0"></i>
                     <span className="mx-1 p-0 col text-left font-weight-bold">{views}</span>
                   </p>
-                  <p className={`m-0 my-1 row align-items-center ${(itemsLiked && this.objectIdInArray(id, itemsLiked)) ? 'icon-selected' : 'icon-unselected'}`} onClick={this.toggleIcon}>
-                    <i className="fas fa-heart col p-0"></i>
+                  <p className="m-0 my-1 row align-items-center" onClick={this.toggleIcon}>
+                  { (itemsLiked && this.objectIdInArray(id, itemsLiked)) 
+                    ? <i className="fas fa-heart col p-0 icon-selected"></i>
+                    : <i className="far fa-heart col p-0 icon-unselected"></i>
+                  }
                     <span className="mx-1 p-0 col text-left font-weight-bold icon-unselected">{likes}</span>
                   </p>
                   <p className="m-0 my-1 icon-unselected align-self-start"><i className="fas fa-exclamation-triangle"></i></p>
-                {/* </div>  */}
               </div>
             </div>
           </div>

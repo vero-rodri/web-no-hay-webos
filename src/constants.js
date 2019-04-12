@@ -1,31 +1,31 @@
 const LIMIT_DESCRIPTION = 45;
 const LIMIT_TITLE = 18;
 
-export const LIMIT_TEXT_CARD_ITEM = 10;
+export const LIMIT_TEXT_CARD_ITEM = 9;
 
 const SELECT_TYPES = {
-  'challenge': 'Reto', 
-  'userChallenge': 'UC',
+  'challenge': 'retos', 
+  'userChallenge': 'logros personales',
 };
 const MIRROR_SELECT_TYPES = {
-  'Reto': 'challenge', 
-  'UC': 'userChallenge',
+  'retos': 'challenge', 
+  'logros personales': 'userChallenge',
 };
 const SELECT_SORTS = {
-  'views': '+ Vistos', 
-  'likes': '+ Likes',
-  "createDate": '+ Recientes',
+  'views': '+ vistos', 
+  'likes': '+ me gusta',
+  "createDate": '+ recientes',
 };
 const MIRROR_SELECT_SORTS = {
-  '+ Vistos': 'views', 
-  '+ Likes': 'likes',
-  "+ Recientes": 'createDate',
+  '+ vistos': 'views', 
+  '+ me gusta': 'likes',
+  "+ recientes": 'createDate',
 };
 const SELECT_CATEGORIES = [
   {'sports': 'Deportivos'},
   {'crazyThings': 'Locuras'}
 ];
-const LIMIT_AVATARS_LIST = 2;
+const LIMIT_AVATARS_LIST = 4;
 
 const DEFAULT_ICON_OPACITY = "0.15";
 
