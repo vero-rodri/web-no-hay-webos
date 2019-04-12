@@ -87,7 +87,7 @@ class Board extends Component {
           link="/search"
           labelButton="Más"
           />
-        <div className="row py-2">
+        <div className="row py-3">
           <div className="col cards-scroll user-challenge-scroll mx-1 pl-1 pr-2">
             <ChallengesScroll items={this.topChallenges()} className="content" />
           </div>
@@ -102,7 +102,6 @@ class Board extends Component {
           labelButton="Más"
         />
 
-        {console.log("\n\nultimoss ", this.latestUserChallenges())}
        
         {userChallenges.length && <CardsRow 
           items={this.latestUserChallenges()} 

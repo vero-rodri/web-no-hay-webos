@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
-import { TextArea, Button, Select, FormField, Form } from 'grommet';
+import { TextArea, Button, Select, Form } from 'grommet';
 import authService from '../../services/authService';
 import usersService from '../../services/usersService';
 import challengesService from '../../services/challengesService';
-import userChallengesService from '../../services/userChallengesService';
 import CardsRow from '../../ui/CardsRow';
 import { SELECT_SORTS, MIRROR_SELECT_SORTS, LIMIT_AVATARS_LIST } from '../../constants';
 import { listByFilters } from '../../utils/handleLogicSelects';
@@ -14,6 +13,10 @@ import userChallengesServices from '../../services/userChallengesService';
 import EvidencesModal from '../../ui/EvidencesModal';
 import EmailInput from '../../emails/EmailInput';
 import EmailList from '../../emails/EmailList';
+import icons from '../../utils/icons.json';
+
+
+const getIconText = text => icons[text];
 
 class ChallengeDetail extends Component {
   
@@ -94,10 +97,8 @@ class ChallengeDetail extends Component {
           ...this.state,
           showModalSendChallenge: !this.state.showModalSendChallenge,
           listAllUsersEnabledForSending: response.filter(user => JSON.stringify(this.state.user.id) !== JSON.stringify(user.id))
-         // pruebaSelect: true
         })
       })
-    //IMPLEMENTAR LA LÓGICA PARA RETAR A OTROS!!!
   }
 
   onHideModalSendChallenge = () => {
@@ -160,7 +161,6 @@ class ChallengeDetail extends Component {
     }});
 
   handleChangeUsersSelectedModal = (event) => {
-    console.log("\n\n\nel event target lleva ", event)
     this.setState({
       ...this.state,
       usersSelected: event
@@ -175,7 +175,6 @@ class ChallengeDetail extends Component {
   }
 
   handleSubmitModal = (event) => {
-    console.log("entro en el submittt")
     event.preventDefault();
     const body = {
       sender: this.state.user.id,
@@ -185,7 +184,6 @@ class ChallengeDetail extends Component {
     };
     userChallengesServices.createUserChallengesByNotifications(body)
       .then(() => {
-        console.log('userChallenges created ok')
         this.setState({
           ...this.state,
           showModalSendChallenge: false
@@ -215,7 +213,6 @@ class ChallengeDetail extends Component {
   }
 
   addEmailToList = (event) => {
-    console.log("Dentro de la fn de añadit al List")
     this.setState({
       ...this.state,
       emailsList: [
@@ -229,9 +226,9 @@ class ChallengeDetail extends Component {
   render() {
 
     
-    const { photo, title, description, isFinished, owner, likes, views  } = this.state.challenge;
+    const { photo, title, description, owner, likes, views  } = this.state.challenge;
 
-    const { optionFiltered, userChallenges, user, listUsers, ListUsersFiltered, modalOrder, itemToShow } = this.state;
+    const { optionFiltered, userChallenges, user, modalOrder, itemToShow } = this.state;
    
     
     if ( this.state.isJoinedNow ) {
@@ -242,19 +239,10 @@ class ChallengeDetail extends Component {
       return <Redirect to={`/notifications`} />
     }
 
-    // if ( this.state.pruebaSelect ) {
-    //   return <Redirect to={`/Ejemplo`} />
-    // }
-    
-    console.log("las props en challenge detail =>", this.props)
-
     return (
-
-
 
       <div className="d-flex flex-column m-0 p-0">
 
-        {console.log()}
         {this.state.showModalSendChallenge && 
           <Modal>
             <div className=" align-items-center">
@@ -309,81 +297,86 @@ class ChallengeDetail extends Component {
         <div className="chl-det-header p-0">
           <img src={photo} alt={title}></img>
           <div className="overlay p-0 container">
-          <div className="">
+          <div className="row overlay-icons">
             <div className="row justify-content-around align-items-center my-2 mx-1">
-              <p className="m-0"><i className="m-0 fas fa-thumbs-up fa-lg"></i></p>
-              <h5 className="m-0">{likes}</h5>
+              <p className="m-0" style={{color: "#0297dc"}}><i className=" m-0 fas fa-eye fa-lg"></i></p>
+              <h6 className="m-0">{views}</h6>
             </div>
             <div className="row justify-content-around align-items-center my-2 mx-1">
-              <p className="m-0"><i className=" m-0 fas fa-eye fa-lg"></i></p>
-              <h5 className="m-0">{views}</h5>
+              <p className="m-0" style={{color: "rgb(249, 46, 46)"}}><i className="m-0 far fa-heart fa-lg"></i></p>
+              <h6 className="m-0">{likes}</h6>
             </div>
             <div className="row justify-content-around align-items-center my-2 mx-1">
-              <p className="m-0"><i className=" m-0 fas fa-users fa-lg"></i></p>
-              <h5 className="m-0">{this.countUserChallenges()}</h5>
+              <p className="m-0"><img src={getIconText("fight")} alt="participants" style={{height: "30px", width: "30px"}}/></p>
+              <h6 className="m-0">{this.countUserChallenges()}</h6>
             </div>
             <div className="row justify-content-around align-items-center my-2 mx-1">
-              <p className="m-0"><i className=" m-0 fas fa-trophy fa-lg"></i></p>
-              <h5 className="m-0">{this.countUserChallengesFinished()}</h5>
+              <p className="m-0"><img src={getIconText("viking")} alt="viking" style={{height: "30px", width: "30px"}}/></p>
+              <h6 className="m-0">{this.countUserChallengesFinished()}</h6>
             </div>
           </div>
           </div>
         </div>
         <div className="container">
           <div className="col-12 mt-2 p-0">
-            <h3><u>{title}</u></h3>
-            <span>{description}</span>
-            <p className="m-0 text-right">Creado por:  
-              <img src={owner && owner.avatarURL} className="avatar-user rounded-circle ml-2 mr-1"></img>
-              <span className="font-weight-bold">{owner && owner.nickName }</span>
-            </p>
+            <h3 className="mt-3">{title}</h3>
+            <p className="mb-2 text-justify">{description}</p>
+            <div className="mr-2 text-right">
+              <div>
+                <small>Creado por:</small>
+                <div>
+                  <img src={owner && owner.avatarURL} className="avatar-user rounded-circle ml-2 mr-1" alt=""></img>
+                  <span className="font-weight-bold">{owner && owner.nickName }</span>
+                </div> 
+              </div>
+            </div>
           </div>
           <hr className="my-1"></hr>
 
           {this.props.location.pathname.startsWith('/notifications') 
-            && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
+            && (<div className="col-12 my-2 d-flex flex-row justify-content-around">
                   <Button className="py-1 px-2 m-1" type="button" primary label="Acepto reto!" onClick={this.onAcceptChallenge}  />
                   <Button className="py-1 px-2 m-1" type="button" primary label="Creo que paso" onClick={this.onRefuseUserChallenge} />
                 </div>
           )}
 
           {this.props.location.pathname.startsWith('/challenges')
-            && (<div className="col-12 m-0 d-flex flex-row justify-content-around">
-                  <Button className="py-1 px-2 m-1" type="button" primary label="Unirse al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
-                  <Button className="py-1 px-2 m-1" type="button" primary label="Retar a otros" onClick={this.onClickChallengeOthers} />
+            && (<div className="col-12 my-2 d-flex flex-row justify-content-around">
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Únete al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Reta a otros" onClick={this.onClickChallengeOthers} />
                 </div>
           )}
 
 
+          { userChallenges.length > 0 &&
+            <Fragment> 
+              <h6 className="mt-3">Ya lo han superado:</h6>
+              <div className="row justify-content-between align-items-center my-1">
 
-
-            <h6 className="mt-3">Logros conseguidos por otros usuarios:</h6>
-            <div className="row justify-content-between align-items-center my-1">
-
-              <div className="col">
-              <ul className="avatars">
-                { this.createListAvatarsUserChallenges()}
-              </ul>
+                <div className="col">
+                <ul className="avatars">
+                  { this.createListAvatarsUserChallenges()}
+                </ul>
+                </div>
+                <div className="col-5">
+                    <Select
+                      className="p-1"
+                      placeholder="Ordenar por"
+                      options={Object.values(SELECT_SORTS)}
+                      value={this.state.optionFiltered}
+                      size="small"
+                      onChange={event => { this.setState({ optionFiltered: event.option })}}
+                    />
+                </div>
               </div>
-              <div className="col-5">
-                <FormField>
-                  <Select
-                    className="p-1"
-                    placeholder="Ordenar por"
-                    options={Object.values(SELECT_SORTS)}
-                    value={this.state.optionFiltered}
-                    size="small"
-                    onChange={event => { this.setState({ optionFiltered: event.option })}}
-                  />
-                </FormField>
-              </div>
-            </div>
-            
+            </Fragment>
+          }
+
             <CardsRow
               items={listByFilters(userChallenges, "userChallenge", MIRROR_SELECT_SORTS[optionFiltered])} 
               type="userChallenge" 
               origin="challenge"
-              textAlternative="No ha habido Webos aún de hacer este reto..."
+              textAlternative="Aún no ha habido nadie con Webos para aceptar este reto"
               onShowModal={this.onShowModalEvidences} 
             />
         </div>
@@ -393,20 +386,3 @@ class ChallengeDetail extends Component {
 }
 
 export default ChallengeDetail;
-
-
-
-
-// transporter.sendMail({
-//   from: '"NearBy" <alwaysneaby@gmail.com>',
-//   to: req.user.email,
-//   subject: `Asistirás a: ${event.name}`,
-//   text: `Te acabas de inscribir al evento: ${event.name}! añádelo a tu calendario con el fichero adjunto.`,
-//   html: `<h3>Te acabas de inscribir al evento: </h3><a href="https://git-project-02.herokuapp.com/detail/${req.params.id}"><h2>${event.name}</h2></a>
-//         <img src=${event.picture} height="400px"></img>`,
-//   icalEvent: {
-//     filename: 'eventReminder.ics',
-//     method: 'request',
-//     content: reminder
-//   }
-// })

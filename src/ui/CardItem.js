@@ -5,6 +5,7 @@ import { Box, Stack} from  'grommet';
 import { REGEX_IMAGE, REGEX_VIDEO, LIMIT_TEXT_CARD_ITEM } from '../constants';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { OverlayTrigger } from 'react-bootstrap'
 
 
 class CardItem extends Component {
@@ -97,8 +98,11 @@ class CardItem extends Component {
     const infoCard = this.createInfoCard(item, type);
     const { text, date, owner, ownerId, likes, views, photo } = infoCard;
     const formattedText = (text) => ((text.length > LIMIT_TEXT_CARD_ITEM) ?  
-      (`${text.slice(0, LIMIT_TEXT_CARD_ITEM)} [...]`) : text);
+      (`${text.slice(0, LIMIT_TEXT_CARD_ITEM)} ...`) : text);
 
+    const renderTooltip = props => (
+      <div {...props} className="rendertooltip">{props.text}</div>
+    );
       
       
     if (isRedirectedToItem) {
@@ -124,29 +128,34 @@ class CardItem extends Component {
             {((photo) && (photo.match(REGEX_IMAGE))) && 
             <img src={photo} className="card-img-top img-card-size" alt="" onClick={(onShowModal) ? this.onShowModal : this.onRedirectToItem}/>
             }
-            <div className="card-body m-0 p-0 text-center">
-              {(origin !== "challenge") 
-                &&  <span className="m-0" data-container="body" data-toggle="popover" data-placement="bottom" data-content={text}>
-                      <u>{formattedText(text)}</u>
-                    </span>}
-              <div className="row m-0">
-                <div className="col-7 text-left m-0 pl-2 align-items-end d-flex">
-                  {((origin !== "profile") && (type !== "evidence")) 
-                    && <Link to={`/profile/${ownerId}`}><p className="m-0 height-line"><small><strong>{owner}</strong></small></p></Link>}
-                  {((type === "evidence") || (origin === "profile")) 
-                    && <p className="m-0 height-line"><small className="mx-1"><Moment className="" format="DD/MM/YYYY">{date}</Moment></small></p>}
-                </div>    
-                
-                  <div className="col-5 text-left p-0 pl-2 m-0">
-                    {((type !== "evidence") && ((origin === "board") || (origin === "profile"))) 
-                      && <p className="m-0 height-line"><small><i className="mx-1 fas fa-thumbs-up fa-xs"></i>{likes}</small></p>}
-                    {((type !== "evidence") && ((origin === "board") || (origin === "profile"))) 
-                      && <p className="m-0 height-line"><small><i className="mx-1 fas fa-eye fa-xs"></i>{views}</small></p>}
-                    {(type === 'evidence')
-                      && <button className="p-0 mx-3" onClick={this.onDeleteEvidence}><i className="fas fa-trash-alt text-danger"></i></button>}
-                  </div>
-                  <div className="col-5 text-left p-0 pl-2 m-0">
-                  </div>
+            <div className="card-body row m-0 p-0 text-center">
+              <div className="col-8 card-info">
+
+                {(origin !== "challenge") &&  
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 200, hide: 150 }}
+                    overlay={renderTooltip({text})}
+                  >
+                    <span className="font-weight-bold" style={{fontSize: ".8rem"}}>{formattedText(text)}</span>
+                  </OverlayTrigger>
+                }
+                <div className="row m-0">
+                  <div className="col m-0 p-0">
+                    {((type === "evidence") || (origin === "profile") || (origin === "challenge")) 
+                      && <p className="m-0 height-line"><small ><Moment format="DD/MM/YYYY">{date}</Moment></small></p>}
+                    {((origin !== "profile") && (type !== "evidence")) 
+                      && <Link to={`/profile/${ownerId}`}><p className="m-0 height-line text-left"><small>De:<strong className="ml-1">{owner}</strong></small></p></Link>}
+                  </div> 
+                </div>   
+              </div>
+              <div className="col-4 m-0 card-icons">
+                  {((type !== "evidence") && (((origin === "board") || (origin === "profile")) || (origin === "challenge"))) 
+                    && <p className="m-0 height-line"><small><i className="mx-1 fas fa-eye fa-xs"></i>{views}</small></p>}
+                  {((type !== "evidence") && (((origin === "board") || (origin === "profile")) || (origin === "challenge"))) 
+                    && <p className="m-0 height-line"><small><i className="mx-1 far fa-heart fa-xs"></i>{likes}</small></p>}
+                  {(type === 'evidence')
+                    && <button className="p-0 mx-3" onClick={this.onDeleteEvidence}><i className="fas fa-trash-alt text-danger"></i></button>}
               </div>
             </div>
           </div>

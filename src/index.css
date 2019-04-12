@@ -26,6 +26,7 @@ a {
 .card {
   height: 135px;
   width: 127px;
+  box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.4);
 }
 .card-comment {
   width: 75%
@@ -38,7 +39,8 @@ a {
 .main-bg {
   width: 100vw;
   height: 100vh;
-  background-image: url("https://res.cloudinary.com/ddby3wqlo/image/upload/v1554674220/NoHayWebos/icons/FONDO_3-01.png");
+  --background-image: url("https://res.cloudinary.com/ddby3wqlo/image/upload/v1554674220/NoHayWebos/icons/FONDO_3-01.png");
+  background-image: url("https://res.cloudinary.com/ddby3wqlo/image/upload/v1555050119/NoHayWebos/icons/FONDO_WEBOS-01.png");
   background-repeat: no-repeat;
   background-size: cover;
   margin: -70px 0px;
@@ -68,7 +70,7 @@ a {
 }
 
 .register {
-  top: 80px;
+  top: 15px;
 }
 
 .login-btn {
@@ -150,17 +152,26 @@ a {
 }
 
 /* BOARD COMPONENT */
+
+.label-titles {
+  font-size: 1.15rem;
+  margin: 0;
+  padding-left: 15px;
+}
+
 .images-scroll {
   display: flex;
   width: 100%;
-  max-height: 125px;
+  max-height: 155px;
   overflow-x: auto;
   overflow-y: hidden;
 }
 
 .img-board-chg {
   object-fit: cover;
-  border: 1px solid rgba(0,0,0,.125);
+  --border: 1px solid rgba(0,0,0,.125);
+  border: 1px solid rgb(103, 102, 102);
+  filter: brightness(0.65)
 }
 
 .images-scroll::-webkit-scrollbar {
@@ -168,12 +179,12 @@ a {
 }
 
 .images-content {
-  width: 180px;
-  height: 113px;
+  width: 240px;
+  height: 150px;
 }
 
 .img-challenge-size {
-  max-height: 113px;
+  max-height: 150px;
 }
 
 .img-card-size {
@@ -189,11 +200,28 @@ a {
   object-fit: cover
 }
 
+.card-info {
+  padding: 5px 0px 5px 5px;
+  justify-content: space-between;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.card-icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px 2px;
+  align-items: flex-start;
+}
+
 .cards-scroll {
   display: flex;
   padding-right: 10px;
   width: 100%;
-  max-height: 135px;
+  --max-height: 135px;
+  max-height: 155px;
   overflow-x: auto;
   overflow-y: hidden; 
 }
@@ -325,6 +353,13 @@ a {
   left: 70%;
 }
 
+.overlay-icons {
+  flex-direction: column;
+  justify-content: space-around;
+  height: 250px;
+  padding: 10px 30px;
+}
+
 ul.avatars {
   display: flex;
   list-style-type: none;
@@ -343,10 +378,19 @@ li.avatars-img {
   transition: 2s ease;
 }
 
+.chllg-card-info {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  height: 40px;
+  align-items: flex-start;
+  padding: 0;
+}
+
 img.avatars-img,
 span.avatars-others {
   background-color: #ffc629;
-  border: 2px solid #1F2532;
+  border: 1px solid #737373;
   border-radius: 100px 100px 100px 100px;
   color: #FFFFFF;
   display: block;
@@ -471,8 +515,8 @@ ul:hover li:nth-child(n+2) {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  position: absolute;
-  top: 0;
+  position: fixed;
+  bottom: 0;
   left: 0;
   z-index: 1000;
   padding: 20px;
@@ -557,5 +601,17 @@ ul:hover li:nth-child(n+2) {
 .crsl-arrows {
   top: 75px;
   height: 50%;
+}
 
+/* popover */
+
+.rendertooltip {
+  background-color: rgb(238, 248, 253);
+  padding: 2px 10px;
+  color: black;
+  border-radius: 5px;
+  border: 1px solid grey;
+  font-size: .8rem;
+  max-width: 80%;
+  margin-left: 10px;
 }
