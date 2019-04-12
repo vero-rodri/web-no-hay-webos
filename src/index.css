@@ -110,6 +110,7 @@ a {
 
 .navbar-toggler {
   border: none;
+  outline: none !important;
 }
 
 .profile-container {
@@ -129,6 +130,10 @@ a {
  border: 1px solid rgb(254, 254, 254);
 }
 
+.nav-bar-dropdown {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+}
+
 .footer-bar {
   z-index: 90;
   box-shadow: 0px -2px 2px 0px rgb(189, 188, 189, 0.5);
@@ -139,6 +144,11 @@ a {
   height: 60px;
   position: fixed;
   font-size: 1.7rem;
+}
+
+.icon-active-footer {
+  text-emphasis-color: red !important;
+  background-color: #18b8ff
 }
 
 
