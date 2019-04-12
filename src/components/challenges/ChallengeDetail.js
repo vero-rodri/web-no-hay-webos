@@ -216,6 +216,7 @@ class ChallengeDetail extends Component {
                           evidences={itemToShow.evidences} 
                           modalOrder={modalOrder}
                           onShowModal={this.onShowModalEvidences}
+                          isChallenge
           />
           </Modal>
         )}

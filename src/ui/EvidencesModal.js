@@ -18,7 +18,13 @@ const EvidencesModal = (props) => {
       <div className="col-2 modal-col">
         <div className="modal-header">
           <div className="mb-1 pr-5 align-self-end">
+            { props.isChallenge && 
+            <h5>{title}</h5>
+            }
+            { !props.isChallenge && 
             <Link to={`/challenges/${id}`} className="modal-link"><h5>{title}</h5></Link>
+            }
+
             <div className="mt-3">
               <span><small>Prueba de </small></span>
               <img className="rounded-circle avatar-user ml-1" src={propAvatar} alt={propNickname}></img>
