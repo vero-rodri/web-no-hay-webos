@@ -1,6 +1,29 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 
+const customStyles = {
+  option: (provided) => ({
+    ...provided,
+    color: '#818181',
+  })};
+
+// const customStyles = {
+//   option: (provided, state) => ({
+//     ...provided,
+//     color: state.isSelected ? 'red' : 'blue',
+//   }),
+//   control: () => ({
+//     // none of react-select's styles are passed to <Control />
+//     width: 200,
+//   }),
+//   singleValue: (provided, state) => {
+//     const opacity = state.isDisabled ? 0.5 : 1;
+//     const transition = 'opacity 300ms';
+
+//     return { ...provided, opacity, transition };
+//   }
+// }
+
 
 class SelectUsers extends Component {
 
@@ -9,14 +32,12 @@ class SelectUsers extends Component {
   }
 
   handleMenuToggle = () => {
-  //console.log("mnajejador TOGGLLEEEEE ", this.state.isOpen)
     this.setState({
       isOpen: !this.state.isOpen
     })
   }
 
   handleChange = (event) => {
-    //console.log("ONCHANGEE ", this.state.isOpen)
     this.props.handleChangeUsers(event);
   }
 
@@ -25,6 +46,7 @@ class SelectUsers extends Component {
   render() {
     return (
       <Select
+      styles={customStyles}
       options={this.props.options}
       menuIsOpen={this.state.isOpen}
       isMulti

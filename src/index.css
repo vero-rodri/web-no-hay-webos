@@ -146,9 +146,8 @@ a {
   font-size: 1.7rem;
 }
 
-.icon-active-footer {
-  text-emphasis-color: red !important;
-  background-color: #18b8ff
+a.icon-active-footer:visited {
+  color: #f92d2d!important;
 }
 
 
@@ -594,6 +593,10 @@ ul:hover li:nth-child(n+2) {
   margin: auto;
 }
 
+.modal-link {
+  color: white;
+}
+
 
 /* NOTIFICATIONS */
 
@@ -613,6 +616,11 @@ ul:hover li:nth-child(n+2) {
   height: 50%;
 }
 
+.btn-disabled {
+  background-color: rgb(177,227,250,.7)!important;
+  color: #f3f3f3!important;
+  border: none!important;
+}
 
 /* popover */
 

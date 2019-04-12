@@ -69,6 +69,7 @@ class CardItem extends Component {
       case "userChallenge": {
 
         return {
+          // origin: element.origin,
           text: element.challengeId.title,
           date: (element.evidences.length) ? element.evidences[0].createdAt: undefined,
           owner: element.userId.nickName,

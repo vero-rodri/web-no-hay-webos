@@ -181,7 +181,7 @@ class ChallengeDetail extends Component {
   render() {
 
     
-    const { photo, title, description, owner, likes, views  } = this.state.challenge;
+    const { id, photo, title, description, owner, likes, views  } = this.state.challenge;
 
     const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
    
@@ -209,12 +209,14 @@ class ChallengeDetail extends Component {
 
         {this.state.showModalEvidences && (
           <Modal>
-          <EvidencesModal title={title} 
+          <EvidencesModal id={id}
+                          title={title} 
                           propAvatar={itemToShow.userId.avatarURL} 
                           propNickname={itemToShow.userId.nickName} 
                           evidences={itemToShow.evidences} 
                           modalOrder={modalOrder}
                           onShowModal={this.onShowModalEvidences}
+                          isChallenge
           />
           </Modal>
         )}

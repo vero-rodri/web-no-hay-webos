@@ -19,7 +19,7 @@ const IconCustom = (props) => {
         {/* <p className="m-0 p-0">{name}</p> */}
       </div>
     </NavLink>
-  )
+  ) 
 }
 
 export default IconCustom;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Modal from '../Modal';
-import { TextArea, Button, Select, FormField, Form } from 'grommet';
+import { Button, Form } from 'grommet';
 import userChallengesServices from '../../../services/userChallengesService';
 import SelectUsers from '../../../ui/SelectUsers';
 import EmailItem from './EmailItem';
@@ -114,7 +114,7 @@ class ModalSendChallenge extends Component {
               </div>
               <Form onSubmit={this.handleSubmitModal}>
                 <div className="py-3">
-                <h6>¡Puedes notificar a cualquier usuario de la aplicación que aún no haya participado en él ...</h6>
+                <h6>Puedes notificar a cualquier usuario de la aplicación que aún no esté participando</h6>
                   <SelectUsers  className="react-select-container" 
                                 handleChange={this.handleChangeUsersSelectedModal}
                                 options={this.listUsersOptions()}
@@ -124,13 +124,13 @@ class ModalSendChallenge extends Component {
                 </div>
                 
                 <div className="py-3">
-                  <h6>... o puedes también mandar este reto por correo electrónico a algún amig@!</h6>
+                  <h6>...o puedes mandar este reto por email a algún amig@</h6>
                   <EmailInput addEmail={this.addEmailToList} />
                   {this.listEmails()}
                 </div>
                 
                 <div className="py-3">
-                  <h6>Puedes también añadir un mensaje para picarles...</h6>
+                  <h6>Añade un mensaje para picarles...</h6>
                   <textarea className="form-control" id="exampleFormControlTextarea1" rows="2" placeholder="¿¿Hay Webos a..." 
                             value={comment}
                             onChange={this.handleCommentModal}>
@@ -138,7 +138,13 @@ class ModalSendChallenge extends Component {
                 </div>
 
                 <div className="d-flex justify-content-center py-3">
-                  <Button type="submit" size="large" primary disabled={!usersSelected.length && !emailsList.length}  label="Notificar!" />
+                  <Button type="submit" 
+                          size="large" 
+                          primary  
+                          label="Notificar!"
+                          // disabled={!usersSelected.length && !emailsList.length}
+                          className={ !usersSelected.length && !emailsList.length && "btn-disabled"}
+                          />
                 </div>
               </Form>
             </div>
