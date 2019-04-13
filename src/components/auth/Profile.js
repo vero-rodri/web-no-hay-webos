@@ -20,6 +20,7 @@ class Profile extends Component {
     userChallengesRejected: [],
     userChallengesPending: [],
     challenges: [],
+    user:{}, 
     optionUserChallengeInProcessFiltered: SELECT_SORTS['createDate'],
     optionUserChallengeFinishedFiltered: SELECT_SORTS['createDate'],
     optionChallengeFiltered: SELECT_SORTS['createDate'],
@@ -32,15 +33,17 @@ class Profile extends Component {
     const { userId } = this.state;
     const p1 = usersService.getChallengesByUser(userId);
     const p2 = usersService.getUserChallengesByUser(userId);
+    const p3 = usersService.getUser(userId)
 
     
-    Promise.all([p1, p2])
-    .then(([challenges, userChallenges]) => {
+    Promise.all([p1, p2, p3])
+    .then(([challenges, userChallenges, user]) => {
       console.log("los UC finished son ", userChallenges)  
       console.log("los CHALL son ", challenges)  
       
       this.setState({
         ...this.state,
+        user: user,
         challenges: challenges,
         userChallengesFinished: userChallenges.filter(userChallenge => userChallenge.isFinished),
         userChallengesInProcess: userChallenges.filter(userChallenge => (!userChallenge.isFinished) && (!userChallenge.isRejected) && (!userChallenge.isPending)),
@@ -117,8 +120,8 @@ class Profile extends Component {
     return (        
       <div className="container my-3">
         <div className="row align-items-center mx-0 mb-0 mt-2" style={{heigth:'300px'}}>
-          <img className="img-user-profile" src={this.props.user.avatarURL} alt={this.props.user.nickName}></img>
-          <h3 className="m-0 mx-3 user-profile">{this.props.user.nickName}</h3>
+          <img className="img-user-profile" src={this.state.user.avatarURL} alt={this.state.user.nickName}></img>
+          <h3 className="m-0 mx-3 user-profile">{this.state.user.nickName}</h3>
         </div>
 
         {this.thereAreUserChallenges() &&

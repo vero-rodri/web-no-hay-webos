@@ -23,6 +23,7 @@ class ChallengeDetail extends Component {
     user: {},
     challenge: {},
     userChallenges: [],
+    userChallengesOwns: [],
     isAlreadyJoined: false,
     isJoinedNow: '',
     optionFiltered: SELECT_SORTS['likes'],
@@ -54,11 +55,11 @@ class ChallengeDetail extends Component {
     const p3 = userChallengesService.getUserChallengesByChallenge(this.props.match.params.challengeId)
       
     Promise.all([p1, p2, p3])
-     .then(([challenge, userChallenges, userChallengesOwns]) => {
+     .then(([challenge, userChallengesFinished, userChallengesOwns]) => {
        this.setState({
        ...this.state,
        challenge: challenge,
-       userChallenges: userChallenges,
+       userChallenges: userChallengesFinished,
        userChallengesOwns: userChallengesOwns
        })
      })
@@ -117,15 +118,14 @@ class ChallengeDetail extends Component {
 
   
   countUserChallenges = () => 
-    (this.state.challenge.userChallenges) ?
-      this.state.challenge.userChallenges.length : 0;
+    (this.state.userChallengesOwns) ?
+      this.state.userChallengesOwns.filter(userChallenge =>
+         (!userChallenge.isFinished) && (!userChallenge.isRejected) && (!userChallenge.isPending)).length : 0;
   
 
   countUserChallengesFinished = () =>   
-    (this.state.challenge.userChallenges) ?
-      this.state.challenge.userChallenges
-        .filter(userChallenge => userChallenge.Finished)
-        .length : 0;
+    (this.state.userChallenges) ?
+      this.state.userChallenges.length : 0;
 
 
   createListAvatarsUserChallenges = () => {

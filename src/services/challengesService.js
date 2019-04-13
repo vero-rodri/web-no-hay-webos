@@ -70,8 +70,8 @@ const getUserChallengeDetail = (UserChallengeId) => {
 }
 
 
-const getUserChallenges = () => {
-  return http.get('/user-challenges')
+const getUserChallengesFinished = () => {
+  return http.get('/user-challenges/finished')
     .then(response => {
       userChallenges = response.data;
       localStorage.setItem(CURRENT_USER_CHALLENGES_KEY, JSON.stringify(userChallenges));
@@ -79,6 +79,12 @@ const getUserChallenges = () => {
       return userChallenges;
     })
 }
+
+const getUserChallengesInProcess = () => {
+  return http.get('/user-challenges/in-process')
+    .then(response => response.data)
+}
+
 
 const getUserChallengesFinishedByChallenge = (challengeId) => {
   return http.get(`challenges/${challengeId}/user-challenges`)
@@ -121,7 +127,7 @@ const addUserChallengeToLikes = (userChallengeId) => {
 
   return http.post(`/user-challenges/${userChallengeId}/likes`)
     .then (response => {
-      getUserChallenges()
+      getUserChallengesFinished()
         .then(() => console.log("fetch userChallenges"))
       return response.data;
     })
@@ -132,7 +138,7 @@ const removeUserChallengeFromLikes = (userChallengeId) => {
 
   return http.delete(`/user-challenges/${userChallengeId}/likes`)
     .then(response => {
-      getUserChallenges()
+      getUserChallengesFinished()
         .then(() => console.log("fetch userChallenges"))
       return response.data;
     })
@@ -192,7 +198,8 @@ export default {
   getChallenges,
   getChallengeDetail,
   createChallenge,
-  getUserChallenges,
+  getUserChallengesFinished,
+  getUserChallengesInProcess,
   getUserChallengeDetail,
   onChallengesChange,
   onUserChallengesChange,

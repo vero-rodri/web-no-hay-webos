@@ -48,6 +48,7 @@ class ModalSendChallenge extends Component {
     const { user, challenge, location } = this.props;
     const { comment, usersSelected, emailsList } = this.state;
     const body = {
+      message: comment,
       sender: user.id,
       usersId: usersSelected.map(user => user.id),
       challengeId: challenge.id

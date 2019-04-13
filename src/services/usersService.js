@@ -25,8 +25,14 @@ const getUsersEnabledForSending = (challengeId) => {
     .then(response => response.data)
 }
 
+const getUser = ( userId ) => {
+  return http.get(`users/${userId}`)
+    .then(response => response.data)
+}
+
 export default {
   getUserChallengesByUser,
   getChallengesByUser,
-  getUsersEnabledForSending
+  getUsersEnabledForSending,
+  getUser
 }

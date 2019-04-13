@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 const http = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
   withCredentials: true
-})
+}) 
 
 let CURRENT_USER_CHALLENGES_PENDING_KEY = 'current-user-challenges-pending'
 let userChallengesPending = JSON.parse(localStorage.getItem(CURRENT_USER_CHALLENGES_PENDING_KEY) || '[]')

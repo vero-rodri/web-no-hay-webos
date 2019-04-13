@@ -22,7 +22,7 @@ class Board extends Component {
   componentDidMount = () => {
 
     const p1 = challengesService.getChallenges();
-    const p2 = challengesService.getUserChallenges();
+    const p2 = challengesService.getUserChallengesFinished();
     const p3 = userChallengesService.getUserChallengesPendingBySession();
     Promise.all([p1, p2, p3])
       .then(([challenges, userChallenges, userChallengesPendingBySession]) => 
