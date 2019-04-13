@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import { Redirect, withRouter, Link } from 'react-router-dom'
-import {LIMIT_DESCRIPTION, LIMIT_TITLE } from '../../constants';
+import {LIMIT_DESCRIPTION, LIMIT_TITLE, REGEX_IMAGE, REGEX_VIDEO } from '../../constants';
 import $ from 'jquery';
 import challengeService from '../../services/challengesService';
 import authService from '../../services/authService';
@@ -171,10 +171,18 @@ class SearchItem extends Component {
     return (
       <Fragment>
         {<div className="media align-items-center mx-0 my-3 border rounded-lg row card-search">
-          
-            <div className="col-3 p-0" onClick={this.goToDetail}>
-              <img src={file} className="w-100 img-in-search rounded-lg" alt="..." />
-            </div>  
+         {((file) && (file.match(REGEX_VIDEO))) && 
+          <div className="col-3 p-0" onClick={this.goToDetail}>
+              <video className="video-card w-100 h-100" >
+                <source src={file} type="video/ogg"/>
+              </video> 
+            </div>
+          }
+         {((file) && (file.match(REGEX_IMAGE))) && 
+          <div className="col-3 p-0" onClick={this.goToDetail}>
+            <img src={file} className="w-100 img-in-search rounded-lg" alt="..." /> 
+          </div>
+          }
           <div className="media-body col-9 p-0">
             <div className="d-flex justify-content-between">
               <div className="px-2 col-9 card-media-item">
