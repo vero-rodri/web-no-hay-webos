@@ -32,7 +32,7 @@ class ModalSendChallenge extends Component {
       ...this.state,
       usersSelected: event
     })
-  }
+  } 
 
   handleCommentModal = (event) => {
     this.setState({
@@ -45,14 +45,12 @@ class ModalSendChallenge extends Component {
   handleSubmitModal = (event) => {
     event.preventDefault();
 
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@22comment lleva", this.state.comment)
-    
     const { user, challenge, location } = this.props;
     const { comment, usersSelected, emailsList } = this.state;
     const body = {
       sender: user.id,
       usersId: usersSelected.map(user => user.id),
-      challengeId: challenge.id,
+      challengeId: challenge.id
     };
 
     const p1 = userChallengesServices.createUserChallengesByNotifications(body);
