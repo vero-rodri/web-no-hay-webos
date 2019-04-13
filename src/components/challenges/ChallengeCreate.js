@@ -90,7 +90,7 @@ class ChallengeCreate extends Component {
 
           <InputField
             label="Nombre:"
-            placeholder="Un dibujo a tinta al día!"
+            placeholder="Cómete un insecto!"
             type="search"
             {...getFieldProps('title', {
               initialValue: '',
