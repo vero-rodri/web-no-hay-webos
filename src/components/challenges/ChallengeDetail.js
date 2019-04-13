@@ -183,9 +183,15 @@ class ChallengeDetail extends Component {
   render() {
 
     
-    const { id, photo, title, description, owner, likes, views  } = this.state.challenge;
+    const { id, 
+            photo, 
+            title, 
+            description, 
+            owner, 
+            likes, 
+            views  } = this.state.challenge;
 
-    const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
+    const { optionFiltered, userChallenges, user, challenge, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
    
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
@@ -248,7 +254,19 @@ class ChallengeDetail extends Component {
         </div>
         <div className="container">
           <div className="col-12 mt-2 p-0">
-            <h3 className="mt-3">{title}</h3>
+              { this.state.challenge.kind && 
+            <div className="row justify-content-between align-items-center px-3">
+                <div className="budget-type small">paso a paso</div>
+                <div className="small">duración: <span className="font-weight-bold">{this.state.challenge.duration}</span> días</div>
+                <div className="small">periodicidad: <span className="font-weight-bold">{this.state.challenge.periodicity}</span> días</div>
+            </div>
+              }
+              { !this.state.challenge.kind && 
+            <div>
+                <div className="budget-type small">típico</div>
+            </div>
+              }
+            <h3 className="mt-2">{title}</h3>
             <p className="mb-2 text-justify">{description}</p>
             <div className="mr-2 text-right">
               <div>

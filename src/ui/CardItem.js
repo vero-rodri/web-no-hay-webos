@@ -5,7 +5,10 @@ import { Box, Stack} from  'grommet';
 import { REGEX_IMAGE, REGEX_VIDEO, LIMIT_TEXT_CARD_ITEM } from '../constants';
 import Moment from 'react-moment';
 import 'moment-timezone';
-import { OverlayTrigger } from 'react-bootstrap'
+import { OverlayTrigger } from 'react-bootstrap';
+import icons from '../utils/icons.json';
+
+const getIconText = text => icons[text];
 
 
 class CardItem extends Component {
@@ -118,7 +121,12 @@ class CardItem extends Component {
         <Box >
           <div className="card">
 
-            {(!photo) && <span className="card-img-top img-card-size" onClick={this.onRedirectToItem}><h6 className="h-100 m-0 d-flex align-items-center"> CLIKEAME PARA SUBIR TU LOGRO</h6></span>}
+            {(!photo) &&  <div className="img-card-size" onClick={this.onRedirectToItem}>
+                            <div className="without-evidences">
+                              <img src={getIconText("hen")} alt="hen" style={{height: "40px", width: "40px"}}/>
+                              <div className="m-0 small text-center"> sin pruebas</div>
+                            </div>
+                          </div>}
             {((photo) && (photo.match(REGEX_VIDEO))) && 
             <video className="video-card" width="125" height="80" onClick={(onShowModal) ? this.onShowModal : this.onRedirectToItem}>
               <source src={photo} type="video/ogg"/>
