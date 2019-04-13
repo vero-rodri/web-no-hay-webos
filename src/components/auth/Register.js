@@ -56,8 +56,8 @@ class Register extends Component {
     
     return (
     <div className="main-bg">
-      <div ><img className="logo register" src={getIconText("logo")} alt="logo" ></img></div>
       <div className="intro-form-container">
+        <div className="logo-intro"><img src={getIconText("logo")} alt="logo" ></img></div>
         <Form onSubmit={this.handleSubmit}>
 
           <InputField

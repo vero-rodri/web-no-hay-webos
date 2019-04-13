@@ -36,16 +36,16 @@ class NotificationItem extends Component {
           <div className="media border mx-2 my-3 rounded d-flex justify-content-between" style={{height: '150px'}}>
             <div className="media-body col-8 h-100">
               <div className=" d-flex row p-0 h-100">
-                <div className="p-2 m-0 row">
+                <div className="p-2 m-0 row align-items-center">
                   <img className="rounded-circle avatar-user" src={avatarURL} alt={this.props.sender.id} />
-                  <h5 className="m-0 mx-1"><strong>{nickName}</strong> te reta a:</h5>
+                  <h6 className="m-0 mx-1 px-1">{nickName} te reta a:</h6>
                 </div>
-                <h6 className="m-0 px-2 my-1 w-100 text-center"><u>{title}</u></h6>
+                <h6 className="m-0 px-2 my-1 w-100 text-center">{title}</h6>
                 <p className="m-0 px-2"><small><i>{message}</i></small></p>
               </div>
             </div>
             <div className="col-4 h-100 p-0">
-              <div className="p-2 m-0 h-100 ">
+              <div className="p-2 m-0 h-100 d-flex flex-column justify-content-around">
                 <Button className="py-1 px-2 my-1 w-100" type="button" primary label="Más info" onClick={this.handleRedirect} />
                 <Button className="py-1 px-2 my-1 w-100" type="button" primary label="Declinar" onClick={() => this.props.handleRemove(this.props.id)}/>
               </div>

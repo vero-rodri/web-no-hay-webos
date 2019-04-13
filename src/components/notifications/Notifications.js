@@ -4,7 +4,7 @@ import userChallengesService from '../../services/userChallengesService';
 
 class Notifications extends Component {
   
-  state = {
+  state = { 
     userChallengesPending: []
   }
 
