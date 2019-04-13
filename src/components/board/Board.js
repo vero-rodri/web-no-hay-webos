@@ -40,7 +40,7 @@ class Board extends Component {
 
 
   topUserChallenges = () => this.state.userChallenges
-    .sort((a, b) => b.likes - a.likes)
+    .sort((a, b) => b.views - a.views)
     .slice(0, 10);
   
 

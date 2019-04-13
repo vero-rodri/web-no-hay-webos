@@ -13,7 +13,6 @@ const getUserChallengesByUser = (userId) => {
     .then(response => response.data)
 }
 
-
 const getChallengesByUser = (userId) => {
   console.log("en Challenge por user");
   return http.get(`users/${userId}/challenges`)

@@ -19,14 +19,14 @@ class Notifications extends Component {
     });
   }
 
-  handleRemoveUserChallenge = (userChallengeId) => {
-    console.log("eliminando...", userChallengeId)
-    userChallengesService.deleteUserChallenge(userChallengeId)
+  handleRejectUserChallenge = (userChallengeId) => {
+    console.log("rechazando...", userChallengeId)
+    userChallengesService.rejectUserChallenge(userChallengeId)
   }
 
   listNotifications = () => 
     this.state.userChallengesPending.map((userChallengePending, index) =>
-        <NotificationItem key={index} {...userChallengePending} handleRemove={this.handleRemoveUserChallenge} />)
+        <NotificationItem key={index} {...userChallengePending} handleRemove={this.handleRejectUserChallenge} />)
   
   
   render() {
