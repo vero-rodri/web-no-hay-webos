@@ -17,8 +17,8 @@ const createUserChallengesByNotifications = (body) =>
     .then(response => response.data);
 
 
-const deleteUserChallenge = (userChallengeId) => 
-  http.delete(`/user-challenges/${userChallengeId}`)
+const rejectUserChallenge = (userChallengeId) => 
+  http.post(`/user-challenges/${userChallengeId}/reject`)
     .then(() => getUserChallengesPendingBySession());
 
 
@@ -39,7 +39,7 @@ http.post(`/user-challenges/${userChallengeId}/accept`)
     return response.data;
   });
 
-const getUserChallengesNoRefuseByChallenge = (challengeId) => {
+const getUserChallengesByChallenge = (challengeId) => {
   return http.get(`challenges/${challengeId}/user-challenges/all`)
     .then(response => response.data)
   }
@@ -50,9 +50,9 @@ const onUserChallengesPendingChange = () =>
 
 export default {
   createUserChallengesByNotifications,
-  deleteUserChallenge,
+  rejectUserChallenge,
   getUserChallengesPendingBySession,
   onUserChallengesPendingChange,
   acceptUserChallenge,
-  getUserChallengesNoRefuseByChallenge
+  getUserChallengesByChallenge
 } 

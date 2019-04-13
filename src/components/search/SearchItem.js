@@ -191,7 +191,7 @@ class SearchItem extends Component {
                   delay={{ show: 200, hide: 150 }}
                   overlay={renderTooltip(this.state.info.description)}
                 >
-                  <p className="m-0">{description}</p>
+                  <p className="m-0">{description.toLowerCase()}</p>
                 </OverlayTrigger>
 
                 <div className="m-0 my-1 d-flex justify-content-between align-items-center">

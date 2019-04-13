@@ -29,7 +29,7 @@ class App extends Component {
         <div className="container-fluid px-0 py-1 margin-main-container">
           <Switch>
             {/* esto va guay, pero vamos a probar protegiendo rutas */}
-            <Route exact path="/register" component={Register} />
+            {/* <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/board" component={Board} />
             <Route exact path="/profile" component={Profile}/>
@@ -40,7 +40,21 @@ class App extends Component {
             <Route exact path="/user-challenges/:userChallengeId" component={UserChallenge} />
             <Route exact path="/notifications" component={Notification} />
             <Route exact path="/notifications/:challengeId" component={ChallengeDetail} />
-            <Route exact path="/ejemplo" component={Ejemplo} />
+            <Redirect to="/board" /> */}
+
+
+
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <PrivateRoute exact path="/board" component={Board} />
+            <PrivateRoute exact path="/profile" component={Profile}/>
+            <PrivateRoute exact path="/profile/:userId" component={Profile}/>
+            <PrivateRoute exact path="/search" component={Search} />
+            <PrivateRoute exact path="/challenges/create" component={ChallengeCreate} />
+            <PrivateRoute exact path="/challenges/:challengeId" component={ChallengeDetail} />
+            <PrivateRoute exact path="/user-challenges/:userChallengeId" component={UserChallenge} />
+            <PrivateRoute exact path="/notifications" component={Notification} />
+            <PrivateRoute exact path="/notifications/:challengeId" component={ChallengeDetail} />
             <Redirect to="/board" />
 
 

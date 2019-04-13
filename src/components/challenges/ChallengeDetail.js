@@ -51,7 +51,7 @@ class ChallengeDetail extends Component {
 
     const p1 = challengesService.getChallengeDetail(this.props.match.params.challengeId)
     const p2 = challengesService.getUserChallengesFinishedByChallenge(this.props.match.params.challengeId)
-    const p3 = userChallengesService.getUserChallengesNoRefuseByChallenge(this.props.match.params.challengeId)
+    const p3 = userChallengesService.getUserChallengesByChallenge(this.props.match.params.challengeId)
       
     Promise.all([p1, p2, p3])
      .then(([challenge, userChallenges, userChallengesOwns]) => {
@@ -71,10 +71,14 @@ class ChallengeDetail extends Component {
   }
 
 
-  objectIdInArray = (userId, userChallenge) => {
+  objectIdInArray = (userId, userChallenges) => {
     let userIdAux = JSON.stringify(userId);
-    let arrAux = userChallenge.map(object => JSON.stringify(object.userId.id));
-    return arrAux.includes(userIdAux);
+    if (userChallenges && userChallenges.length) {
+      let arrAux = userChallenges.map(object => JSON.stringify(object.userId.id));
+      return arrAux.includes(userIdAux);
+    } else {
+      return false;
+    }
   }
 
 
@@ -172,7 +176,7 @@ class ChallengeDetail extends Component {
 
   onRefuseUserChallenge = (event) => {
     const { userChallengeId } = this.props.location.state
-    userChallengesService.deleteUserChallenge(userChallengeId)
+    userChallengesService.rejectUserChallenge(userChallengeId)
       .then(() => 
         this.setState({
           ...this.state,
@@ -183,15 +187,10 @@ class ChallengeDetail extends Component {
   render() {
 
     
-    const { id, 
-            photo, 
-            title, 
-            description, 
-            owner, 
-            likes, 
-            views  } = this.state.challenge;
 
-    const { optionFiltered, userChallenges, user, challenge, modalOrder, itemToShow, listAllUsersEnabledForSending } = this.state;
+    const { id, photo, title, description, owner, likes, views  } = this.state.challenge;
+
+    const { optionFiltered, userChallenges, user, challenge, listUsers, ListUsersFiltered, modalOrder, itemToShow, listAllUsersEnabledForSending, userChallengesOwns } = this.state;
    
     if ( this.state.isJoinedNow ) {
       return <Redirect to={`/user-challenges/${this.state.isJoinedNow}`} />
@@ -289,7 +288,7 @@ class ChallengeDetail extends Component {
 
           {this.props.location.pathname.startsWith('/challenges')
             && (<div className="col-12 my-2 d-flex flex-row justify-content-around">
-                  <Button className="py-1 px-2 m-1" type="button" primary label="Únete al reto!" disabled={this.objectIdInArray(user.id, userChallenges)} onClick={this.onClickJoin}  />
+                  <Button className="py-1 px-2 m-1" type="button" primary label="Únete al reto!" disabled={this.objectIdInArray(user.id, userChallengesOwns)} onClick={this.onClickJoin}  />
                   <Button className="py-1 px-2 m-1" type="button" primary label="Reta a otros" onClick={this.onClickChallengeOthers} />
                 </div>
           )}
